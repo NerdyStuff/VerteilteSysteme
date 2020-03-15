@@ -1,12 +1,12 @@
 # VerteilteSysteme
-This Project is a distributed chat plattform for the course 'Verteilte Systeme'
+This project is a distributed chat plattform for the course 'Verteilte Systeme' written in java.
 
 ## Task:
-Build a TCP based chat system in Java using **java.io.\***, **java.net.\***, **java.util.\*** and **java.swing.\*** for the base version.
+Build a TCP based chat system in java using **java.io.\***, **java.net.\***, **java.util.\*** and **java.swing.\*** for the base version.
 
-User need to login to the server, to chat with exactly one other user. To avoid failures, there is a need of two identical servers, which keep track of the complete chat history.
+**User need to login to the server**, to chat with exactly one other user. To avoid failures, there is a need of **two identical servers**, which keep track of the complete chat history.
 
-The user connects to a random choosen server (=> **load distribution**) for a central login with for example username and password. For the chat the client also connects to a random server.
+The user connects to a **random choosen server** (=> **load distribution**) for a **central login** with for example username and password. For the chat the client also connects to a random server.
 
 A messages sent by user A shall be **saved in the chat history** and send to user B, where it is also kept in the chat history. The complete chat history for both parties shall be displayed in correct order with time (=> **Lamport timestamps**) if the users are logged in.
 
