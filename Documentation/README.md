@@ -1,4 +1,4 @@
 # Documentation of this Project
 Ideas for the project can be found [here]().
 
-[Here]() are our meeting notes.
+[Here](https://github.com/NerdyStuff/VerteilteSysteme/tree/master/Documentation/Planning) are our meeting notes.
