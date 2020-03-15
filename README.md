@@ -8,9 +8,9 @@ Build a TCP based chat system in java using **java.io.\***, **java.net.\***, **j
 
 The user connects to a **random choosen server** (=> **load distribution**) for a **central login** with for example username and password. For the chat the client also connects to a random server.
 
-A messages sent by user A shall be **saved in the chat history** and send to user B, where it is also kept in the chat history. The complete chat history for both parties shall be displayed in correct order with time (=> **Lamport timestamps**) if the users are logged in.
+A messages sent by user A shall be **saved in the chat history** and send to user B, where it is also kept in the chat history. The complete chat history for both parties shall be displayed in correct order with time (=> **Lamport timestamps**[1]) if the users are logged in.
 
-The server shall process the messages from both users fast (=> **non-persistent server**[1]).
+The server shall process the messages from both users fast (=> **non-persistent server**[2]).
 
 The whole system shall be **failsafe for network issues and errors** (for the testcase the network partitioning is short).
 
@@ -37,4 +37,5 @@ The system must be documented (5 - 10 pages + commented code listing). It must b
 * **Marcel Mertens** ([Nerdystuff](https://github.com/NerdyStuff)) 
 
 ### Sources & Links
-- \[1\] [non-persistent vs persistent connection](https://www.geeksforgeeks.org/http-non-persistent-persistent-connection-set-2/)
+- \[1\] [Lamport-Uhr](https://de.wikipedia.org/wiki/Lamport-Uhr); [Lamport timestamps](https://en.wikipedia.org/wiki/Lamport_timestamps) 
+- \[2\] [non-persistent vs persistent connection](https://www.geeksforgeeks.org/http-non-persistent-persistent-connection-set-2/)
