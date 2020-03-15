@@ -1,4 +1,4 @@
-# VerteilteSysteme
+# Verteilte Systeme
 This project is a distributed chat plattform for the course 'Verteilte Systeme' written in java.
 
 ## Task:
