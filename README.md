@@ -26,4 +26,4 @@ The system must be documented (5 - 10 pages + commented code listing). It must b
 - Encrypted storage of chathistory on the server (+ 10 points)
 - Group chats (+ 20 points)
 - Encrypted communication (+ 20 points)
-- Three replicated servers with majority consensus strategy\[MCS\]((+ 40 points))
+- Three replicated servers with majority consensus strategy\[MCS\](+ 40 points)
