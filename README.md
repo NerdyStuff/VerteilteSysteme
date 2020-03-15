@@ -10,7 +10,7 @@ The user connects to a **random choosen server** (=> **load distribution**) for 
 
 A messages sent by user A shall be **saved in the chat history** and send to user B, where it is also kept in the chat history. The complete chat history for both parties shall be displayed in correct order with time (=> **Lamport timestamps**) if the users are logged in.
 
-The server shall process the messages from both users fast (=> **non-persistent server**).
+The server shall process the messages from both users fast (=> **non-persistent server**[1]).
 
 The whole system shall be **failsafe for network issues and errors** (for the testcase the network partitioning is short).
 
@@ -27,3 +27,6 @@ The system must be documented (5 - 10 pages + commented code listing). It must b
 - Group chats (+ 20 points)
 - Encrypted communication (+ 20 points)
 - Three replicated servers with majority consensus strategy\[MCS\](+ 40 points)
+
+### Sources & Links
+- \[1\] [non-persistent vs persistent connection](https://www.geeksforgeeks.org/http-non-persistent-persistent-connection-set-2/)
