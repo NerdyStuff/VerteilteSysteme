@@ -28,5 +28,13 @@ The system must be documented (5 - 10 pages + commented code listing). It must b
 - Encrypted communication (+ 20 points)
 - Three replicated servers with majority consensus strategy\[MCS\](+ 40 points)
 
+### Group:
+* **Anna-Lena Richert** ([aalenaa](https://github.com/aalenaa))
+* **Anton Ochel** ([Tony1704](https://github.com/Tony1704))
+* **Benno Grimm** ([Grimmig18](https://github.com/Grimmig18))
+* **Tizian Groß** ([tizian123](https://github.com/tizian123)) 
+* **Tristan Emig** ([TristanMrb](https://github.com/TristanMrb)) 
+* **Marcel Mertens** ([Nerdystuff](https://github.com/NerdyStuff)) 
+
 ### Sources & Links
 - \[1\] [non-persistent vs persistent connection](https://www.geeksforgeeks.org/http-non-persistent-persistent-connection-set-2/)
