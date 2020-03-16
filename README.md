@@ -39,3 +39,4 @@ The system must be documented (5 - 10 pages + commented code listing). It must b
 ### Sources & Links
 - \[1\] [Lamport-Uhr](https://de.wikipedia.org/wiki/Lamport-Uhr); [Lamport timestamps](https://en.wikipedia.org/wiki/Lamport_timestamps) 
 - \[2\] [non-persistent vs persistent connection](https://www.geeksforgeeks.org/http-non-persistent-persistent-connection-set-2/)
+- \[3\] [Step-bv-Step Java Chat](https://www.instructables.com/id/Creating-a-Chat-Server-Using-Java/)
