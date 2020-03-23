@@ -21,3 +21,10 @@ das ganze wird über unterscheidliche portranges getrennt
 
 ## Nachrichten Client Server
 Messageobjekt hat timestamp, typ und body und wird auf dem server in die datenbank geschrieben 
+
+### Datentyp für Messages
+- Eine Message soll den Timestamp, den Usernamen, das Passwort und die Nachricht mitgeschickt werden
+- Dafür würde ein json ideal sein, dieser ist aber durch die anfoderungen ohne eine externe library nicht erlaubt
+- Alternativ bauen wir uns unseren eigenen String, welcher durch ein Zeichen die verschiedenen daten trennt
+  -Dafür muss ein geeigneter trenner gefunden werden, idealerweise ein non printable character
+  
