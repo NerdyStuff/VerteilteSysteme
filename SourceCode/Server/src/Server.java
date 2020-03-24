@@ -11,7 +11,16 @@ public class Server {
     private static int serverPort = 1337;
     private static ServerSocket serverSocket;
 
+
+
+    private static User[] users = new User[10];
+
     public static void main(String[] args) {
+
+        boolean userAuthenticated = false;
+
+        users[0] = new User("peter123", "sicher4711");
+        users[1] = new User("klaus55", "superTollesPw");
 
         // open server socket
         startServerSocket(serverPort);
@@ -30,11 +39,30 @@ public class Server {
                     String socketDataString = getSocketData(clientSocket); // Get data from socket
 
                     // Analyse Data
-                    Message dataPakage = null;
+                    Message dataPakage = new Message(socketDataString);
 
-                    System.out.println("Data: " + socketDataString);
+                    for (int i = 0; i < users.length; i++) {
 
-                    sendSocketData(clientSocket, "TEST");
+                        if(dataPakage.getSender() == users[i].getUsername()) {
+                            if (dataPakage.getPassword() == users[i].getPassword()) {
+                                System.out.println("User authenticated successfully");
+                                userAuthenticated = true;
+                            }
+                        }
+                    }
+
+                    // If user was not successfully authentificated close connection
+                    if(!userAuthenticated) {
+                        clientSocket.close();
+                    }
+
+
+
+
+
+
+
+
                 }
             } catch (IOException ioException) {
                 System.out.println("Error: Client could not connect...");
