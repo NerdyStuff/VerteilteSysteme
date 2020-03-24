@@ -126,7 +126,6 @@ public class Server {
         String data = "";
 
         try {
-            //Scanner scanner = new Scanner(clientSocket.getInputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
             // TODO read whole output!
