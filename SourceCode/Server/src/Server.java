@@ -12,12 +12,12 @@ public class Server {
     private static ServerSocket serverSocket;
 
 
-
-    private static User[] users = new User[10];
+    private static User[] users = new User[2];
 
     public static void main(String[] args) {
 
         boolean userAuthenticated = false;
+        int userPositionInArray = 0;
 
         users[0] = new User("peter123", "sicher4711");
         users[1] = new User("klaus55", "superTollesPw");
@@ -43,35 +43,53 @@ public class Server {
 
                     try {
                         dataPakage = new Message(socketDataString);
-                    }
-                    catch (WrongMessageInput wrongMessageInput) {
+                    } catch (WrongMessageInput wrongMessageInput) {
                         System.out.println("Error while processing Message");
                         wrongMessageInput.printStackTrace();
                         clientSocket.close();
                     }
 
+                    System.out.println(dataPakage.getSender());
+                    System.out.println(dataPakage.getPassword());
+                    System.out.println(dataPakage.getReceiver());
+
+
                     for (int i = 0; i < users.length; i++) {
 
-                        if(dataPakage.getSender() == users[i].getUsername()) {
-                            if (dataPakage.getPassword() == users[i].getPassword()) {
+                        if (dataPakage.getSender().equals(users[i].getUsername())) {
+                            if (dataPakage.getPassword().equals(users[i].getPassword())) {
                                 System.out.println("User authenticated successfully");
                                 userAuthenticated = true;
+                                userPositionInArray = i;
                             }
                         }
                     }
 
                     // If user was not successfully authentificated close connection
-                    if(!userAuthenticated) {
+                    if (!userAuthenticated) {
 
                         System.out.println("Closing connection!");
                         clientSocket.close();
                     }
 
+                    System.out.println("After IF");
+
+                    for (int i = 0; i < users.length; i++) {
+
+                        if (dataPakage.getReceiver().equals(users[i].getUsername())) {
+                            users[i].addMessage(dataPakage.getMessage());
+                        }
+                    }
+
+                    System.out.println("After FOR");
+
+                    sendSocketData(clientSocket, "TEst");
 
 
-
-
-
+                    // Send queued data to client
+                    while (!users[userPositionInArray].hasNoMessages()) {
+                        sendSocketData(clientSocket, users[userPositionInArray].removeMessage());
+                    }
 
 
                 }
@@ -136,7 +154,7 @@ public class Server {
         try {
             PrintWriter printWriter = new PrintWriter(clientSocket.getOutputStream());
 
-            printWriter.println(data);
+            printWriter.print(data);
         } catch (IOException ioException) {
             System.out.println("Error: Couldn't send data to client");
             ioException.printStackTrace();
