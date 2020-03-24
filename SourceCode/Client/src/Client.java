@@ -9,7 +9,7 @@ public class Client
     private final int port = 1337; //Konstante für den Port
     private String username, password;
     public static void main(String[] args) {
-        Client c = new Client("peter123","sicher4711");
+        Client c = new Client("peter123","superTollesPw");
     }
 
     public Client(String username, String password) //Konstruktor
@@ -28,8 +28,8 @@ public class Client
             PrintWriter printWriter = new PrintWriter(server.getOutputStream(), true);
             printWriter.println(constructMessageString(to,message));
 
-            Scanner scanner = new Scanner(server.getInputStream()); //neuer Scanner
-            String input = scanner.nextLine(); //öffne scanner und schreibe in String bis \n kommt
+            BufferedReader reader = new BufferedReader(new InputStreamReader(server.getInputStream())); //neuer Scanner
+            String input = reader.readLine(); //öffne scanner und schreibe in String bis \n kommt
 
             System.out.println(input); //schreibe Serverdaten
         } catch(IOException exception) //fange Exception ab
