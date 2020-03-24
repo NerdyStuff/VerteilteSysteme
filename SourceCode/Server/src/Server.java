@@ -36,9 +36,6 @@ public class Server {
                     System.out.println("Success: Client connected to server!");
                     System.out.println("Client: " + clientSocket.toString() + " connected to server.");
 
-
-                    sendSocketData(clientSocket, "SEDENDKJHCLDXCH");
-
                     String socketDataString = getSocketData(clientSocket); // Get data from socket
 
                     // Analyse Data
@@ -51,8 +48,6 @@ public class Server {
                         wrongMessageInput.printStackTrace();
                         clientSocket.close();
                     }
-
-                    sendSocketData(clientSocket, "LOLOLO");
 
                     for (int i = 0; i < users.length; i++) {
 
@@ -80,9 +75,6 @@ public class Server {
                             System.out.println(users[i].removeMessage());
                         }
                     }
-
-                    sendSocketData(clientSocket, "DATEN ENDE");
-
 
                     // Send queued data to client
                     while (!users[userPositionInArray].hasNoMessages()) {
@@ -134,17 +126,16 @@ public class Server {
         String data = "";
 
         try {
-            Scanner scanner = new Scanner(clientSocket.getInputStream());
+            //Scanner scanner = new Scanner(clientSocket.getInputStream());
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
             // TODO read whole output!
-            data = scanner.nextLine();
+            data = reader.readLine();
 
         } catch (IOException ioException) {
             System.out.println("Error: Couldn't get data from socket...");
             ioException.printStackTrace();
         }
-
-
 
         return data;
     }
