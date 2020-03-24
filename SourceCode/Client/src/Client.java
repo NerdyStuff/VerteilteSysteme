@@ -32,10 +32,12 @@ public class Client {
             printWriter.println(constructMessageString(to, message));
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(server.getInputStream()));
-            String input = reader.readLine(); //öffne scanner und schreibe in String bis \n kommt
-
-            System.out.println(input);
-        } catch (IOException exception)
+            String input = "";
+            while((input = reader.readLine())!= null) {
+                System.out.println(input);
+            }
+        }
+        catch (IOException exception)
         {
             exception.printStackTrace();
         } finally {

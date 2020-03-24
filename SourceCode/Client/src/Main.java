@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -14,11 +15,18 @@ public class Main {
         Client c = new Client("localhost",1337,username,passwort);
         System.out.println("Du kannst jetzt chatten:");
         while(true) {
-            String message = reader.readLine();
-            if(message.equals("\\exit")) {
-                break;
-            }else{
-                c.writeMessage(to, message);
+            String message = "";
+            if((message = reader.readLine())!= null) {
+                if (message.equals("\\exit")) {
+                    break;
+                }
+            }
+            c.writeMessage(to, message);
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException interruptedExeption) {
+                System.out.println("Error: Could not sleep for one second...");
+                interruptedExeption.printStackTrace();
             }
         }
     }
