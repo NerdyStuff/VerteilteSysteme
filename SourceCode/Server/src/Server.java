@@ -21,10 +21,8 @@ public class Server {
 
         users[0] = new User("peter123", "sicher4711");
         users[1] = new User("klaus55", "superTollesPw");
-
         // open server socket
         startServerSocket(serverPort);
-
         // wait for clients
         while (true) {
             Socket clientSocket = null;
