@@ -15,17 +15,25 @@ public class Message {
      *
      * @param inputString
      */
-    public Message (String inputString)
-    {
+    public Message (String inputString) throws WrongMessageInput {
        //<sender>#passwort#receiver#timestamp#message
-        
+       String[] splitMessage = inputString.split("#");
+       if(splitMessage.length == 5) {
+           setSender(splitMessage[0]);
+           setPassword(splitMessage[1]);
+           setReceiver(splitMessage[2]);
+           setTimestamp(splitMessage[3]);
+           setMessage(splitMessage[4]);
+       }else{
+           throw new WrongMessageInput("Something was wrong with the Message input");
+       }
     }
 
     public String getSender() {
         return sender;
     }
 
-    public void setSender(String sender) {
+    private void setSender(String sender) {
         this.sender = sender;
     }
 
@@ -33,7 +41,7 @@ public class Message {
         return password;
     }
 
-    public void setPassword(String password) {
+    private void setPassword(String password) {
         this.password = password;
     }
 
@@ -41,7 +49,7 @@ public class Message {
         return receiver;
     }
 
-    public void setReceiver(String receiver) {
+    private void setReceiver(String receiver) {
         this.receiver = receiver;
     }
 
@@ -49,7 +57,7 @@ public class Message {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    private void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -57,7 +65,7 @@ public class Message {
         return message;
     }
 
-    public void setMessage(String message) {
+    private void setMessage(String message) {
         this.message = message;
     }
 }
