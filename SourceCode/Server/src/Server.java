@@ -30,8 +30,6 @@ public class Server {
             try {
                 clientSocket = serverSocket.accept();
 
-                sendSocketData(clientSocket, "DATEN");
-
                 if (clientSocket.isConnected()) {
                     System.out.println("Success: Client connected to server!");
                     System.out.println("Client: " + clientSocket.toString() + " connected to server.");
@@ -72,7 +70,6 @@ public class Server {
 
                         if (dataPakage.getReceiver().equals(users[i].getUsername())) {
                             users[i].addMessage(dataPakage.getMessage());
-                            System.out.println(users[i].removeMessage());
                         }
                     }
 
