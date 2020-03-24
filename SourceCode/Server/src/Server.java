@@ -32,9 +32,14 @@ public class Server {
             try {
                 clientSocket = serverSocket.accept();
 
+                sendSocketData(clientSocket, "DATEN");
+
                 if (clientSocket.isConnected()) {
                     System.out.println("Success: Client connected to server!");
                     System.out.println("Client: " + clientSocket.toString() + " connected to server.");
+
+
+                    sendSocketData(clientSocket, "SEDENDKJHCLDXCH");
 
                     String socketDataString = getSocketData(clientSocket); // Get data from socket
 
@@ -49,10 +54,7 @@ public class Server {
                         clientSocket.close();
                     }
 
-                    System.out.println(dataPakage.getSender());
-                    System.out.println(dataPakage.getPassword());
-                    System.out.println(dataPakage.getReceiver());
-
+                    sendSocketData(clientSocket, "LOLOLO");
 
                     for (int i = 0; i < users.length; i++) {
 
@@ -72,27 +74,24 @@ public class Server {
                         clientSocket.close();
                     }
 
-                    System.out.println("After IF");
 
                     for (int i = 0; i < users.length; i++) {
 
                         if (dataPakage.getReceiver().equals(users[i].getUsername())) {
                             users[i].addMessage(dataPakage.getMessage());
+                            System.out.println(users[i].removeMessage());
                         }
                     }
 
-                    System.out.println("After FOR");
-
-                    sendSocketData(clientSocket, "TEst");
+                    sendSocketData(clientSocket, "DATEN ENDE");
 
 
                     // Send queued data to client
                     while (!users[userPositionInArray].hasNoMessages()) {
                         sendSocketData(clientSocket, users[userPositionInArray].removeMessage());
                     }
-
-
                 }
+
             } catch (IOException ioException) {
                 System.out.println("Error: Client could not connect...");
                 ioException.printStackTrace();
@@ -137,7 +136,7 @@ public class Server {
         String data = "";
 
         try {
-            Scanner scanner = new Scanner(clientSocket.getInputStream());
+            Scanner scanner = new Scanner(new BufferedInputStream (clientSocket.getInputStream()));
 
             // TODO read whole output!
             data = scanner.nextLine();
@@ -147,14 +146,16 @@ public class Server {
             ioException.printStackTrace();
         }
 
+
+
         return data;
     }
 
     private static void sendSocketData(Socket clientSocket, String data) {
         try {
-            PrintWriter printWriter = new PrintWriter(clientSocket.getOutputStream());
+            PrintWriter printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
 
-            printWriter.print(data);
+            printWriter.println(data);
         } catch (IOException ioException) {
             System.out.println("Error: Couldn't send data to client");
             ioException.printStackTrace();
