@@ -7,7 +7,11 @@ public class Client
 {
     private final String hostname = "localhost"; //Konstante für den Hostname
     private final int port = 1337; //Konstante für den Port
-    private String nachricht = "Hello World!";
+    private String nachricht = "klaus55#superTollesPw#peter123#123456#Hallo Peter";
+
+    public static void main(String[] args) {
+        Client c = new Client();
+    }
 
     public Client() //Konstruktor
     {
@@ -21,25 +25,23 @@ public class Client
         try //versuche
         {
             server = new Socket(hostname, port); //neuer Socket zum Server
-            Scanner scanner = new Scanner(server.getInputStream()); //neuer Scanner
-
             PrintWriter printWriter = new PrintWriter(server.getOutputStream(), true);
-
             printWriter.println(nachricht);
 
+            Scanner scanner = new Scanner(server.getInputStream()); //neuer Scanner
             String input = scanner.nextLine(); //öffne scanner und schreibe in String bis \n kommt
 
             System.out.println(input); //schreibe Serverdaten
         }
 
-        catch(UnknownHostException lException) //fange Exception ab
+        catch(UnknownHostException exception) //fange Exception ab
         {
-            lException.printStackTrace(); //schreibe Exception
+            exception.printStackTrace(); //schreibe Exception
         }
 
-        catch(IOException lException) //fange Exception ab
+        catch(IOException e) //fange Exception ab
         {
-            lException.printStackTrace(); //schreibe Exception
+           e.printStackTrace(); //schreibe Exception
         }
 
         finally
@@ -51,9 +53,9 @@ public class Client
                     server.close(); //schließe Verbindung
                 }
 
-                catch(IOException lException) //fange Exception ab
+                catch(IOException e) //fange Exception ab
                 {
-                    lException.printStackTrace(); //schreibe Exception
+                    e.printStackTrace(); //schreibe Exception
                 }
             }
         }
