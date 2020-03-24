@@ -6,6 +6,7 @@ public class Client {
     private String hostname; //Konstante für den Hostname
     private int port; //Konstante für den Port
     private String username, password;
+    private String newMessages;
 
     /**
      * Creates a client that can log in to the server program
@@ -35,6 +36,7 @@ public class Client {
             String input = "";
             while((input = reader.readLine())!= null) {
                 System.out.println(input);
+                newMessages += input;
             }
         }
         catch (IOException exception)
@@ -58,6 +60,14 @@ public class Client {
         Date date = new Date();
 
         return (username + "#" + password + "#" + to + "#" + date + "#" + message);
+    }
+
+    public String getNewMessages(){
+        return newMessages;
+    }
+
+    public void deleteNewMessages(){
+        newMessages = "";
     }
 }
 

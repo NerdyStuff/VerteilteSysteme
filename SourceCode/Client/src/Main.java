@@ -10,9 +10,9 @@ import java.util.concurrent.TimeUnit;
 public class Main {
 
     private static JFrame frame;
-    private static JTextField textField;
-    private static JTextField textField_1;
-    private static JTextField textField_2;
+    private static JTextField textFieldUsername,textFieldChat;
+    private static JTextField textFieldPw;
+    private static JTextField textFieldChatpartner;
 
     private static String username;
     private static String passwort;
@@ -52,10 +52,10 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(null);
 
-        textField = new JTextField();
-        textField.setBounds(128, 28, 86, 20);
-        frame.getContentPane().add(textField);
-        textField.setColumns(10);
+        textFieldUsername = new JTextField();
+        textFieldUsername.setBounds(128, 28, 86, 20);
+        frame.getContentPane().add(textFieldUsername);
+        textFieldUsername.setColumns(10);
 
         JLabel lblName = new JLabel("Username");
         lblName.setBounds(65, 31, 70, 14);
@@ -65,10 +65,10 @@ public class Main {
         lblPw.setBounds(65, 68, 70, 14);
         frame.getContentPane().add(lblPw);
 
-        textField_1 = new JTextField();
-        textField_1.setBounds(128, 65, 86, 20);
-        frame.getContentPane().add(textField_1);
-        textField_1.setColumns(10);
+        textFieldPw = new JTextField();
+        textFieldPw.setBounds(128, 65, 86, 20);
+        frame.getContentPane().add(textFieldPw);
+        textFieldPw.setColumns(10);
 
         JButton btnLogin = new JButton("Login");
         btnLogin.setBounds(230, 68, 89, 23);
@@ -78,14 +78,20 @@ public class Main {
         lblchatpartner.setBounds(65, 115, 140, 14);
         frame.getContentPane().add(lblchatpartner);
 
-        textField_2 = new JTextField();
-        textField_2.setBounds(150, 112, 247, 20);
-        frame.getContentPane().add(textField_2);
-        textField_2.setColumns(10);
+        textFieldChatpartner = new JTextField();
+        textFieldChatpartner.setBounds(150, 112, 247, 20);
+        frame.getContentPane().add(textFieldChatpartner);
+        textFieldChatpartner.setColumns(10);
 
-        JTextArea textArea_1 = new JTextArea();
-        textArea_1.setBounds(80, 157, 400, 200);
-        frame.getContentPane().add(textArea_1);
+        JTextArea chatIncoming = new JTextArea();
+        chatIncoming.setBounds(80, 157, 400, 200);
+        frame.getContentPane().add(chatIncoming);
+        chatIncoming.setEnabled(false);
+
+        textFieldChat = new JTextField();
+        textFieldChat.setBounds(80, 358, 400, 20);
+        frame.getContentPane().add(textFieldChat);
+        textFieldChat.setColumns(10);
 
         JButton btnClear = new JButton("Clear");
         btnClear.setBounds(312, 387, 89, 23);
@@ -98,18 +104,20 @@ public class Main {
 
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                if(textField.getText()!= "" && textField_1.getText() != "")
-                    username = textField.getText();
-                    passwort = textField_1.getText();
-                    textField.setEnabled(false);
-                    textField_1.setEnabled(false);
+                if(textFieldUsername.getText()!= "" && textFieldPw.getText() != "")
+                    username = textFieldUsername.getText();
+                    passwort = textFieldPw.getText();
+                    textFieldUsername.setEnabled(false);
+                    textFieldPw.setEnabled(false);
                     c = new Client("localhost",1337,username,passwort);
             }
         });
 
         btnSubmit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                c.writeMessage(textField_2.getText(),textArea_1.getText());
+                c.writeMessage(textFieldChatpartner.getText(),textFieldChat.getText());
+                chatIncoming.append(c.getNewMessages()+ "\n");
+                textFieldChat.setText("");
             }
         });
 
