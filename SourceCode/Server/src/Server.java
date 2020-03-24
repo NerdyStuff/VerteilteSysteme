@@ -28,9 +28,12 @@ public class Server {
                 if (clientSocket.isConnected())
                 {
                     System.out.println("Success: Client connected to server!");
-                    System.out.println("Client: " + clientSocket.toString());
+                    System.out.println("Client: " + clientSocket.toString() +  " connected to server.");
 
-                    String socketDataString = getSocketData(clientSocket);
+                    String socketDataString = getSocketData(clientSocket); // Get data from socket
+
+                    // Analyse Data
+                    Message dataPakage = null;
 
                     System.out.println("Data: "+ socketDataString);
 
@@ -93,15 +96,18 @@ public class Server {
         return data;
     }
 
-    private static void sendSocketData(Socket clientSocket, String data)
-    {
+    private static void sendSocketData(Socket clientSocket, String data) {
         try {
             PrintWriter printWriter = new PrintWriter(clientSocket.getOutputStream());
 
             printWriter.println(data);
-        }
-        catch (IOException ioExceptio){
+        } catch (IOException ioException) {
             System.out.println("Error: Couldn't send data to client");
         }
+    }
+
+    private static Message splitToken(String data)
+    {
+        return null;
     }
 }
