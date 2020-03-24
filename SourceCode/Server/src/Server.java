@@ -1,6 +1,5 @@
 import java.net.*;
 import java.io.*;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -10,8 +9,6 @@ public class Server {
 
     private static int serverPort = 1337;
     private static ServerSocket serverSocket;
-
-
     private static User[] users = new User[2];
 
     public static void main(String[] args) {
