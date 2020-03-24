@@ -39,7 +39,16 @@ public class Server {
                     String socketDataString = getSocketData(clientSocket); // Get data from socket
 
                     // Analyse Data
-                    Message dataPakage = new Message(socketDataString);
+                    Message dataPakage = null;
+
+                    try {
+                        dataPakage = new Message(socketDataString);
+                    }
+                    catch (WrongMessageInput wrongMessageInput) {
+                        System.out.println("Error while processing Message");
+                        wrongMessageInput.printStackTrace();
+                        clientSocket.close();
+                    }
 
                     for (int i = 0; i < users.length; i++) {
 
@@ -53,6 +62,8 @@ public class Server {
 
                     // If user was not successfully authentificated close connection
                     if(!userAuthenticated) {
+
+                        System.out.println("Closing connection!");
                         clientSocket.close();
                     }
 
