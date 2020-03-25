@@ -5,9 +5,16 @@ Unsere Ideen können [hier](https://github.com/NerdyStuff/VerteilteSysteme/new/m
 
 ## Allgemeines
 Zur Kommunikation zwischen den Clients und den Servern werden Objekte der Klasse <code>DataPackage</code> verwendet.
+Die Objekte werden direkt durch den Socket versendet.
 Ein Client kann dabei immer nur ein Objekt der Klasse an den Server senden. Der Server sendet dem Client eine Liste mit DataPackage-Objekten zurück. Die Liste muss dabei immer mindestens ein Objekt enthalten. Durch das Attribut <code>flag</code> wird definiert, was der Server bzw. der Client an Informationen aus dem DataPackage-Objekt an Daten erhalten kann. Die einzelnen Werte des Flags können in der Schnittstellendefinition angesehen werden.
+Zur Registrierung senden Clients ein ihren Nutzernamen, ihr Passwort und das entsprechende Flag an den Server. Der Server legt dann einen neuen User in seiner Nutzerliste an und sendet dem Client eine Liste mit einem DataPackage-Objekt zurück, in dem das Flag für eine erfolgreiche Registrierung oder eine nicht erfolgreiche Registrierung gesetzt ist. Nach einer erfolgreichen Registrierung kann der Nutzer eine Nachricht an einen Server schicken. Die Nachricht ist in einem DataPackage-Objekt verpackt mit dem gestzten Flag für eine Nachricht, dem Sender, dem Empfänger und dem Zeitstempel. Existiert der Empfänger im System wird eine positive Rückmeldung vom Server an den Client gesendet, existiert der Empfänger im System nicht, wird eine negative Rückmeldung mittels Flag zurückgeschickt.
+Da Nutzer nicht immer angemeldet sind, werden die Nachrichten für die Nutzer in der Message-Queue für den jeweiligen Empfänger gespeichert. Dazu schaut der Server in seiner Nutzerliste nach und Fügt ein Nachrichten Objekt in der Nachrichten Liste des jeweiligen Benutzers hinzu.
+Nach dem sich ein Nutzer angemeldet hat, sendet der Client kontinuierlich in bestimmten Zeitintervallen Anfragen an den Server, ob es neue Nachrichten gibt. Gibt es neue Nachrichten wird eine Liste mit DataPackage-Objekten zurückgesendet, die die Nachrichteninhalte enthalten. Gibt es keine Updates, wird eine Liste mit einem DataPackage-Objekt zurückgesendet, mit dem gestzten flag für keine neue Nachrichten.
 
-## Schnittstellendefinition:
+Synchronistatiion zwischen den Servern.... (TBD: Two-Phase-Protokoll)
+Zeitstempel implementieren (TBD: Laportuhren -> eventuell das DataPacakgeObjet um eine NachrichtenID erweitern!)
+
+## Schnittstellen- und Objektdefinitionen:
 
 ### DataPackage
 | Attribut | Datentyp | Beschreibung |
@@ -40,3 +47,6 @@ Ein Client kann dabei immer nur ein Objekt der Klasse an den Server senden. Der 
 ### Client
 | Attribut | Datentyp | Beschreibung |
 | -------- | -------- | ------------ |
+
+### WrongMessageException
+Exception Objekt für falsche Messages.
