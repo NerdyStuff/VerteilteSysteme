@@ -31,7 +31,7 @@ public class Client {
         {
             server = new Socket(hostname, port); //neuer Socket zum Server
             PrintWriter printWriter = new PrintWriter(server.getOutputStream(), true);
-            printWriter.println(constructMessageString(to, message));
+            //printWriter.println(constructMessageString(to, message));
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(server.getInputStream()));
             String input = "";
@@ -58,10 +58,15 @@ public class Client {
         }
     }
 
-    private String constructMessageString(String to, String message) {
+    private Message constructMessage(String to, String message) {
         Date date = new Date();
-
-        return (username + "#" + password + "#" + to + "#" + date + "#" + message);
+        Message m = null;
+        try {
+            m = new Message(username, password, to, date, message);
+        }catch (WrongMessageInput wmi){
+            wmi.printStackTrace();
+        }
+        return m;
     }
 
     public String getNewMessages(){
