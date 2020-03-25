@@ -46,7 +46,7 @@ public class Main {
             }
         }
     }
-    public static void UI(){
+    public static void UI() {
         frame = new JFrame();
         frame.setBounds(100, 100, 730, 489);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -86,7 +86,7 @@ public class Main {
         JTextArea chatIncoming = new JTextArea();
         chatIncoming.setBounds(80, 157, 400, 200);
         frame.getContentPane().add(chatIncoming);
-        chatIncoming.setEnabled(false);
+        chatIncoming.setEditable(false);
 
         textFieldChat = new JTextField();
         textFieldChat.setBounds(80, 358, 400, 20);
@@ -116,7 +116,10 @@ public class Main {
         btnSubmit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 c.writeMessage(textFieldChatpartner.getText(),textFieldChat.getText());
-                chatIncoming.append(c.getNewMessages()+ "\n");
+                String messages = c.getNewMessages();
+                if(!messages.equals("")) {
+                    chatIncoming.append(messages + "\n");
+                }
                 textFieldChat.setText("");
             }
         });
@@ -126,6 +129,20 @@ public class Main {
                 chatIncoming.setText("");
             }
         });
+
+        while(true){
+            try {
+                TimeUnit.SECONDS.sleep(1);
+                c.writeMessage(textFieldChatpartner.getText(),"");
+                String messages = c.getNewMessages();
+                if(!messages.equals("")) {
+                    chatIncoming.append(messages + "\n");
+                }
+            }catch (Exception e){
+
+            }
+
+        }
 
     }
 }

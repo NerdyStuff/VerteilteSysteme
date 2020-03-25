@@ -64,7 +64,9 @@ public class Client {
     }
 
     public String getNewMessages(){
-        return newMessages;
+        String nm = newMessages;
+        this.deleteNewMessages();
+        return nm;
     }
 
     public void deleteNewMessages(){
