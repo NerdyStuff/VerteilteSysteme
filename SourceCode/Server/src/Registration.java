@@ -1,5 +1,6 @@
 public class Registration{
     private String username, password;
+    private boolean registrationStatus; //true: registrierung war erfolreich false: nutzername bereits belegt
 
     public Registration(String username, String password) {
         this.username = username;
@@ -22,4 +23,11 @@ public class Registration{
         this.password = password;
     }
 
+    public boolean isRegistrationStatus() {
+        return registrationStatus;
+    }
+
+    public void setRegistrationStatus(boolean registrationStatus) {
+        this.registrationStatus = registrationStatus;
+    }
 }
