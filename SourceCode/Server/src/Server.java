@@ -67,7 +67,7 @@ public class Server {
 
                         if (dataPackage.getReceiver().equals(users[i].getUsername())) {
                             if (dataPackage.getMessage() != "null") {
-                                users[i].addMessage(dataPackage.getMessage());
+                                users[i].addMessage(dataPackage);
                             }
                         }
                     }
@@ -135,11 +135,10 @@ public class Server {
         return data;
     }
 
-    private static void sendSocketData(Socket clientSocket, String data) {
+    private static void sendSocketData(Socket clientSocket, Message message) {
         try {
             PrintWriter printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
-
-            printWriter.println(data);
+            printWriter.print(message);
         } catch (IOException ioException) {
             System.out.println("Error: Couldn't send data to client");
             ioException.printStackTrace();

@@ -8,6 +8,7 @@ public class Message {
     private String receiver;
     private String timestamp;
     private String message;
+    private String inputString;
 
     /**
      * The Message Object is created with the String which was received by the network. It fills all the fields for easier access. String pattern: sender#password#receiver#timestamp#message
@@ -15,6 +16,7 @@ public class Message {
      */
     public Message (String inputString) throws WrongMessageInput {
        //sender#passwort#receiver#timestamp#message
+        this.inputString = inputString;
        String[] splitMessage = inputString.split("#");
        //if the message is up normal, fill the fields
        if(splitMessage.length == 5) {
@@ -86,5 +88,9 @@ public class Message {
 
     private void setMessage(String message) {
         this.message = message;
+    }
+
+    public String toString(){
+        return inputString;
     }
 }

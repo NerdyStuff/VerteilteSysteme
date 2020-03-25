@@ -8,12 +8,12 @@ public class User {
 
     private String username;
     private String password;
-    private Queue<String> messages;
+    private LinkedList<Message> messages;
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.messages = new LinkedList<String>();
+        this.messages = new LinkedList<Message>();
     }
 
 
@@ -33,11 +33,11 @@ public class User {
         this.password = password;
     }
 
-    public void addMessage(String message) {
+    public void addMessage(Message message) {
         this.messages.add(message);
     }
 
-    public String removeMessage() {
+    public Message removeMessage() {
         return this.messages.remove();
     }
 

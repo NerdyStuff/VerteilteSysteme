@@ -35,6 +35,7 @@ public class Client {
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(server.getInputStream()));
             String input = "";
+            System.out.print(reader.read());
             while((input = reader.readLine())!= null) {
                 System.out.println(input);
                 newMessages += input;
