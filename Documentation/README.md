@@ -12,9 +12,31 @@ Ein Client kann dabei immer nur ein Objekt der Klasse an den Server senden. Der 
 ### DataPackage
 | Attribut | Datentyp | Beschreibung |
 | -------- | -------- | ------------ |
-| flag:    | Integer  | <code>Wert: 1</code> Registrierung <br> <code>Wert: 2</code> Nachricht <br> <code>Wert: 3</code> Update-Request <br> <code>Wert: 4</code> Neue Nachrichten für den Client <br> <code>Wert: 5</code> Keine neuen Nachrichten für den Client <br> <code>Wert: -1</code> Registrierung fehlgeschlagen <br> <code>Wert: -2</code> Falsches Passwort oder Nutzername <br> <code>Wert -3</code> Empfänger existiert nicht
+| flag:    | Integer  | <code>Wert: 1</code> Registrierung <br> <code>Wert: 2</code> Nachricht <br> <code>Wert: 3</code> Update-Request <br> <code>Wert: 4</code> Neue Nachrichten für den Client <br> <code>Wert: 5</code> Keine neuen Nachrichten für den Client <br> <code>Wert: -1</code> Registrierung fehlgeschlagen <br> <code>Wert: -2</code> Falsches Passwort oder Nutzername <br> <code>Wert: -3</code> Empfänger existiert nicht
 | username | String | Nutzername |
 | password | String | Password |
 | receiver | Empfänger der Nachricht |
 | message  | Nachrichtentext |
 | timestamp| Zeitstempel der Nachricht|
+
+### Message
+| Attribut  | Datentyp | Beschreibung |
+| --------- | -------- | ------------ |
+| sender    | String   | Sender der Nachricht |
+| text      | String   | Text der Nachricht |
+| timestamp | Date    | Zeitstempel der Nachricht |
+
+### User
+| Attribut | Datentyp | Beschreibung |
+| -------- | -------- | ------------ |
+| username | String   | Nutzername |
+| password | String   | Passwort des Benutzers |
+| messages | LinkedList<Message> | Liste mit den Nachrichten für den Benutzer |
+  
+### Server
+| Attribut | Datentyp | Beschreibung |
+| -------- | -------- | ------------ |
+
+### Client
+| Attribut | Datentyp | Beschreibung |
+| -------- | -------- | ------------ |
