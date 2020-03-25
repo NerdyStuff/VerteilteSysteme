@@ -34,10 +34,10 @@ public class Server {
                     String socketDataString = getSocketData(clientSocket); // Get data from socket
 
                     // Analyse Data
-                    Message dataPakage = null;
+                    Message dataPackage = null;
 
                     try {
-                        dataPakage = new Message(socketDataString);
+                        dataPackage = new Message(socketDataString);
                     } catch (WrongMessageInput wrongMessageInput) {
                         System.out.println("Error while processing Message");
                         wrongMessageInput.printStackTrace();
@@ -46,8 +46,8 @@ public class Server {
 
                     for (int i = 0; i < users.length; i++) {
 
-                        if (dataPakage.getSender().equals(users[i].getUsername())) {
-                            if (dataPakage.getPassword().equals(users[i].getPassword())) {
+                        if (dataPackage.getSender().equals(users[i].getUsername())) {
+                            if (dataPackage.getPassword().equals(users[i].getPassword())) {
                                 System.out.println("User authenticated successfully");
                                 userAuthenticated = true;
                                 userPositionInArray = i;
@@ -65,8 +65,10 @@ public class Server {
 
                     for (int i = 0; i < users.length; i++) {
 
-                        if (dataPakage.getReceiver().equals(users[i].getUsername())) {
-                            users[i].addMessage(dataPakage.getMessage());
+                        if (dataPackage.getReceiver().equals(users[i].getUsername())) {
+                            if (dataPackage.getMessage() != "null") {
+                                users[i].addMessage(dataPackage.getMessage());
+                            }
                         }
                     }
 

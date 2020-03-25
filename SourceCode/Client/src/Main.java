@@ -120,6 +120,12 @@ public class Main {
                 textFieldChat.setText("");
             }
         });
+        btnClear.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                textFieldChat.setText("");
+                chatIncoming.setText("");
+            }
+        });
 
     }
 }

@@ -29,7 +29,7 @@ public class Message {
            setPassword(splitMessage[1]);
            setReceiver(splitMessage[2]);
            setTimestamp(splitMessage[3]);
-           message = null;
+           message = "";
        //this for messages that contain one or more hashtags in the message body
        }else if(splitMessage.length >= 6){
            setSender(splitMessage[0]);

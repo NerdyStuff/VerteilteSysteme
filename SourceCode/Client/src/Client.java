@@ -21,6 +21,7 @@ public class Client {
         this.password = password;
         this.hostname = hostname;
         this.port = port;
+        newMessages = "";
     }
 
     public void writeMessage(String to, String message) {
