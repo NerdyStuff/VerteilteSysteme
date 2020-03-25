@@ -3,61 +3,38 @@ import java.util.Date;
 /**
  * Server;
  */
-public class Message extends Package{
+public class Message{
 
-    private String message;
+    private String sender, text;
     private Date timestamp;
 
-    /**
-     * The Message Object is created with the String which was received by the network. It fills all the fields for easier access. String pattern: sender#password#receiver#timestamp#message
-     *
-     */
-    public Message (String sender, String password, String receiver, Date timestamp, String message) throws WrongMessageInput {
-        super(sender, password, receiver);
-        this.message = message;
+    public Message(String sender, String text, Date timestamp) {
+        this.sender = sender;
+        this.text = text;
         this.timestamp = timestamp;
-        /*
-       //sender#passwort#receiver#timestamp#message
-       String[] splitMessage = inputString.split("#");
-       //if the message is up normal, fill the fields
-       if(splitMessage.length == 5) {
-           setSender(splitMessage[0]);
-           setPassword(splitMessage[1]);
-           setReceiver(splitMessage[2]);
-           setTimestamp(splitMessage[3]);
-           setMessage(splitMessage[4]);
-       //this is for messages which contain no message body, being only update requests
-       }else if(splitMessage.length == 4) {
-           setSender(splitMessage[0]);
-           setPassword(splitMessage[1]);
-           setReceiver(splitMessage[2]);
-           setTimestamp(splitMessage[3]);
-           message = "";
-       //this for messages that contain one or more hashtags in the message body
-       }else if(splitMessage.length >= 6){
-           setSender(splitMessage[0]);
-           setPassword(splitMessage[1]);
-           setReceiver(splitMessage[2]);
-           setTimestamp(splitMessage[3]);
-           StringBuilder messageStuffed;
-           messageStuffed = new StringBuilder(splitMessage[4]);
-           for(int i = 5; i < splitMessage.length; i++) {
-               messageStuffed.append("#");
-               messageStuffed.append(splitMessage[i]);
-           }
-           setMessage(messageStuffed.toString());
-       }else{
-           throw new WrongMessageInput("Something was wrong with the Message input");
-       }
-         */
     }
 
-    public String getMessage() {
-        return message;
+    public String getSender() {
+        return sender;
     }
 
-    private void setMessage(String message) {
-        this.message = message;
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
 }
