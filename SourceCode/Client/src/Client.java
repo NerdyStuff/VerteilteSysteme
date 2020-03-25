@@ -30,8 +30,8 @@ public class Client {
         try
         {
             server = new Socket(hostname, port); //neuer Socket zum Server
-            PrintWriter printWriter = new PrintWriter(server.getOutputStream(), true);
-            //printWriter.println(constructMessageString(to, message));
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(server.getOutputStream());
+            objectOutputStream.writeObject(constructMessage(to,message));
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(server.getInputStream()));
             String input = "";

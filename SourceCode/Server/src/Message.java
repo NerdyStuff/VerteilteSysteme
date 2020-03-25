@@ -6,14 +6,16 @@ import java.util.Date;
 public class Message extends Package{
 
     private String message;
+    private Date timestamp;
 
     /**
      * The Message Object is created with the String which was received by the network. It fills all the fields for easier access. String pattern: sender#password#receiver#timestamp#message
      *
      */
     public Message (String sender, String password, String receiver, Date timestamp, String message) throws WrongMessageInput {
-        super(sender, password, receiver,timestamp);
+        super(sender, password, receiver);
         this.message = message;
+        this.timestamp = timestamp;
         /*
        //sender#passwort#receiver#timestamp#message
        String[] splitMessage = inputString.split("#");

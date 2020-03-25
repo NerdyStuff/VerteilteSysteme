@@ -31,7 +31,7 @@ public class Server {
                     System.out.println("Success: Client connected to server!");
                     System.out.println("Client: " + clientSocket.toString() + " connected to server.");
 
-                    String socketDataString = getSocketData(clientSocket); // Get data from socket
+                    Package socketDataString = getSocketData(clientSocket); // Get data from socket
 
                     // Analyse Data
                     Message dataPackage = null;
@@ -117,19 +117,28 @@ public class Server {
         }
     }
 
-    private static String getSocketData(Socket clientSocket) {
+    private static Package getSocketData(Socket clientSocket) {
 
-        String data = "";
+        Package data = null;
 
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            InputStream inputStream = clientSocket.getInputStream();
+            // create a DataInputStream so we can read data from it.
+            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
             // TODO read whole output!
-            data = reader.readLine();
-
+            Object object = objectInputStream.readObject();
+            if(object instanceof Package){
+                data = (Package) object;
+            }else{
+                WrongMessageInput wmi = new WrongMessageInput("Empfangene Daten sind kein Package");
+                throw wmi;
+            }
         } catch (IOException ioException) {
             System.out.println("Error: Couldn't get data from socket...");
             ioException.printStackTrace();
+        } catch (ClassNotFoundException | WrongMessageInput e) {
+            e.printStackTrace();
         }
 
         return data;

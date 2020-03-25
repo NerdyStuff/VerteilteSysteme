@@ -2,13 +2,11 @@ import java.util.Date;
 
 public abstract class Package {
     private String sender,password,receiver;
-    private Date timestamp;
 
-    public Package(String sender, String password, String receiver, Date timestamp) {
+    public Package(String sender, String password, String receiver) {
         this.sender = sender;
         this.password = password;
         this.receiver = receiver;
-        this.timestamp = timestamp;
     }
 
     public Package(){}
@@ -37,11 +35,4 @@ public abstract class Package {
         this.receiver = receiver;
     }
 
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
 }
