@@ -50,3 +50,9 @@ Zeitstempel implementieren (TBD: Laportuhren -> eventuell das DataPacakgeObjet u
 
 ### WrongMessageException
 Exception Objekt für falsche Messages.
+
+## UML Klassendiagramm:
+Hier sieht man das (vorläufige) Klassen- und Beziehungsdiagramm der Basisversion.
+<br>
+![UML-Klassendiagramm](https://github.com/NerdyStuff/VerteilteSysteme/blob/master/Documentation/Files/uml_diagramm.png)
+Das UML-Diagramm ist [hier](https://github.com/NerdyStuff/VerteilteSysteme/blob/master/Documentation/Files/uml_diagramm.pdf) auch als PDF zu finden.
