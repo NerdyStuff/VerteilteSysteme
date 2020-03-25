@@ -116,9 +116,10 @@ public class Main {
         btnSubmit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 c.writeMessage(textFieldChatpartner.getText(),textFieldChat.getText());
+                chatIncoming.append(username + ": " + textFieldChat.getText() + "\n");
                 String messages = c.getNewMessages();
                 if(!messages.equals("")) {
-                    chatIncoming.append(messages + "\n");
+                    chatIncoming.append(textFieldChatpartner.getText() + ": " + messages + "\n");
                 }
                 textFieldChat.setText("");
             }
@@ -136,7 +137,7 @@ public class Main {
                 c.writeMessage(textFieldChatpartner.getText(),"");
                 String messages = c.getNewMessages();
                 if(!messages.equals("")) {
-                    chatIncoming.append(messages + "\n");
+                    chatIncoming.append(textFieldChatpartner.getText() + ": " + messages + "\n");
                 }
             }catch (Exception e){
 
