@@ -1,9 +1,5 @@
 import java.util.LinkedList;
-import java.util.Queue;
 
-/**
- * Server;
- */
 public class User {
 
     private String username;

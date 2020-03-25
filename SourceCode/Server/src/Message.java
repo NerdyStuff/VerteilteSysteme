@@ -1,8 +1,5 @@
 import java.util.Date;
 
-/**
- * Server;
- */
 public class Message{
 
     private String sender, text;
