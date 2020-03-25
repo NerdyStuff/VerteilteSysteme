@@ -12,7 +12,7 @@ Ein Client kann dabei immer nur ein Objekt der Klasse an den Server senden. Der 
 ### DataPackage
 | Attribut | Datentyp | Beschreibung |
 | -------- | -------- | ------------ |
-| flag:    | Integer  | <code>Wert: 1</code> Registrierung <br> <code>Wert: 2</code> Nachricht <br> <code>Wert: 3</code> Update-Request <br> <code>Wert: 4</code> Neue Nachrichten für den Client <br> <code>Wert: </code> Keine neuen Nachrichten für den Client <br> <code>Wert: 1</code> Registrierung fehlgeschlagen <br> <code>Wert: -1</ode> Falsches Passwort oder Nutzername <br> <code>-3</code> Empfänger existiert nicht
+| flag:    | Integer  | <code>Wert: 1</code> Registrierung <br> <code>Wert: 2</code> Nachricht <br> <code>Wert: 3</code> Update-Request <br> <code>Wert: 4</code> Neue Nachrichten für den Client <br> <code>Wert: 5</code> Keine neuen Nachrichten für den Client <br> <code>Wert: -1</code> Registrierung fehlgeschlagen <br> <code>Wert: -2</code> Falsches Passwort oder Nutzername <br> <code>Wert -3</code> Empfänger existiert nicht
 | username | String | Nutzername |
 | password | String | Password |
 | receiver | Empfänger der Nachricht |
