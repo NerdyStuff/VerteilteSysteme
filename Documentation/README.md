@@ -7,7 +7,7 @@ Unsere Ideen können [hier](https://github.com/NerdyStuff/VerteilteSysteme/new/m
 Zur Kommunikation zwischen den Clients und den Servern werden Objekte der Klasse <code>DataPackage</code> verwendet.
 Ein Client kann dabei immer nur ein Objekt der Klasse an den Server senden. Der Server sendet dem Client eine Liste mit DataPackage-Objekten zurück. Die Liste muss dabei immer mindestens ein Objekt enthalten. Durch das Attribut <code>flag</code> wird definiert, was der Server bzw. der Client an Informationen aus dem DataPackage-Objekt an Daten erhalten kann. Die einzelnen Werte des Flags können in der Schnittstellendefinition angesehen werden.
 
-## Schnittstellendefinition:
+## Schnittstellen- und Objektdefinitionen:
 
 ### DataPackage
 | Attribut | Datentyp | Beschreibung |
@@ -40,3 +40,6 @@ Ein Client kann dabei immer nur ein Objekt der Klasse an den Server senden. Der 
 ### Client
 | Attribut | Datentyp | Beschreibung |
 | -------- | -------- | ------------ |
+
+### WrongMessageException
+Exception Objekt für falsche Messages.
