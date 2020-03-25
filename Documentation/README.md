@@ -19,7 +19,7 @@ Zeitstempel implementieren (TBD: Laportuhren -> eventuell das DataPacakgeObjet u
 ### DataPackage
 | Attribut | Datentyp | Beschreibung |
 | -------- | -------- | ------------ |
-| flag:    | Integer  | <code>Wert: 1</code> Registrierung <br> <code>Wert: 2</code> Nachricht <br> <code>Wert: 3</code> Update-Request <br> <code>Wert: 4</code> Neue Nachrichten für den Client <br> <code>Wert: 5</code> Keine neuen Nachrichten für den Client <br> <code>Wert: -1</code> Registrierung fehlgeschlagen <br> <code>Wert: -2</code> Falsches Passwort oder Nutzername <br> <code>Wert: -3</code> Empfänger existiert nicht
+| flag:    | Integer  | <code>Wert: 1</code> Registrierung <br> <code>Wert: 2</code> Nachricht <br> <code>Wert: 3</code> Update-Request <br> <code>Wert: 4</code> Neue Nachrichten für den Client <br> <code>Wert: 5</code> Keine neuen Nachrichten für den Client <br> <code>Wert: 6</code> Registrierung erfolgreich <br> <code>Wert: 7</code> Nachricht erfolgreich angenommen <br> <code>Wert: -1</code> Registrierung fehlgeschlagen <br> <code>Wert: -2</code> Falsches Passwort oder Nutzername <br> <code>Wert: -3</code> Empfänger existiert nicht <br> <code>Wert: -4</code> Allgemeiner Fehler <br> <code>-5</code> Empfänger darf nicht gleicher Nutzer sein wie Sender|
 | username | String | Nutzername |
 | password | String | Password |
 | receiver | String | Empfänger der Nachricht |
