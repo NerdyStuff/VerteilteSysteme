@@ -31,7 +31,7 @@ Ein Client kann dabei immer nur ein Objekt der Klasse an den Server senden. Der 
 | -------- | -------- | ------------ |
 | username | String   | Nutzername |
 | password | String   | Passwort des Benutzers |
-| messages | LinkedList<Message> | Liste mit den Nachrichten für den Benutzer |
+| messages | LinkedList\<Message\> | Liste mit den Nachrichten für den Benutzer |
   
 ### Server
 | Attribut | Datentyp | Beschreibung |
