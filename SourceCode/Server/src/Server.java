@@ -33,7 +33,7 @@ public class Server {
         }
     }
 
-    private void acceptClientConnections() {
+    public void acceptClientConnections() {
 
         Socket clientSocket = null;
 
@@ -52,23 +52,8 @@ public class Server {
                     // Get DataPackage-object from Socket
                     DataPackage dataPackage = getSocketData(clientSocket);
 
-                    if (dataPackage.getFlag() == 1) {
-
-                        // Client sent registration:
-                        // Send return-list to user
-                        this.sendSocketData(clientSocket, this.handleRegistration(dataPackage));
-                    } else if (dataPackage.getFlag() == 2) {
-
-                        // Client sent message:
-                        // Send return-list to user
-                        this.sendSocketData(clientSocket, this.handleIncomingMessage(dataPackage));
-                    } else if (dataPackage.getFlag() == 3) {
-
-                        // Client sent Update-Request:
-                        // Send return-list to user
-                        this.sendSocketData(clientSocket, this.handleUpdateRequest(dataPackage));
-                    } else {
-
+                    // Corrupted dataPackage received
+                    if (dataPackage == null) {
                         // Send fail to client
                         List<DataPackage> failedReturnList = new LinkedList<DataPackage>();
 
@@ -77,6 +62,36 @@ public class Server {
 
                         // Send list to user
                         this.sendSocketData(clientSocket, failedReturnList);
+
+                        clientSocket.close();
+                    } else {
+
+                        if (dataPackage.getFlag() == 1) {
+
+                            // Client sent registration:
+                            // Send return-list to user
+                            this.sendSocketData(clientSocket, this.handleRegistration(dataPackage));
+                        } else if (dataPackage.getFlag() == 2) {
+
+                            // Client sent message:
+                            // Send return-list to user
+                            this.sendSocketData(clientSocket, this.handleIncomingMessage(dataPackage));
+                        } else if (dataPackage.getFlag() == 3) {
+
+                            // Client sent Update-Request:
+                            // Send return-list to user
+                            this.sendSocketData(clientSocket, this.handleUpdateRequest(dataPackage));
+                        } else {
+
+                            // Send fail to client
+                            List<DataPackage> failedReturnList = new LinkedList<DataPackage>();
+
+                            // Add return-object to return list
+                            failedReturnList.add(new DataPackage(-4, "Error!"));
+
+                            // Send list to user
+                            this.sendSocketData(clientSocket, failedReturnList);
+                        }
                     }
                 }
 
@@ -100,26 +115,55 @@ public class Server {
 
     private DataPackage getSocketData(Socket clientSocket) {
         DataPackage data = null;
+        boolean errorOccured = false;
 
         try {
             InputStream inputStream = clientSocket.getInputStream();
             // create a DataInputStream so we can read data from it.
-            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
-            Object object = objectInputStream.readObject();
-            if (object instanceof DataPackage) {
-                data = (DataPackage) object;
-            } else {
-                WrongDataPackageException wrongDataPackageException = new WrongDataPackageException("Error: Not a valid DataPackage-Object");
-                throw wrongDataPackageException;
+            ObjectInputStream objectInputStream = null;
+            Object object = null;
+
+            try {
+                objectInputStream = new ObjectInputStream(inputStream);
+            } catch (StreamCorruptedException e) {
+                errorOccured = true;
+                System.out.println("Error: StreamCorruptedException");
             }
-        } catch (IOException ioException) {
+
+            if (!errorOccured) {
+                try {
+                    object = objectInputStream.readObject();
+                } catch (NullPointerException e) {
+                    errorOccured = true;
+                    System.out.println("Error: NullPointerException");
+                }
+            }
+
+            if (!errorOccured && object != null) {
+                if (object instanceof DataPackage) {
+                    data = (DataPackage) object;
+                } else {
+                    throw new WrongDataPackageException("Error: Not a valid DataPackage-Object");
+                }
+            } else {
+                System.out.println("Error: Object is null");
+            }
+
+        } catch (StreamCorruptedException e) {
+            System.out.println("Error: Did not receive an object...");
+            e.printStackTrace();
+        } catch (IOException e) {
             System.out.println("Error: Couldn't get data from socket...");
-            ioException.printStackTrace();
+            e.printStackTrace();
         } catch (WrongDataPackageException e) {
             System.out.println("Error: Received data is not a DataPackage-object...");
+            e.getMessage();
         } catch (ClassNotFoundException e) {
             System.out.println("Error: Class not found...");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Error: An error occured...");
             e.printStackTrace();
         }
 
@@ -180,8 +224,8 @@ public class Server {
                     // Add received message to message-queue of receiver
                     users.get(dataPackage.getReceiver())
                             .addMessage(new Message(dataPackage.getUsername(),
-                                            dataPackage.getMessage(),
-                                            dataPackage.getTimestamp()));
+                                    dataPackage.getMessage(),
+                                    dataPackage.getTimestamp()));
                     messageReturnList.add(new DataPackage(7, "Message accepted"));
                     return messageReturnList;
                 } else {
@@ -213,7 +257,7 @@ public class Server {
 
                 updateReturnList.add(new DataPackage(5, "No new messages"));
 
-                return  updateReturnList;
+                return updateReturnList;
             }
 
             while (!user.hasNoMessages()) {
@@ -221,8 +265,8 @@ public class Server {
 
                 updateReturnList.add(
                         new DataPackage(4, message.getSender(),
-                                        message.getText(),
-                                        message.getTimestamp()));
+                                message.getText(),
+                                message.getTimestamp()));
             }
 
             return updateReturnList;
