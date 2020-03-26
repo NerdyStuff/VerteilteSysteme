@@ -1,14 +1,15 @@
 import java.io.*;
 import java.net.*;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class Client {
 
     // TODO: List of Hostnames and ports
     // TODO: setter for adding hostname and portpair
-    private String hostname = "localhost"; //Hostname
-    private int port = 1337; //port
+    // TODO: Close connection!
+    private HashMap<Integer, Host> hosts;
 
     //TODO: use host object as list to choose one
 
@@ -18,9 +19,14 @@ public class Client {
     public Client(String username, String password) {
         this.username = username;
         this.password = password;
+
+        hosts = new HashMap<Integer, Host>();
+        hosts
     }
 
     public String sendMessage(String receiver, String message) {
+
+        Host host = selectHost();
         String returnString = "";
 
         DataPackage dataPackage = new DataPackage(2, username, password, receiver, message, new Date());
@@ -33,7 +39,7 @@ public class Client {
         }*/
 
         // TODO: Retry + Error Handling
-        List<DataPackage> serverResponse = getDataPackageList(hostname, port);
+        List<DataPackage> serverResponse = getDataPackageList(host.getHostname(), host.getPort());
 
         if (serverResponse == null) {
             // Error
@@ -73,11 +79,19 @@ public class Client {
         return returnString;
     }
 
-    public void getUpdates() {
+    public List<Message> getUpdates() {
 
+        // Cases: 4, 5, -2, -4
+
+
+        return null;
     }
 
     public String register() {
+
+        Host host = selectHost();
+
+
         String returnString = "";
 
         DataPackage dataPackage = new DataPackage(1, username, password);
@@ -90,7 +104,7 @@ public class Client {
         }*/
 
         // TODO: Retry + Error Handling
-        List<DataPackage> serverResponse = getDataPackageList(hostname, port);
+        List<DataPackage> serverResponse = getDataPackageList(host.getHostname(), host.getPort());
 
         if (serverResponse == null) {
             // Error
@@ -194,12 +208,13 @@ public class Client {
 
     private int sendDataPackage(DataPackage dataPackage) {
 
+        Host host = selectHost();
+
         int returnFlag = 0;
         Socket socketToServer = null;
 
-
         try {
-            socketToServer = new Socket(hostname, port);
+            socketToServer = new Socket(host.getHostname(), host.getPort());
         } catch (UnknownHostException e) {
             System.out.println("Error: Host not known");
 
@@ -210,7 +225,6 @@ public class Client {
 
             return -2; //IOException
         }
-
 
         if (socketToServer != null) {
 
