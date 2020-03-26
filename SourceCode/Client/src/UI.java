@@ -9,8 +9,9 @@ public class UI {
 
     private static JFrame frame;
     private static JTextField textFieldUsername,textFieldChat;
-    private static JTextField textFieldPw;
+    private static JPasswordField textFieldPw;
     private static JTextField textFieldChatpartner;
+    private static JEditorPane status;
 
     private static String username;
     private static String passwort;
@@ -40,7 +41,7 @@ public class UI {
         frame.getContentPane().add(lblName);
 
         //Password
-        textFieldPw = new JTextField();
+        textFieldPw = new JPasswordField();
         textFieldPw.setBounds(128, 65, 86, 20);
         frame.getContentPane().add(textFieldPw);
         textFieldPw.setColumns(10);
@@ -82,10 +83,11 @@ public class UI {
         textFieldChat.setColumns(10);
 
         //Editor Pane for Status updates
-        JEditorPane status = new JEditorPane();
-        status.setBounds(530,30,130,370);
+        status = new JEditorPane();
+        status.setBounds(530,30,170,370);
         status.setBackground(SystemColor.control);
         status.setEditable(false);
+        status.setFont(new Font("Courier New",Font.PLAIN , 11));
         frame.getContentPane().add(status);
 
         //Clear Button
@@ -108,20 +110,52 @@ public class UI {
         btnChat.setEnabled(false);
         btnClear.setEnabled(false);
 
+        status.setText("");
+
         //Eventlisteners
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if(!textFieldUsername.getText().equals("") && !textFieldPw.getText().equals("")) {
-                    username = textFieldUsername.getText();
-                    passwort = textFieldPw.getText();
-                    textFieldUsername.setBorder(new LineBorder(Color.gray,1));
-                    textFieldPw.setBorder(new LineBorder(Color.gray,1));
-                    textFieldUsername.setEnabled(false);
-                    textFieldPw.setEnabled(false);
-                    c = new Client("localhost",1337,username,passwort);
+                if(btnLogin.getText() == "Login") {
+                    if (!textFieldUsername.getText().equals("") && !textFieldPw.getText().equals("")) {
+                        username = textFieldUsername.getText();
+                        passwort = textFieldPw.getText();
+                        textFieldUsername.setBorder(new LineBorder(Color.gray, 1));
+                        textFieldPw.setBorder(new LineBorder(Color.gray, 1));
+                        textFieldUsername.setEnabled(false);
+                        textFieldPw.setEnabled(false);
+                        c = new Client(username, passwort);
+                        btnLogin.setText("Logout");
+                        textFieldChatpartner.setEnabled(true);
+                        textFieldChat.setEnabled(true);
+                        btnChat.setEnabled(true);
+                        log("Login data saved");
+                    } else {
+                        textFieldUsername.setBorder(new LineBorder(Color.red, 1));
+                        textFieldPw.setBorder(new LineBorder(Color.red, 1));
+                        log("Please enter a username and a password");
+                    }
+                }else if(btnLogin.getText() == "Logout"){
+                    username = "";
+                    passwort = "";
+                    textFieldUsername.setText("");
+                    textFieldPw.setText("");
+                    chatIncoming.setText("");
+                    textFieldChat.setText("");
+                    textFieldChatpartner.setText("");
+                    c = null;
+                    textFieldUsername.setEnabled(true);
+                    textFieldPw.setEnabled(true);
+                    btnLogin.setText("Login");
+                    chatIncoming.setEnabled(false);
+                    textFieldChatpartner.setEnabled(false);
+                    textFieldChat.setEnabled(false);
+                    btnChat.setEnabled(false);
+                    btnSend.setEnabled(false);
+                    btnChat.setEnabled(false);
+                    btnClear.setEnabled(false);
+                    log("Logged out");
                 }else{
-                    textFieldUsername.setBorder(new LineBorder(Color.red,1));
-                    textFieldPw.setBorder(new LineBorder(Color.red,1));
+                    log("What is happening?");
                 }
             }
         });
@@ -139,7 +173,9 @@ public class UI {
 
         btnChat.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                chatIncoming.setEnabled(true);
+                btnSend.setEnabled(true);
+                btnClear.setEnabled(true);
             }
         });
 
@@ -158,5 +194,9 @@ public class UI {
 
         }
 
+    }
+
+    private static void log(String log){
+        status.setText(status.getText() + log + "\n");
     }
 }

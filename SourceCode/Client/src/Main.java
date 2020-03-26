@@ -28,7 +28,7 @@ public class Main {
         String passwort = reader.readLine();
         System.out.println("Bitte gib den Username deines Chatpartners ein");
         String to = reader.readLine();
-        Client c = new Client("localhost",1337,username,passwort);
+        Client c = new Client(username,passwort);
         System.out.println("Du kannst jetzt chatten:");
         while(true) {
             String message = "";
