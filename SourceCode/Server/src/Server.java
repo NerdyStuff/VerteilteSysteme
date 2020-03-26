@@ -284,8 +284,6 @@ public class Server {
 
         List<DataPackage> updateReturnList = new LinkedList<DataPackage>();
 
-        // TODO: Synchronise between servers
-
         // Authentificate User
         User user = authenticateUser(dataPackage.getUsername(), dataPackage.getPassword());
 
