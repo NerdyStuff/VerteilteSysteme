@@ -248,6 +248,6 @@ public class Client {
     }
 
     private int randomNumber(int max) {
-        return (int) (Math.random() * ((max) + 1));
+        return (int) (Math.random() * max);
     }
 }
