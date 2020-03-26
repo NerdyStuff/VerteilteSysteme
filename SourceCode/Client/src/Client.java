@@ -23,10 +23,24 @@ public class Client {
     public String sendMessage(String receiver, String message) {
 
         Host host = selectHost();
+        Socket socket = null;
         String returnString = "";
 
+        try {
+            socket = new Socket(host.getHostname(), host.getPort());
+        } catch (UnknownHostException e) {
+            System.out.println("Error: Host not known");
+
+            return null;
+
+        } catch (IOException e) {
+            System.out.println("Error: IOException");
+
+            return null;
+        }
+
         DataPackage dataPackage = new DataPackage(2, username, password, receiver, message, new Date());
-        int returnValue = sendDataPackage(dataPackage);
+        int returnValue = sendDataPackage(socket, dataPackage);
 
         // TODO : Error handling
         /*switch (returnValue) {
@@ -35,7 +49,7 @@ public class Client {
         }*/
 
         // TODO: Retry + Error Handling
-        List<DataPackage> serverResponse = getDataPackageList(host.getHostname(), host.getPort());
+        List<DataPackage> serverResponse = getDataPackageList(socket);
 
         if (serverResponse == null) {
             // Error
@@ -71,6 +85,8 @@ public class Client {
             }
         }
 
+        // Close connection
+        this.closeSocket(socket);
 
         return returnString;
     }
@@ -78,10 +94,24 @@ public class Client {
     public List<Message> getUpdates() {
 
         Host host = selectHost();
+        Socket socket = null;
         List<Message> messagesList = new LinkedList<Message>();
 
+        try {
+            socket = new Socket(host.getHostname(), host.getPort());
+        } catch (UnknownHostException e) {
+            System.out.println("Error: Host not known");
+
+            return null;
+
+        } catch (IOException e) {
+            System.out.println("Error: IOException");
+
+            return null;
+        }
+
         DataPackage dataPackage = new DataPackage(3, username, password);
-        int returnValue = sendDataPackage(dataPackage);
+        int returnValue = sendDataPackage(socket, dataPackage);
 
         // TODO : Error handling
         /*switch (returnValue) {
@@ -90,7 +120,7 @@ public class Client {
         }*/
 
         // TODO: Retry + Error Handling
-        List<DataPackage> serverResponse = getDataPackageList(host.getHostname(), host.getPort());
+        List<DataPackage> serverResponse = getDataPackageList(socket);
 
         // TODO: handle other cases than messages for user exist
 
@@ -134,17 +164,34 @@ public class Client {
             }
         }
 
+        // Close connection
+        this.closeSocket(socket);
+
         return messagesList;
     }
 
     public String register() {
 
         Host host = selectHost();
+        Socket socket = null;
+
+        try {
+            socket = new Socket(host.getHostname(), host.getPort());
+        } catch (UnknownHostException e) {
+            System.out.println("Error: Host not known");
+
+            return null;
+
+        } catch (IOException e) {
+            System.out.println("Error: IOException");
+
+            return null;
+        }
 
         String returnString = "";
 
         DataPackage dataPackage = new DataPackage(1, username, password);
-        int returnValue = sendDataPackage(dataPackage);
+        int returnValue = sendDataPackage(socket, dataPackage);
 
         // TODO : Error handling
         /*switch (returnValue) {
@@ -153,7 +200,7 @@ public class Client {
         }*/
 
         // TODO: Retry + Error Handling
-        List<DataPackage> serverResponse = getDataPackageList(host.getHostname(), host.getPort());
+        List<DataPackage> serverResponse = getDataPackageList(socket);
 
         if (serverResponse == null) {
             // Error
@@ -180,27 +227,16 @@ public class Client {
             }
         }
 
+        // Close connection
+        this.closeSocket(socket);
+
         return returnString;
     }
 
-    private List<DataPackage> getDataPackageList(String hostname, int port) {
+    private List<DataPackage> getDataPackageList(Socket socketFromServer) {
 
-        Socket socketFromServer = null;
         List<DataPackage> data = null;
         boolean errorOccured = false;
-
-        try {
-            socketFromServer = new Socket(hostname, port);
-        } catch (UnknownHostException e) {
-            System.out.println("Error: Host not known");
-
-            return null;
-
-        } catch (IOException e) {
-            System.out.println("Error: IOException");
-
-            return null;
-        }
 
         if (socketFromServer != null) {
 
@@ -252,36 +288,12 @@ public class Client {
             }
         }
 
-        // Close connection
-        try {
-            socketFromServer.close();
-        } catch (IOException e) {
-            System.out.println("Error: Could not close connection");
-            e.printStackTrace();
-        }
-
         return data;
     }
 
-    private int sendDataPackage(DataPackage dataPackage) {
-
-        Host host = selectHost();
+    private int sendDataPackage(Socket socketToServer, DataPackage dataPackage) {
 
         int returnFlag = 0;
-        Socket socketToServer = null;
-
-        try {
-            socketToServer = new Socket(host.getHostname(), host.getPort());
-        } catch (UnknownHostException e) {
-            System.out.println("Error: Host not known");
-
-            return -1; //unknown Host
-
-        } catch (IOException e) {
-            System.out.println("Error: IOException");
-
-            return -2; //IOException
-        }
 
         if (socketToServer != null) {
 
@@ -305,6 +317,15 @@ public class Client {
         }
 
         return returnFlag;
+    }
+
+    private void closeSocket(Socket socket) {
+        try {
+            socket.close();
+        } catch (IOException e) {
+            System.out.println("Error: Could not close connection");
+            e.printStackTrace();
+        }
     }
 
     private Host selectHost() {
