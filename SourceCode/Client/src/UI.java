@@ -28,21 +28,7 @@ public class UI {
                 TimeUnit.SECONDS.sleep(1);
                 // TODO: CHANGED TO UPDATE!
                 List<Message> newMessages = c.getUpdates();
-                if(newMessages == null || newMessages.isEmpty()){
-                    log("Network error");
-                }else{
-                    Iterator iterator = newMessages.iterator();
-                    Message firstMessage = (Message) iterator.next();
-                    if(firstMessage.getSender().equals("")){
-                        System.out.println("No new updates");
-                    }else {
-                        chatIncoming.append("[" + firstMessage.getTimestamp() + "] " + firstMessage.getSender() + ": " + firstMessage.getText() + "\n");
-                        while (iterator.hasNext()) {
-                            Message message = (Message) iterator.next();
-                            chatIncoming.append("[" + message.getTimestamp() + "] " + message.getSender() + ": " + message.getText() + "\n");
-                        }
-                    }
-                }
+                printMessages(newMessages);
             }catch (Exception e){
 
             }
@@ -165,6 +151,8 @@ public class UI {
                         textFieldUsername.setEnabled(false);
                         textFieldPw.setEnabled(false);
                         c = new Client(username, passwort);
+                        List<Message> history = c.login();
+                        printMessages(history);
                         btnLogin.setText("Logout");
                         textFieldChatpartner.setEnabled(true);
                         btnChat.setEnabled(true);
@@ -293,5 +281,23 @@ public class UI {
 
     private static void log(String log){
         status.setText(status.getText() + log + "\n");
+    }
+
+    private static void printMessages(List<Message> newMessages) {
+        if (newMessages == null || newMessages.isEmpty()) {
+            log("Network error");
+        } else {
+            Iterator iterator = newMessages.iterator();
+            Message firstMessage = (Message) iterator.next();
+            if (firstMessage.getSender().equals("")) {
+                System.out.println("No new updates");
+            } else {
+                chatIncoming.append("[" + firstMessage.getTimestamp() + "] " + firstMessage.getSender() + ": " + firstMessage.getText() + "\n");
+                while (iterator.hasNext()) {
+                    Message message = (Message) iterator.next();
+                    chatIncoming.append("[" + message.getTimestamp() + "] " + message.getSender() + ": " + message.getText() + "\n");
+                }
+            }
+        }
     }
 }
