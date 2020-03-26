@@ -3,6 +3,8 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class UI {
@@ -12,6 +14,7 @@ public class UI {
     private static JPasswordField textFieldPw;
     private static JTextField textFieldChatpartner;
     private static JEditorPane status;
+    private static JTextArea chatIncoming;
 
     private static String username;
     private static String passwort;
@@ -20,6 +23,31 @@ public class UI {
 
     public UI() {
         generateUI();
+        while(true){
+            try {
+                TimeUnit.SECONDS.sleep(1);
+                // TODO: CHANGED TO UPDATE!
+                List<Message> newMessages = c.getUpdates();
+                if(newMessages == null || newMessages.isEmpty()){
+                    log("Network error");
+                }else{
+                    Iterator iterator = newMessages.iterator();
+                    Message firstMessage = (Message) iterator.next();
+                    if(firstMessage.getSender().equals("")){
+                        System.out.println("No new updates");
+                    }else {
+                        chatIncoming.append("[" + firstMessage.getTimestamp() + "] " + firstMessage.getSender() + ": " + firstMessage.getText() + "\n");
+                        while (iterator.hasNext()) {
+                            Message message = (Message) iterator.next();
+                            chatIncoming.append("[" + message.getTimestamp() + "] " + message.getSender() + ": " + message.getText() + "\n");
+                        }
+                    }
+                }
+            }catch (Exception e){
+
+            }
+
+        }
     }
 
     public static void generateUI() {
@@ -77,7 +105,7 @@ public class UI {
         frame.getContentPane().add(btnChat);
 
         //Chat Field
-        JTextArea chatIncoming = new JTextArea();
+        chatIncoming = new JTextArea();
         chatIncoming.setBounds(65, 157, 400, 200);
         frame.getContentPane().add(chatIncoming);
         chatIncoming.setEditable(false);
@@ -132,8 +160,8 @@ public class UI {
                         c = new Client(username, passwort);
                         btnLogin.setText("Logout");
                         textFieldChatpartner.setEnabled(true);
-                        textFieldChat.setEnabled(true);
                         btnChat.setEnabled(true);
+                        btnRegister.setEnabled(false);
                         log("Login data saved");
                     } else {
                         textFieldUsername.setBorder(new LineBorder(Color.red, 1));
@@ -159,6 +187,7 @@ public class UI {
                     btnSend.setEnabled(false);
                     btnChat.setEnabled(false);
                     btnClear.setEnabled(false);
+                    btnRegister.setEnabled(true);
                     log("Logged out");
                 }else{
                     log("What is happening?");
@@ -195,6 +224,7 @@ public class UI {
             public void actionPerformed(ActionEvent e) {
                 String message = textFieldChat.getText();
                 String messageStatus = c.sendMessage(to,message);
+                chatIncoming.append(" " + username + ": " + message + "\n");
                 textFieldChat.setText("");
                 log(messageStatus);
             }
@@ -239,23 +269,6 @@ public class UI {
                 }
             }
         });
-
-        //While schleife
-        while(true){
-            try {
-                TimeUnit.SECONDS.sleep(1);
-                // TODO: CHANGED TO UPDATE!
-                c.getUpdates();
-                //c.sendMessage(textFieldChatpartner.getText(),"");
-                //String messages = c.sendMessage();
-                //if(!messages.equals("")) {
-                //    chatIncoming.append(textFieldChatpartner.getText() + ": " + messages + "\n");
-                //}
-            }catch (Exception e){
-
-            }
-
-        }
 
     }
 
