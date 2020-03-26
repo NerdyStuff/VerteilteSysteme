@@ -191,6 +191,9 @@ public class Server {
 
             return registrationReturnList;
         } else {
+
+            users.put(dataPackage.getUsername(),
+                    new User(dataPackage.getUsername(), dataPackage.getPassword()));
             //TODO: Synchronise between servers
 
             // If user does not exist, return success
