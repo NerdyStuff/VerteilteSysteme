@@ -52,8 +52,14 @@ public class UI {
 
         //Login Button
         JButton btnLogin = new JButton("Login");
-        btnLogin.setBounds(230, 68, 89, 23);
+        btnLogin.setBounds(230, 63, 89, 23);
         frame.getContentPane().add(btnLogin);
+
+        //Login Button
+        JButton btnRegister = new JButton("Register");
+        btnRegister.setBounds(230, 27, 89, 23);
+        frame.getContentPane().add(btnRegister);
+
 
         //Chat Partner
         textFieldChatpartner = new JTextField();
@@ -158,6 +164,31 @@ public class UI {
                     log("What is happening?");
                 }
             }
+        });
+
+        btnRegister.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (!textFieldUsername.getText().equals("") && !textFieldPw.getText().equals("")) {
+                    username = textFieldUsername.getText();
+                    passwort = textFieldPw.getText();
+                    textFieldUsername.setBorder(new LineBorder(Color.gray, 1));
+                    textFieldPw.setBorder(new LineBorder(Color.gray, 1));
+                    textFieldUsername.setEnabled(false);
+                    textFieldPw.setEnabled(false);
+                    c = new Client(username, passwort);
+                    String registration = c.register();
+                    log(registration);
+                    btnLogin.setText("Logout");
+                    textFieldChatpartner.setEnabled(true);
+                    textFieldChat.setEnabled(true);
+                    btnChat.setEnabled(true);
+                    btnRegister.setEnabled(false);
+                } else {
+                    textFieldUsername.setBorder(new LineBorder(Color.red, 1));
+                    textFieldPw.setBorder(new LineBorder(Color.red, 1));
+                    log("Please enter a username and a password");
+                }
+           }
         });
 
         btnSend.addActionListener(new ActionListener() {
