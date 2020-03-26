@@ -7,12 +7,8 @@ import java.util.List;
 public class Client {
 
     // TODO: List of Hostnames and ports
-    // TODO: setter for adding hostname and portpair
     // TODO: Close connection!
     private HashMap<Integer, Host> hosts;
-
-    //TODO: use host object as list to choose one
-
 
     private String username, password;
 
@@ -21,7 +17,11 @@ public class Client {
         this.password = password;
 
         hosts = new HashMap<Integer, Host>();
-        hosts
+        hosts.put(0, new Host("localhost", 1337));
+    }
+
+    public void addHost(String hostname, int port) {
+        hosts.put(hosts.size(), new Host(hostname, port));
     }
 
     public String sendMessage(String receiver, String message) {
@@ -244,8 +244,10 @@ public class Client {
     }
 
     private Host selectHost() {
-        // getRandom host
+        return hosts.get(this.randomNumber(hosts.size()));
+    }
 
-        return null;
+    private int randomNumber(int max) {
+        return (int) (Math.random() * ((max) + 1));
     }
 }
