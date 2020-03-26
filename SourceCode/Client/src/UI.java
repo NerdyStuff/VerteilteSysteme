@@ -195,8 +195,8 @@ public class UI {
             public void actionPerformed(ActionEvent e) {
                 String message = textFieldChat.getText();
                 String messageStatus = c.sendMessage(to,message);
+                textFieldChat.setText("");
                 log(messageStatus);
-
             }
         });
         btnClear.addActionListener(new ActionListener() {
