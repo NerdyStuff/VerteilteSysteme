@@ -9,6 +9,10 @@ public class Client {
     // TODO: setter for adding hostname and portpair
     private String hostname = "localhost"; //Hostname
     private int port = 1337; //port
+
+    //TODO: use host object as list to choose one
+
+
     private String username, password;
 
     public Client(String username, String password) {
@@ -223,5 +227,11 @@ public class Client {
         }
 
         return returnFlag;
+    }
+
+    private Host selectHost() {
+        // getRandom host
+
+        return null;
     }
 }
