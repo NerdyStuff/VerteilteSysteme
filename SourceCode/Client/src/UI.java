@@ -162,20 +162,50 @@ public class UI {
 
         btnSend.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                String message = textFieldChat.getText();
+                String messageStatus = c.sendMessage(to,message);
+                log(messageStatus);
 
             }
         });
         btnClear.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                if(textFieldChat.getText().equals("")) {
+                    chatIncoming.setText("");
+                }else{
+                    textFieldChat.setText("");
+                }
             }
         });
 
         btnChat.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                chatIncoming.setEnabled(true);
-                btnSend.setEnabled(true);
-                btnClear.setEnabled(true);
+                if(btnChat.getText().equals("Chat")) {
+                    if (!textFieldChatpartner.getText().equals("")) {
+                        to = textFieldChatpartner.getText();
+                        chatIncoming.setEnabled(true);
+                        btnSend.setEnabled(true);
+                        btnClear.setEnabled(true);
+                        textFieldChat.setEnabled(true);
+                        log("Chat partner saved");
+                        btnChat.setText("Leave");
+                    } else {
+                        log("please enter chat partner");
+                    }
+                }else if(btnChat.getText().equals("Leave")){
+                    to = null;
+                    chatIncoming.setText("");
+                    chatIncoming.setEnabled(false);
+                    btnClear.setEnabled(false);
+                    textFieldChat.setEnabled(false);
+                    textFieldChat.setText("");
+                    btnSend.setEnabled(false);
+                    textFieldChatpartner.setText("");
+                    btnChat.setText("Chat");
+                    log("You left the chat");
+                }else{
+                    log("What is going on?");
+                }
             }
         });
 
