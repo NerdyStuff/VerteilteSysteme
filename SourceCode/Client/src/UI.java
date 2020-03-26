@@ -105,10 +105,13 @@ public class UI {
         frame.getContentPane().add(btnChat);
 
         //Chat Field
-        chatIncoming = new JTextArea();
-        chatIncoming.setBounds(65, 157, 400, 200);
-        frame.getContentPane().add(chatIncoming);
+        chatIncoming = new JTextArea(2, 20);
         chatIncoming.setEditable(false);
+        //container drumherum
+        JScrollPane scroll = new JScrollPane(chatIncoming);
+        scroll.setBounds(65, 157, 400, 200);
+        frame.getContentPane().add(scroll);
+
 
         //Message Field
         textFieldChat = new JTextField();
@@ -118,11 +121,15 @@ public class UI {
 
         //Editor Pane for Status updates
         status = new JEditorPane();
-        status.setBounds(530,30,170,370);
         status.setBackground(SystemColor.control);
         status.setEditable(false);
         status.setFont(new Font("Courier New",Font.PLAIN , 11));
-        frame.getContentPane().add(status);
+        //scroll
+        JScrollPane scrollStatus = new JScrollPane(status);
+        scrollStatus.setBounds(530,30,170,370);
+        scrollStatus.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        scrollStatus.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        frame.getContentPane().add(scrollStatus);
 
         //Clear Button
         JButton btnClear = new JButton("Clear");
@@ -270,7 +277,19 @@ public class UI {
             }
         });
 
+        textFieldChat.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String message = textFieldChat.getText();
+                String messageStatus = c.sendMessage(to,message);
+                chatIncoming.append(" " + username + ": " + message + "\n");
+                textFieldChat.setText("");
+                log(messageStatus);
+            }
+        });
+
     }
+
+
 
     private static void log(String log){
         status.setText(status.getText() + log + "\n");
