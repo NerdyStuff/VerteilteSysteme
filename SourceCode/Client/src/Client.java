@@ -6,8 +6,6 @@ import java.util.List;
 
 public class Client {
 
-    // TODO: List of Hostnames and ports
-    // TODO: Close connection!
     private HashMap<Integer, Host> hosts;
 
     private String username, password;
@@ -82,6 +80,7 @@ public class Client {
     public List<Message> getUpdates() {
 
         // Cases: 4, 5, -2, -4
+
 
 
         return null;
@@ -203,6 +202,14 @@ public class Client {
             }
         }
 
+        // Close connection
+        try {
+            socketFromServer.close();
+        } catch (IOException e) {
+            System.out.println("Error: Could not close connection");
+            e.printStackTrace();
+        }
+
         return data;
     }
 
@@ -238,6 +245,13 @@ public class Client {
 
                 return -3; // Could not send Data
             }
+        }
+
+        try {
+            socketToServer.close();
+        } catch (IOException e) {
+            System.out.println("Error: Could not close connection");
+            return -4;
         }
 
         return returnFlag;
