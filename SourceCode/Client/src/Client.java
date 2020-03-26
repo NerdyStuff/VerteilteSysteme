@@ -61,22 +61,28 @@ public class Client {
 
                 switch (responseFlag) {
                     case 7:
+                        System.out.println(responseFlag);
                         returnString = "Message accepted";
                         break;
                     case -2:
+                        System.out.println(responseFlag);
                         returnString = "Wrong Username or Password";
                         break;
                     case -3:
+                        System.out.println(responseFlag);
                         returnString = "Receiver does not exists";
                         break;
                     case -4:
+                        System.out.println(responseFlag);
                         returnString = "An error occured";
                         break;
                     case -5:
+                        System.out.println(responseFlag);
                         returnString = "You can not be the receiver";
                         break;
 
                     default:
+                        System.out.println(responseFlag);
                         returnString = "An error occured";
                 }
 
@@ -210,12 +216,14 @@ public class Client {
 
                 int responseFlag = responsePackage.getFlag();
 
+                System.out.println(responseFlag);
+
                 switch (responseFlag) {
                     case -1:
                         returnString = "Registration failed";
                         break;
-                    case -6:
-                        returnString = "Wrong Username or Password";
+                    case 6:
+                        returnString = "Registration successful";
                         break;
 
                     default:
@@ -224,6 +232,7 @@ public class Client {
 
             } else {
                 // error
+                returnString = "An error occured";
             }
         }
 
@@ -264,7 +273,7 @@ public class Client {
                 }
 
                 if (!errorOccured && object != null) {
-                    if (object instanceof DataPackage) {
+                    if (object instanceof List) {
                         data = (List<DataPackage>) object;
                     } else {
                         throw new Exception("Error: Not a valid DataPackage-List");
@@ -307,13 +316,6 @@ public class Client {
 
                 return -3; // Could not send Data
             }
-        }
-
-        try {
-            socketToServer.close();
-        } catch (IOException e) {
-            System.out.println("Error: Could not close connection");
-            return -4;
         }
 
         return returnFlag;

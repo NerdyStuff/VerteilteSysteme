@@ -37,7 +37,8 @@ public class Main {
                     break;
                 }
             }
-            c.sendMessage(to, message);
+            // TODO: HERERER
+            c.getUpdates();
             try {
                 TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException interruptedExeption) {

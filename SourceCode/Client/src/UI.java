@@ -244,7 +244,9 @@ public class UI {
         while(true){
             try {
                 TimeUnit.SECONDS.sleep(1);
-                c.sendMessage(textFieldChatpartner.getText(),"");
+                // TODO: CHANGED TO UPDATE!
+                c.getUpdates();
+                //c.sendMessage(textFieldChatpartner.getText(),"");
                 //String messages = c.sendMessage();
                 //if(!messages.equals("")) {
                 //    chatIncoming.append(textFieldChatpartner.getText() + ": " + messages + "\n");
