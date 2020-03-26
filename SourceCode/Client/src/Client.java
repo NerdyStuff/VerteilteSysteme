@@ -135,11 +135,13 @@ public class Client {
         } else {
             if (!serverResponse.isEmpty()) {
 
-                DataPackage responsePackage = responsePackage = serverResponse.remove(0);
+                DataPackage responsePackage = serverResponse.remove(0);
                 ;
 
                 if (responsePackage.getFlag() == 5) {
                     // No new Messages
+
+                    messagesList.add(new Message("", "", null)); // Empty message object
 
                 } else if (responsePackage.getFlag() == 4) {
                     // Add messages to messages list
