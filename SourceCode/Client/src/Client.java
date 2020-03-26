@@ -21,6 +21,84 @@ public class Client {
         hosts.put(hosts.size(), new Host(hostname, port));
     }
 
+    public List<Message> login() {
+
+        Host host = selectHost();
+        Socket socket = null;
+        List<Message> messagesList = new LinkedList<Message>();
+
+        try {
+            socket = new Socket(host.getHostname(), host.getPort());
+        } catch (UnknownHostException e) {
+            System.out.println("Error: Host not known");
+
+            return null;
+
+        } catch (IOException e) {
+            System.out.println("Error: IOException");
+
+            return null;
+        }
+
+        DataPackage dataPackage = new DataPackage(8, username, password);
+        int returnValue = sendDataPackage(socket, dataPackage);
+
+        // TODO : Error handling
+        /*switch (returnValue) {
+            case 0:
+                break;
+        }*/
+
+        // TODO: Retry + Error Handling
+        List<DataPackage> serverResponse = getDataPackageList(socket);
+
+        // TODO: handle other cases than messages for user exist
+
+        if (serverResponse == null) {
+            // Error
+        } else {
+            if (!serverResponse.isEmpty()) {
+
+                DataPackage responsePackage = serverResponse.remove(0);
+                ;
+
+                if (responsePackage.getFlag() == -6) {
+                    // No chathistory found on server
+
+                    messagesList.add(new Message("", "", null)); // Empty message object
+
+                } else if (responsePackage.getFlag() == 9) {
+                    // Add messages to messages list
+                    messagesList.add(
+                            new Message(responsePackage.getUsername(),
+                                    responsePackage.getMessage(),
+                                    responsePackage.getTimestamp()));
+
+                    Iterator iterator = serverResponse.iterator();
+                    while (iterator.hasNext()) {
+                        DataPackage tempData = (DataPackage) iterator.next();
+                        messagesList.add(
+                                new Message(tempData.getUsername(),
+                                        tempData.getMessage(),
+                                        tempData.getTimestamp()));
+                    }
+                } else if (responsePackage.getFlag() == -2) {
+                    // Wrong password or username
+
+                } else if (responsePackage.getFlag() == -4) {
+                    // General Error
+
+                } else {
+                    // Unknown Error
+                }
+            } else {
+                // error
+            }
+        }
+
+        return messagesList;
+    }
+
     public String sendMessage(String receiver, String message) {
 
         Host host = selectHost();

@@ -1,15 +1,18 @@
 import java.util.LinkedList;
+import java.util.List;
 
 public class User {
 
     private String username;
     private String password;
     private LinkedList<Message> messages;
+    private LinkedList<Message> chatHistory;
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
         this.messages = new LinkedList<Message>();
+        this.chatHistory = new LinkedList<Message>();
     }
 
 
@@ -31,6 +34,7 @@ public class User {
 
     public void addMessage(Message message) {
         this.messages.add(message);
+        this.chatHistory.add(message);
     }
 
     public Message removeMessage() {
@@ -39,5 +43,9 @@ public class User {
 
     public boolean hasNoMessages() {
         return this.messages.isEmpty();
+    }
+
+    public List<Message> getChathistory() {
+        return this.chatHistory;
     }
 }

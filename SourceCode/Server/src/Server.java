@@ -81,6 +81,10 @@ public class Server {
                             // Client sent Update-Request:
                             // Send return-list to user
                             this.sendSocketData(clientSocket, this.handleUpdateRequest(dataPackage));
+                        } else if (dataPackage.getFlag() == 8) {
+                            // User requests chathistory e.g. after login
+
+                            this.sendSocketData(clientSocket, this.handleChatHistoryRequest(dataPackage));
                         } else {
 
                             // Send fail to client
@@ -270,6 +274,44 @@ public class Server {
                         new DataPackage(4, message.getSender(),
                                 message.getText(),
                                 message.getTimestamp()));
+            }
+
+            return updateReturnList;
+        }
+    }
+
+    private List<DataPackage> handleChatHistoryRequest(DataPackage dataPackage) {
+
+        List<DataPackage> updateReturnList = new LinkedList<DataPackage>();
+
+        // TODO: Synchronise between servers
+
+        // Authentificate User
+        User user = authenticateUser(dataPackage.getUsername(), dataPackage.getPassword());
+
+        if (user == null) {
+            updateReturnList.add(new DataPackage(-2, "Username or password is incorrect!"));
+
+            return updateReturnList;
+        } else {
+
+            if (user.getChathistory() == null) {
+                // User has no chat history
+
+                updateReturnList.add(new DataPackage(-6, "No chat history found / error"));
+
+                return updateReturnList;
+            } else {
+
+                Iterator iterator = user.getChathistory().iterator();
+                while (iterator.hasNext()) {
+                    DataPackage tempData = (DataPackage) iterator.next();
+                    updateReturnList.add(
+                            new DataPackage(9,
+                                            tempData.getUsername(),
+                                            tempData.getMessage(),
+                                            tempData.getTimestamp()));
+                }
             }
 
             return updateReturnList;
