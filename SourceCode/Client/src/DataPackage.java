@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.Date;
 
-public class DataPackage {
+public class DataPackage implements Serializable {
 
     private int flag;
     private String username, password, receiver, message;
