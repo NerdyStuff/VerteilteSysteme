@@ -1,8 +1,6 @@
 import java.io.*;
 import java.net.*;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Client {
 
@@ -79,17 +77,69 @@ public class Client {
 
     public List<Message> getUpdates() {
 
-        // Cases: 4, 5, -2, -4
+        Host host = selectHost();
+        List<Message> messagesList = new LinkedList<Message>();
 
+        DataPackage dataPackage = new DataPackage(3, username, password);
+        int returnValue = sendDataPackage(dataPackage);
 
+        // TODO : Error handling
+        /*switch (returnValue) {
+            case 0:
+                break;
+        }*/
 
-        return null;
+        // TODO: Retry + Error Handling
+        List<DataPackage> serverResponse = getDataPackageList(host.getHostname(), host.getPort());
+
+        // TODO: handle other cases than messages for user exist
+
+        if (serverResponse == null) {
+            // Error
+        } else {
+            if (!serverResponse.isEmpty()) {
+
+                DataPackage responsePackage = responsePackage = serverResponse.remove(0);
+                ;
+
+                if (responsePackage.getFlag() == 5) {
+                    // No new Messages
+
+                } else if (responsePackage.getFlag() == 4) {
+                    // Add messages to messages list
+                    messagesList.add(
+                            new Message(responsePackage.getUsername(),
+                                    responsePackage.getMessage(),
+                                    responsePackage.getTimestamp()));
+
+                    Iterator iterator = serverResponse.iterator();
+                    while (iterator.hasNext()) {
+                        DataPackage tempData = (DataPackage) iterator.next();
+                        messagesList.add(
+                                new Message(tempData.getUsername(),
+                                        tempData.getMessage(),
+                                        tempData.getTimestamp()));
+                    }
+                } else if (responsePackage.getFlag() == -2) {
+                    // Wrong password or username
+
+                } else if (responsePackage.getFlag() == -4) {
+                    // General Error
+
+                } else {
+                    // Unknown Error
+                }
+            } else {
+                // error
+            }
+        }
+
+        return messagesList;
     }
 
     public String register() {
 
         Host host = selectHost();
-
 
         String returnString = "";
 
