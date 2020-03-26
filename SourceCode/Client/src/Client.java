@@ -5,7 +5,6 @@ import java.util.*;
 public class Client {
 
     private HashMap<Integer, Host> hosts;
-    private List<Message> messageHistory;
 
     private String username, password;
 
@@ -16,15 +15,10 @@ public class Client {
         hosts = new HashMap<Integer, Host>();
         hosts.put(0, new Host("localhost", 1337));
 
-        messageHistory = new LinkedList<Message>();
     }
 
     public void addHost(String hostname, int port) {
         hosts.put(hosts.size(), new Host(hostname, port));
-    }
-
-    public List<Message> getMessageHistory() {
-        return messageHistory;
     }
 
     public String sendMessage(String receiver, String message) {
@@ -164,8 +158,6 @@ public class Client {
                                 new Message(tempData.getUsername(),
                                         tempData.getMessage(),
                                         tempData.getTimestamp()));
-
-                        messageHistory.addAll(messagesList);
                     }
                 } else if (responsePackage.getFlag() == -2) {
                     // Wrong password or username
