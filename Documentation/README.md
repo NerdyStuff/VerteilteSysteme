@@ -49,12 +49,15 @@ Zeitstempel implementieren (TBD: Laportuhren -> eventuell das DataPacakgeObjet u
 ### Server
 | Attribut | Datentyp | Beschreibung |
 | -------- | -------- | ------------ |
-| serverPort | Integer |
+| serverPort | Integer | Port, auf dem der Server Anfragen annimmt |
+| serverSocket | Socket | Socket des Servers |
+| users    | HashMap\<String, User\> | Hashmap mit den im System registrierten Nutzern |
 
 ### Client
 | Attribut | Datentyp | Beschreibung |
 | -------- | -------- | ------------ |
-| hosts    | HashMap\<Host\> | Hashmap mit den benutzbaren Servern |
+| hosts    | HashMap\<Integer, Host\> | Hashmap mit den benutzbaren Servern <br> \(HashMap wird als dynamisches Array verwendet<br>
+mit Zugriffszeit von 1\) |
 | username | String   | Nutzername des Clients |
 | password | String   | Passwort des Clients |
 
