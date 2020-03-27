@@ -39,17 +39,33 @@ Zeitstempel implementieren (TBD: Laportuhren -> eventuell das DataPacakgeObjet u
 | username | String   | Nutzername |
 | password | String   | Passwort des Benutzers |
 | messages | LinkedList\<Message\> | Liste mit den Nachrichten für den Benutzer |
+
+### Host
+| Attribut | Datentyp | Beschreibung |
+| -------- | -------- | ------------ |
+| hostname | String   | Hostname des Hostsservers |
+| port     | Integer  | Port des Hostservers |
   
 ### Server
 | Attribut | Datentyp | Beschreibung |
 | -------- | -------- | ------------ |
+| serverPort | Integer |
 
 ### Client
 | Attribut | Datentyp | Beschreibung |
 | -------- | -------- | ------------ |
+| hosts    | HashMap\<Host\> | Hashmap mit den benutzbaren Servern |
+| username | String   | Nutzername des Clients |
+| password | String   | Passwort des Clients |
 
-### WrongMessageException
-Exception Objekt für falsche Messages.
+### UI
+Klasse um eine grafische Oberfläche für den Client zu erzeugen.
+
+### CLI
+**TBD:** Klasse um ein Eingabeterminal für den Nutzer zu erzeugen
+
+### WrongDataPackageException
+Exception Objekt für Daten-Objekte, die nicht dem DataPackage Format entsprechen.
 
 ## UML Klassendiagramm:
 Hier sieht man das (vorläufige) Klassen- und Beziehungsdiagramm der Basisversion.
