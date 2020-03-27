@@ -56,8 +56,7 @@ Zeitstempel implementieren (TBD: Laportuhren -> eventuell das DataPacakgeObjet u
 ### Client
 | Attribut | Datentyp | Beschreibung |
 | -------- | -------- | ------------ |
-| hosts    | HashMap\<Integer, Host\> | Hashmap mit den benutzbaren Servern <br> \(HashMap wird als dynamisches Array verwendet<br>
-mit Zugriffszeit von 1\) |
+| hosts    | HashMap\<Integer, Host\> | Hashmap mit den benutzbaren Servern <br> \(HashMap wird als dynamisches Array verwendet mit Zugriffszeit von 1\) |
 | username | String   | Nutzername des Clients |
 | password | String   | Passwort des Clients |
 
