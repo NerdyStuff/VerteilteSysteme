@@ -11,8 +11,8 @@ Zur Registrierung senden Clients ein ihren Nutzernamen, ihr Passwort und das ent
 Da Nutzer nicht immer angemeldet sind, werden die Nachrichten für die Nutzer in der Message-Queue für den jeweiligen Empfänger gespeichert. Dazu schaut der Server in seiner Nutzerliste nach und Fügt ein Nachrichten Objekt in der Nachrichten Liste des jeweiligen Benutzers hinzu.
 Nach dem sich ein Nutzer angemeldet hat, sendet der Client kontinuierlich in bestimmten Zeitintervallen Anfragen an den Server, ob es neue Nachrichten gibt. Gibt es neue Nachrichten wird eine Liste mit DataPackage-Objekten zurückgesendet, die die Nachrichteninhalte enthalten. Gibt es keine Updates, wird eine Liste mit einem DataPackage-Objekt zurückgesendet, mit dem gestzten flag für keine neue Nachrichten.
 
-Synchronistatiion zwischen den Servern.... (TBD: Two-Phase-Protokoll)
-Zeitstempel implementieren (TBD: Laportuhren -> eventuell das DataPacakgeObjet um eine NachrichtenID erweitern!)
+Synchronistatiion zwischen den Servern.... (**TBD:** Two-Phase-Commit-Protokoll)<br>
+Zeitstempel implementieren (TBD: Laportuhren -> eventuell das DataPacakgeObjet um eine NachrichtenID erweitern!) => NUTZEN VON LISTEN, UM LAPORTUHREN ZU UMGEHEN
 
 ## Schnittstellen- und Objektdefinitionen:
 
