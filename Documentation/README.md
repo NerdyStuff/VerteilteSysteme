@@ -25,6 +25,7 @@ Zeitstempel implementieren (TBD: Laportuhren -> eventuell das DataPacakgeObjet u
 | receiver | String | Empfänger der Nachricht |
 | message  | String | Nachrichtentext |
 | timestamp| Date   | Zeitstempel der Nachricht|
+| object   | Object | Objekt um Daten zwischen den Servern zu synchronisieren |
 
 ### Message
 | Attribut  | Datentyp | Beschreibung |
