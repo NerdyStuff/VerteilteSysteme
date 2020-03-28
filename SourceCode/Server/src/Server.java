@@ -90,7 +90,39 @@ public class Server {
                         } else if (dataPackage.getFlag() == 20) {
                             // Other Server sent commit request (prepare for commit)
 
-                            System.out.println("Got flag 20");
+                            if (dataPackage.getSyncFlag() == 1) {
+                                // registration
+                                if (users.get(dataPackage.getUsername()) != null) {
+                                    this.sendServerSocketData(clientSocket, new DataPackage(-20, "Failed"));
+                                } else {
+                                    this.sendServerSocketData(clientSocket, new DataPackage(21, "Ready"));
+
+                                    // wait for commit
+                                    boolean gotResponse = false;
+                                    while (!gotResponse) {
+
+                                        DataPackage responseData = null;
+
+                                        if ((responseData = getSocketData(clientSocket)) != null) {
+
+                                            if (responseData.getFlag() == 22) {
+                                                // Send commit to server
+                                                // push user to own HashMap
+                                                this.sendServerSocketData(clientSocket, new DataPackage(23, "Acknowledge"));
+
+                                                users.put(((User) dataPackage.getObject()).getUsername(), ((User) dataPackage.getObject()));
+
+                                                gotResponse = true;
+                                            } else {
+                                                // Send Abort and do not save user
+                                                this.sendServerSocketData(clientSocket, new DataPackage(-21, "Abort"));
+
+                                                gotResponse = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
 
                         } else if (dataPackage.getFlag() == 21) {
                             // Other Server sent ready message
@@ -221,8 +253,12 @@ public class Server {
             return registrationReturnList;
         } else {
 
-            users.put(dataPackage.getUsername(),
+            User user = new User(dataPackage.getUsername(), dataPackage.getPassword());
+
+
+            /*users.put(dataPackage.getUsername(),
                     new User(dataPackage.getUsername(), dataPackage.getPassword()));
+            */
             //TODO: Synchronise between servers
 
             Socket syncSocket = null;
@@ -240,20 +276,63 @@ public class Server {
                 return null;
             }
 
-            if(syncSocket != null) {
+            if (syncSocket != null) {
                 System.out.println("Socket to sync Server established");
 
-                DataPackage sendSyncData = new DataPackage(20, new Test());
+                DataPackage sendSyncData = new DataPackage(20, 1, user);
 
                 this.sendServerSocketData(syncSocket, sendSyncData);
 
                 //////////////////////////////////////////
-                //while ()
 
-                //wait for response
+                boolean gotResponse = false;
+                while (!gotResponse) {
+
+                    DataPackage responseData = null;
+
+                    if ((responseData = getSocketData(syncSocket)) != null) {
+
+                        if (responseData.getFlag() == 21) {
+                            // Send commit to server
+                            // push user to own HashMap
+
+                            this.sendServerSocketData(syncSocket, new DataPackage(22, "Request Commit"));
+
+                            gotResponse = true;
+                        } else if (responseData.getFlag() == -20) {
+
+                            // Send Abort and do not save user
+                            this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
+
+                            // Fail
+                            return null;
+                        }
+                    }
+                }
+
+                gotResponse = false;
+                while (!gotResponse) {
+
+                    DataPackage responseData = null;
+
+                    if ((responseData = getSocketData(syncSocket)) != null) {
+
+                        if (responseData.getFlag() == 23) {
+                            users.put(user.getUsername(), user);
+
+                            gotResponse = true;
+                        } else {
+                            // Failed
+                            return null;
+                        }
+                    }
+                }
+
                 /////////////////////////////////////////
             } else {
                 //Error handling
+
+                return null;
             }
 
             // If user does not exist, return success

@@ -6,6 +6,7 @@ public class DataPackage implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int flag;
+    private int syncFlag;
     private String username, password, receiver, message;
     private Date timestamp;
     private Object object;
@@ -42,8 +43,9 @@ public class DataPackage implements Serializable {
     }
 
     // Constructor for sending data between servers
-    public DataPackage(int flag, Object object) {
+    public DataPackage(int flag, int syncFlag, Object object) {
         this.flag = flag;
+        this.syncFlag = syncFlag;
         this.object = object;
     }
 
@@ -53,6 +55,14 @@ public class DataPackage implements Serializable {
 
     public void setFlag(int flag) {
         this.flag = flag;
+    }
+
+    public int getSyncFlag() {
+        return syncFlag;
+    }
+
+    public void setSyncFlag(int syncFlag) {
+        this.syncFlag = syncFlag;
     }
 
     public String getUsername() {
