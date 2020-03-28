@@ -3,10 +3,12 @@ import java.util.Date;
 
 public class DataPackage implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     // TODO: implement Serializable
     private int flag;
     private String username, password, receiver, message;
     private Date timestamp;
+    private Object object;
 
     // Constructor for whole DataPackage for Messages from Client to Server
     public DataPackage(int flag, String username, String password, String receiver, String message, Date timestamp) {
@@ -37,6 +39,12 @@ public class DataPackage implements Serializable {
         this.username = username;
         this.message = message;
         this.timestamp = timestamp;
+    }
+
+    // Constructor for sending data between servers
+    public DataPackage(int flag, Object object) {
+        this.flag = flag;
+        this.object = object;
     }
 
     public int getFlag() {
@@ -86,4 +94,8 @@ public class DataPackage implements Serializable {
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
+
+    public void setObject(Object object) { this.object = object; }
+
+    public Object getObject() { return this.object; }
 }

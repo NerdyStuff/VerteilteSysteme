@@ -85,7 +85,11 @@ public class Server {
                             // User requests chathistory e.g. after login
 
                             this.sendSocketData(clientSocket, this.handleChatHistoryRequest(dataPackage));
-                        } else {
+                        } else if (dataPackage.getFlag() == 20) {
+
+                        }
+
+                        else {
 
                             // Send fail to client
                             List<DataPackage> failedReturnList = new LinkedList<DataPackage>();
