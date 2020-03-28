@@ -11,7 +11,7 @@ public class Server {
 
     private int syncServerPort = 1338;
     private ServerSocket syncServerSocket;
-    private String syncHostname = "localhost";
+    private String syncHostname = "192.168.188.31";
 
     // Hashmap to store Users
     private HashMap<String, User> users;
@@ -163,7 +163,7 @@ public class Server {
                     if (dataPackage == null) {
 
                         // Send FAILED to other Server
-                        this.sendSocketData(synchroniationSocket, new DataPackage(-20, null));
+                        this.sendSocketData(synchroniationSocket, new DataPackage(-20, new Test()));
 
                         synchroniationSocket.close();
                     } else {
@@ -184,7 +184,7 @@ public class Server {
                             System.out.println("ERROR");
 
                             // Send FAILED to other Server
-                            this.sendSocketData(synchroniationSocket, new DataPackage(-20, null));
+                            this.sendSocketData(synchroniationSocket, new DataPackage(-20, new Test()));
 
                             synchroniationSocket.close();
                         }
@@ -319,7 +319,7 @@ public class Server {
 
             //////////////////////////////////////////
             //while ()
-            DataPackage sendSyncData = new DataPackage(20, new Object());
+            DataPackage sendSyncData = new DataPackage(20, new Test());
 
             this.sendSocketData(syncSocket, sendSyncData);
 
