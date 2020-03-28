@@ -122,14 +122,39 @@ public class Server {
                                         }
                                     }
                                 }
-                            }
+                            } else if (dataPackage.getSyncFlag() == 2) {
+                                // incomming message sync
 
-                        } else if (dataPackage.getFlag() == 21) {
-                            // Other Server sent ready message
-                        } else if (dataPackage.getFlag() == 22) {
-                            // Other Server sent commit
-                        } else if (dataPackage.getFlag() == 23) {
-                            // Other Server sent acknowledge
+                                // TODO: Can Errors occur????
+
+                                this.sendServerSocketData(clientSocket, new DataPackage(21, "Ready"));
+
+                                // wait for commit
+                                boolean gotResponse = false;
+                                while (!gotResponse) {
+
+                                    DataPackage responseData = null;
+
+                                    if ((responseData = getSocketData(clientSocket)) != null) {
+
+                                        if (responseData.getFlag() == 22) {
+                                            // Send commit to server
+                                            // push user to own HashMap
+                                            this.sendServerSocketData(clientSocket, new DataPackage(23, "Acknowledge"));
+
+                                            // update user message
+                                            users.replace(((User) dataPackage.getObject()).getUsername(), ((User) dataPackage.getObject()));
+
+                                            gotResponse = true;
+                                        } else {
+                                            // Send Failed and do not update user
+                                            this.sendServerSocketData(clientSocket, new DataPackage(-20, "Failed"));
+
+                                            gotResponse = true;
+                                        }
+                                    }
+                                }
+                            }
                         } else {
 
                             // Send fail to client
@@ -255,12 +280,7 @@ public class Server {
 
             User user = new User(dataPackage.getUsername(), dataPackage.getPassword());
 
-
-            /*users.put(dataPackage.getUsername(),
-                    new User(dataPackage.getUsername(), dataPackage.getPassword()));
-            */
-            //TODO: Synchronise between servers
-
+            // TODO: CHECK ERROR HANDLING
             Socket syncSocket = null;
 
             try {
@@ -268,12 +288,14 @@ public class Server {
             } catch (UnknownHostException e) {
                 System.out.println("Error: Host not known");
 
-                return null;
+                registrationReturnList.add(new DataPackage(-1, "Registration failed"));
+                return registrationReturnList;
 
             } catch (IOException e) {
                 System.out.println("Error: IOException");
 
-                return null;
+                registrationReturnList.add(new DataPackage(-1, "Registration failed"));
+                return registrationReturnList;
             }
 
             if (syncSocket != null) {
@@ -282,8 +304,6 @@ public class Server {
                 DataPackage sendSyncData = new DataPackage(20, 1, user);
 
                 this.sendServerSocketData(syncSocket, sendSyncData);
-
-                //////////////////////////////////////////
 
                 boolean gotResponse = false;
                 while (!gotResponse) {
@@ -294,9 +314,8 @@ public class Server {
 
                         if (responseData.getFlag() == 21) {
                             // Send commit to server
-                            // push user to own HashMap
 
-                            this.sendServerSocketData(syncSocket, new DataPackage(22, "Request Commit"));
+                            this.sendServerSocketData(syncSocket, new DataPackage(22, "Commit"));
 
                             gotResponse = true;
                         } else if (responseData.getFlag() == -20) {
@@ -306,8 +325,8 @@ public class Server {
 
                             //TODO: CHECK IF ABORT IS SENT ON REQUESTED SERVER
 
-                            // Fail
-                            return null;
+                            registrationReturnList.add(new DataPackage(-1, "Registration failed"));
+                            return registrationReturnList;
                         }
                     }
                 }
@@ -324,13 +343,13 @@ public class Server {
 
                             gotResponse = true;
                         } else {
-                            // Failed
-                            return null;
+
+                            registrationReturnList.add(new DataPackage(-1, "Registration failed"));
+                            return registrationReturnList;
                         }
                     }
                 }
 
-                /////////////////////////////////////////
             } else {
                 //Error handling
 
@@ -365,12 +384,92 @@ public class Server {
                 // Check if receiver is a user of the system
                 if (users.get(dataPackage.getReceiver()) != null) {
 
-                    // Add received message to message-queue of receiver
-                    users.get(dataPackage.getReceiver())
-                            .addMessage(new Message(dataPackage.getUsername(),
-                                    dataPackage.getMessage(),
-                                    dataPackage.getTimestamp()));
+                    // Sync between servers
+                    Socket syncSocket = null;
+
+                    try {
+                        syncSocket = new Socket(syncHostname, serverPort);
+                    } catch (UnknownHostException e) {
+                        System.out.println("Error: Host not known");
+
+                        // Error
+                        messageReturnList.add(new DataPackage(-4, "Error: Host unknown"));
+
+                        return messageReturnList;
+
+                    } catch (IOException e) {
+                        System.out.println("Error: IOException");
+
+                        // Error
+                        messageReturnList.add(new DataPackage(-4, "Error: IOException"));
+
+                        return messageReturnList;
+                    }
+
+                    if (syncSocket != null) {
+                        System.out.println("Socket to sync Server established");
+
+
+                        User updateUser = users.get(dataPackage.getReceiver());
+
+                        updateUser.addMessage(new Message(dataPackage.getUsername(),
+                                        dataPackage.getMessage(),
+                                        dataPackage.getTimestamp()));
+
+                        DataPackage sendSyncData = new DataPackage(20, 1, updateUser); // Request Commit
+
+                        this.sendServerSocketData(syncSocket, sendSyncData);
+
+                        boolean gotResponse = false;
+                        while (!gotResponse) {
+
+                            DataPackage responseData = null;
+
+                            if ((responseData = getSocketData(syncSocket)) != null) {
+
+                                if (responseData.getFlag() == 21) {
+                                    // Send commit to server
+
+                                    this.sendServerSocketData(syncSocket, new DataPackage(22, "Commit"));
+
+                                    gotResponse = true;
+                                } else if (responseData.getFlag() == -20) {
+
+                                    // Send Abort and do not save user
+                                    this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
+
+                                    //TODO: CHECK IF ABORT IS SENT ON REQUESTED SERVER
+
+                                    // Error
+                                    messageReturnList.add(new DataPackage(-4, "Error: Abort"));
+                                }
+                            }
+                        }
+
+                        gotResponse = false;
+                        while (!gotResponse) {
+
+                            DataPackage responseData = null;
+
+                            if ((responseData = getSocketData(syncSocket)) != null) {
+
+                                if (responseData.getFlag() == 23) {
+
+                                    // replace user
+                                    users.replace(updateUser.getUsername(), updateUser);
+
+                                    gotResponse = true;
+                                } else {
+
+                                    // Error
+                                    messageReturnList.add(new DataPackage(-4, "Error: Did not get acknowledge from other server"));
+                                }
+                            }
+                        }
+                    }
+
                     messageReturnList.add(new DataPackage(7, "Message accepted"));
+
                     return messageReturnList;
                 } else {
                     // Receiver is not a user of the system

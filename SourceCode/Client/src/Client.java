@@ -14,6 +14,7 @@ public class Client {
 
         hosts = new HashMap<Integer, Host>();
         hosts.put(0, new Host("localhost", 1337));
+        hosts.put(1, new Host("192.168.188.31", 1337));
 
     }
 
