@@ -114,8 +114,8 @@ public class Server {
 
                                                 gotResponse = true;
                                             } else {
-                                                // Send Abort and do not save user
-                                                this.sendServerSocketData(clientSocket, new DataPackage(-21, "Abort"));
+                                                // Send Failed and do not save user
+                                                this.sendServerSocketData(clientSocket, new DataPackage(-20, "Failed"));
 
                                                 gotResponse = true;
                                             }
@@ -303,6 +303,8 @@ public class Server {
 
                             // Send Abort and do not save user
                             this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
+
+                            //TODO: CHECK IF ABORT IS SENT ON REQUESTED SERVER
 
                             // Fail
                             return null;
