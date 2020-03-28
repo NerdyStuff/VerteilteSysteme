@@ -4,7 +4,7 @@ import java.util.Date;
 public class DataPackage implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // TODO: implement Serializable
+
     private int flag;
     private String username, password, receiver, message;
     private Date timestamp;

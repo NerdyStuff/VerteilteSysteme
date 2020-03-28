@@ -9,6 +9,10 @@ public class Server {
     private int serverPort = 1337;
     private ServerSocket serverSocket;
 
+    private int syncServerPort = 1338;
+    private ServerSocket syncServerSocket;
+    private String syncHostname = "localhost";
+
     // Hashmap to store Users
     private HashMap<String, User> users;
 
@@ -31,11 +35,28 @@ public class Server {
                 }
             }
         }
+
+        // wait till a backup server socket is established
+        while (syncServerSocket == null) {
+            try {
+                syncServerSocket = new ServerSocket(syncServerPort);
+            } catch (IOException e) {
+                System.out.println("Error: Socket creation for synchronisation failed... Retrying...");
+
+                // Sleep one second
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException interruptedExeption) {
+                    System.out.println("Error: Could not sleep for one second...");
+                }
+            }
+        }
     }
 
     public void acceptClientConnections() {
 
         Socket clientSocket = null;
+        Socket synchroniationSocket = null;
 
         // Do forever....
         while (true) {
@@ -86,10 +107,14 @@ public class Server {
 
                             this.sendSocketData(clientSocket, this.handleChatHistoryRequest(dataPackage));
                         } else if (dataPackage.getFlag() == 20) {
-
-                        }
-
-                        else {
+                            // Other Server sent commit request (prepare for commit)
+                        } else if (dataPackage.getFlag() == 21) {
+                            // Other Server sent ready message
+                        } else if (dataPackage.getFlag() == 22) {
+                            // Other Server sent commit
+                        } else if (dataPackage.getFlag() == 23) {
+                            // Other Server sent acknowledge
+                        } else {
 
                             // Send fail to client
                             List<DataPackage> failedReturnList = new LinkedList<DataPackage>();
@@ -99,6 +124,8 @@ public class Server {
 
                             // Send list to user
                             this.sendSocketData(clientSocket, failedReturnList);
+
+                            clientSocket.close(); // Close client socket
                         }
                     }
                 }
@@ -114,6 +141,67 @@ public class Server {
                         clientSocket.close();
                     } catch (IOException ioException) {
                         System.out.println("Error: Socket couldn't be closed...");
+                        ioException.printStackTrace();
+                    }
+                }
+            }
+
+            // SERVER COMMUNICATION
+            try {
+                // Accept client connections
+                synchroniationSocket = syncServerSocket.accept();
+
+                if (synchroniationSocket.isConnected()) {
+                    // Client connected to server
+                    System.out.println("Success: SyncServer connected to server!");
+                    System.out.println("Sync Server: " + synchroniationSocket.toString() + " connected to server.");
+
+                    // Get DataPackage-object from Socket
+                    DataPackage dataPackage = getSocketData(synchroniationSocket);
+
+                    // Corrupted dataPackage received
+                    if (dataPackage == null) {
+
+                        // Send FAILED to other Server
+                        this.sendSocketData(synchroniationSocket, new DataPackage(-20, null));
+
+                        synchroniationSocket.close();
+                    } else {
+
+                        if (dataPackage.getFlag() == 20) {
+                            // Other Server sent commit request (prepare for commit)
+
+                            System.out.println("GOT PACKAGE");
+
+                        } else if (dataPackage.getFlag() == 21) {
+                            // Other Server sent ready message
+                        } else if (dataPackage.getFlag() == 22) {
+                            // Other Server sent commit
+                        } else if (dataPackage.getFlag() == 23) {
+                            // Other Server sent acknowledge
+                        } else {
+
+                            System.out.println("ERROR");
+
+                            // Send FAILED to other Server
+                            this.sendSocketData(synchroniationSocket, new DataPackage(-20, null));
+
+                            synchroniationSocket.close();
+                        }
+                    }
+                }
+
+            } catch (IOException ioException) {
+                // Error occured
+                System.out.println("Error: sync Server could not connect...");
+                ioException.printStackTrace();
+            } finally {
+                // disconnect Server
+                if (synchroniationSocket != null) {
+                    try {
+                        synchroniationSocket.close();
+                    } catch (IOException ioException) {
+                        System.out.println("Error: Socket to sync Server couldn't be closed...");
                         ioException.printStackTrace();
                     }
                 }
@@ -188,6 +276,16 @@ public class Server {
         }
     }
 
+    private void sendSocketData(Socket syncServerSocket, DataPackage dataPackage) {
+        try {
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(syncServerSocket.getOutputStream());
+            objectOutputStream.writeObject(dataPackage);
+        } catch (IOException ioException) {
+            System.out.println("Error: Couldn't send data to other server");
+            ioException.printStackTrace();
+        }
+    }
+
     private List<DataPackage> handleRegistration(DataPackage dataPackage) {
 
         List<DataPackage> registrationReturnList = new LinkedList<DataPackage>();
@@ -203,6 +301,31 @@ public class Server {
             users.put(dataPackage.getUsername(),
                     new User(dataPackage.getUsername(), dataPackage.getPassword()));
             //TODO: Synchronise between servers
+
+            Socket syncSocket = null;
+
+            try {
+                syncSocket = new Socket(syncHostname, syncServerPort);
+            } catch (UnknownHostException e) {
+                System.out.println("Error: Host not known");
+
+                return null;
+
+            } catch (IOException e) {
+                System.out.println("Error: IOException");
+
+                return null;
+            }
+
+            //////////////////////////////////////////
+            //while ()
+            DataPackage sendSyncData = new DataPackage(20, new Object());
+
+            this.sendSocketData(syncSocket, sendSyncData);
+
+            //wait for response
+            /////////////////////////////////////////
+
 
             // If user does not exist, return success
             registrationReturnList.add(new DataPackage(6, "Registration successfull"));
@@ -310,9 +433,9 @@ public class Server {
                     DataPackage tempData = (DataPackage) iterator.next();
                     updateReturnList.add(
                             new DataPackage(9,
-                                            tempData.getUsername(),
-                                            tempData.getMessage(),
-                                            tempData.getTimestamp()));
+                                    tempData.getUsername(),
+                                    tempData.getMessage(),
+                                    tempData.getTimestamp()));
                 }
             }
 
