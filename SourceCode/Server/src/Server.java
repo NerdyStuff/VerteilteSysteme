@@ -154,6 +154,38 @@ public class Server {
                                         }
                                     }
                                 }
+                            } else if (dataPackage.getSyncFlag() == 3) {
+                                // update request sync
+
+                                // TODO: Can Errors occur????
+
+                                this.sendServerSocketData(clientSocket, new DataPackage(21, "Ready"));
+
+                                // wait for commit
+                                boolean gotResponse = false;
+                                while (!gotResponse) {
+
+                                    DataPackage responseData = null;
+
+                                    if ((responseData = getSocketData(clientSocket)) != null) {
+
+                                        if (responseData.getFlag() == 22) {
+                                            // Send commit to server
+                                            // push user to own HashMap
+                                            this.sendServerSocketData(clientSocket, new DataPackage(23, "Acknowledge"));
+
+                                            // update user message
+                                            users.replace(((User) dataPackage.getObject()).getUsername(), ((User) dataPackage.getObject()));
+
+                                            gotResponse = true;
+                                        } else {
+                                            // Send Failed and do not update user
+                                            this.sendServerSocketData(clientSocket, new DataPackage(-20, "Failed"));
+
+                                            gotResponse = true;
+                                        }
+                                    }
+                                }
                             }
                         } else {
 
@@ -413,8 +445,8 @@ public class Server {
                         User updateUser = users.get(dataPackage.getReceiver());
 
                         updateUser.addMessage(new Message(dataPackage.getUsername(),
-                                        dataPackage.getMessage(),
-                                        dataPackage.getTimestamp()));
+                                dataPackage.getMessage(),
+                                dataPackage.getTimestamp()));
 
                         DataPackage sendSyncData = new DataPackage(20, 1, updateUser); // Request Commit
 
@@ -483,6 +515,7 @@ public class Server {
 
     private List<DataPackage> handleUpdateRequest(DataPackage dataPackage) {
         List<DataPackage> updateReturnList = new LinkedList<DataPackage>();
+        List<Message> messageList = new LinkedList<Message>();
 
         // TODO: Synchronise between servers
 
@@ -506,10 +539,96 @@ public class Server {
             while (!user.hasNoMessages()) {
                 Message message = user.removeMessage();
 
+                messageList.add(message);
+
                 updateReturnList.add(
                         new DataPackage(4, message.getSender(),
                                 message.getText(),
                                 message.getTimestamp()));
+            }
+
+            // Sync between servers
+            Socket syncSocket = null;
+
+            try {
+                syncSocket = new Socket(syncHostname, serverPort);
+            } catch (UnknownHostException e) {
+                System.out.println("Error: Host not known");
+
+                // Error
+                updateReturnList.add(new DataPackage(-4, "Error: Host unknown"));
+
+                return updateReturnList;
+
+            } catch (IOException e) {
+                System.out.println("Error: IOException");
+
+                // Error
+                updateReturnList.add(new DataPackage(-4, "Error: IOException"));
+
+                return updateReturnList;
+            }
+
+            if (syncSocket != null) {
+                System.out.println("Socket to sync Server established");
+
+                DataPackage sendSyncData = new DataPackage(20, 1, user); // Request Commit
+
+                this.sendServerSocketData(syncSocket, sendSyncData);
+
+                boolean gotResponse = false;
+                while (!gotResponse) {
+
+                    DataPackage responseData = null;
+
+                    if ((responseData = getSocketData(syncSocket)) != null) {
+
+                        if (responseData.getFlag() == 21) {
+                            // Send commit to server
+
+                            this.sendServerSocketData(syncSocket, new DataPackage(22, "Commit"));
+
+                            gotResponse = true;
+                        } else if (responseData.getFlag() == -20) {
+
+                            // Send Abort and do not save user
+                            this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
+
+                            //TODO: CHECK IF ABORT IS SENT ON REQUESTED SERVER
+
+                            // Error
+                            updateReturnList.add(new DataPackage(-4, "Error: Abort"));
+                        }
+                    }
+                }
+
+                gotResponse = false;
+                while (!gotResponse) {
+
+                    DataPackage responseData = null;
+
+                    if ((responseData = getSocketData(syncSocket)) != null) {
+
+                        if (responseData.getFlag() == 23) {
+
+                            //TODO: messages are removed from user, so nothing to do here, Rollback if error occured
+
+                            gotResponse = true;
+                        } else {
+
+                            // Error
+
+                            // Rollback
+                            while (!messageList.isEmpty()) {
+                                Message tempMessage = ((LinkedList<Message>) messageList).remove();
+
+                                user.addMessage(tempMessage);
+                            }
+
+                            updateReturnList.add(new DataPackage(-4, "Error: Did not get acknowledge from other server"));
+                        }
+                    }
+                }
             }
 
             return updateReturnList;
