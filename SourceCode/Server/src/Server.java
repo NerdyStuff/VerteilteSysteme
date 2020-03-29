@@ -338,7 +338,9 @@ public class Server {
                 this.sendServerSocketData(syncSocket, sendSyncData);
 
                 boolean gotResponse = false;
-                while (!gotResponse) {
+                int retryCounter = 0;
+
+                while (!gotResponse && retryCounter < 10) {
 
                     DataPackage responseData = null;
 
@@ -355,16 +357,37 @@ public class Server {
                             // Send Abort and do not save user
                             this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
 
-                            //TODO: CHECK IF ABORT IS SENT ON REQUESTED SERVER
-
                             registrationReturnList.add(new DataPackage(-1, "Registration failed"));
                             return registrationReturnList;
+                        } else {
+                            // If an error occured
+                            // Send Abort and do not save user
+                            this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
+
+                            registrationReturnList.add(new DataPackage(-1, "Registration failed"));
+                            break;
                         }
+                    }
+
+                    // Wait a second
+                    try {
+                        TimeUnit.SECONDS.sleep(1);
+                        retryCounter ++;
+                    } catch (InterruptedException interruptedExeption) {
+                        System.out.println("Error: Could not sleep for one second...");
                     }
                 }
 
+                // timeout
+                if(retryCounter >= 10 || !gotResponse) {
+                    this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
+
+                    registrationReturnList.add(new DataPackage(-1, "Registration failed"));
+                }
+
                 gotResponse = false;
-                while (!gotResponse) {
+                retryCounter = 0;
+                while (!gotResponse && retryCounter < 10) {
 
                     DataPackage responseData = null;
 
@@ -377,15 +400,36 @@ public class Server {
                         } else {
 
                             registrationReturnList.add(new DataPackage(-1, "Registration failed"));
-                            return registrationReturnList;
+
+                            break;
                         }
                     }
+
+                    // Wait a second
+                    try {
+                        TimeUnit.SECONDS.sleep(1);
+                        retryCounter ++;
+                    } catch (InterruptedException interruptedExeption) {
+                        System.out.println("Error: Could not sleep for one second...");
+                    }
+                }
+
+                if(retryCounter >= 10 || !gotResponse) {
+                    this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
+
+                    registrationReturnList.add(new DataPackage(-1, "Registration failed"));
+
+                    this.closeSocket(syncSocket);
+
+                    return registrationReturnList;
                 }
 
             } else {
                 //Error handling
+                this.closeSocket(syncSocket);
 
-                return null;
+                registrationReturnList.add(new DataPackage(-1, "Registration failed"));
+                return registrationReturnList;
             }
 
             // If user does not exist, return success
@@ -686,5 +730,14 @@ public class Server {
 
         // No user found or password is not correct
         return null;
+    }
+
+    private void closeSocket(Socket socket) {
+        try {
+            socket.close();
+        } catch (IOException e) {
+            System.out.println("Error: Could not close connection");
+            e.printStackTrace();
+        }
     }
 }
