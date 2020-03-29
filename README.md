@@ -1,34 +1,34 @@
 # Verteilte Systeme
-This project is a distributed chat plattform for the course 'Verteilte Systeme' written in java.
+Dieses Projekt ist eine Chatplattform, die über ein verteiltes System betrieben wird. Dieses Projekt ist im Rahmen der Vorlesung "Verteilte Systeme" entstanden und wurde in Java geschrieben.
 
-## Task:
-Build a TCP based chat system in java using **java.io.\***, **java.net.\***, **java.util.\*** and **java.swing.\*** for the base version.
+## Aufgabe:
+Ein auf TCP basierendes Chatsystem bauen, welches lediglich die Bibliotheken **java.io.\***, **java.net.\***, **java.util.\*** und **java.swing.\*** benutzt.
 
-**User need to login to the server**, to chat with exactly one other user. To avoid failures, there is a need of **two identical servers**, which keep track of the complete chat history.
+**Der User muss sich auf einem Server einloggen können**, um dann mit einem weiteren User chatten zu können. Um hier Ausfälle zu vermeiden, müssen zwei identische Server aufgesetzt werden, welche auch beide die komplette Chat Historie behalten.
 
-The user connects to a **random choosen server** (=> **load distribution**) for a **central login** with for example username and password. For the chat the client also connects to a random server.
+Der User verbindet sich zu einem **zufällig ausgewählten Server** (=> Lastenverteilung), welcher ihn zentral einloggt, z.B. mit Username und Passwort. Für den Chat verbindet sich der Client auch mit einem zufälligen Server.
 
-A messages sent by user A shall be **saved in the chat history** and send to user B, where it is also kept in the chat history. The complete chat history for both parties shall be displayed in correct order with time (=> **Lamport timestamps**[1]) if the users are logged in.
+Eine Nachricht die von User A geschickt wurde soll in seiner Chat Historie gespeichert werden und dann zu User B geschickt werden, wo es auch in der Chat Historie gespeichert wird. Die komplette Chat Historie soll für beide Parteien in der richtigen Reinfolge dargestellt werden (=> **Lamport Timestamps** [1]). Der Chat soll nur für eingeloggte User sichtbar sein.
 
-The server shall process the messages from both users fast (=> **non-persistent server**[2]).
+Der Server soll Nachrichten aller User schnell bearbeiten. (=> **Non-Persisten Server** [2]).
 
-The whole system shall be **failsafe for network issues and errors** (for the testcase the network partitioning is short).
+Das ganze System soll **Fehlersicher gegen Netzwerkprobleme und -fehler** sein. 
 
-The whole system needs **testcases** to cover all the scenarios mentioned above.
+Das System soll **Testcases** besitzen, welche mögliche Fehlerfälle abdecken.
 
-The system must be documented (5 - 10 pages + commented code listing). It must be documented who of the group did which.
+Das System soll dokumentiert sein (5-10 Seiten + Codekommentare)
 
-## Additional extensions:
-- Using emoji (+ 5 points)
-- Multiple chat histories for a user (+ 10 points)
-- graphical user interface (+ 10 points)
-- Persist chat history (+ 10 points)
-- Encrypted storage of chathistory on the server (+ 10 points)
-- Group chats (+ 20 points)
-- Encrypted communication (+ 20 points)
-- Three replicated servers with majority consensus strategy\[MCS\](+ 40 points)
+## Zusatzerweiterungen:
+- Emojis (+ 5 points)
+- Mehrere Chat Hsitorien für einen User (+ 10 points)
+- GUI (+ 10 points)
+- Persistente Chat Historie (+ 10 points)
+- Verschlüsselte Speicherung auf dem Server (+ 10 points)
+- Gruppenchats (+ 20 points)
+- Verschlüsselte Kommunikation (+ 20 points)
+- Drei identische Server mit der Major Consensus Strategei(+ 40 points)
 
-### Group:
+### Gruppe:
 * **Anna-Lena Richert** ([aalenaa](https://github.com/aalenaa))
 * **Anton Ochel** ([Tony1704](https://github.com/Tony1704))
 * **Benno Grimm** ([Grimmig18](https://github.com/Grimmig18))
@@ -36,7 +36,7 @@ The system must be documented (5 - 10 pages + commented code listing). It must b
 * **Tristan Emig** ([TristanMrb](https://github.com/TristanMrb)) 
 * **Marcel Mertens** ([Nerdystuff](https://github.com/NerdyStuff)) 
 
-### Sources & Links
+### Quellen & Links
 - \[1\] [Lamport-Uhr](https://de.wikipedia.org/wiki/Lamport-Uhr); [Lamport timestamps](https://en.wikipedia.org/wiki/Lamport_timestamps) 
 - \[2\] [non-persistent vs persistent connection](https://www.geeksforgeeks.org/http-non-persistent-persistent-connection-set-2/)
 - \[3\] [Step-bv-Step Java Chat](https://www.instructables.com/id/Creating-a-Chat-Server-Using-Java/)
