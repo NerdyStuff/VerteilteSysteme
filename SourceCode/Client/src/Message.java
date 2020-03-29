@@ -1,6 +1,6 @@
 import java.util.Date;
 
-public class Message{
+public class Message {
 
     private String sender, text;
     private Date timestamp;

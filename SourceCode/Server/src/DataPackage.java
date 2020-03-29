@@ -105,7 +105,11 @@ public class DataPackage implements Serializable {
         this.timestamp = timestamp;
     }
 
-    public void setObject(Object object) { this.object = object; }
+    public void setObject(Object object) {
+        this.object = object;
+    }
 
-    public Object getObject() { return this.object; }
+    public Object getObject() {
+        return this.object;
+    }
 }

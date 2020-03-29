@@ -377,14 +377,14 @@ public class Server {
                     try {
                         System.out.println("Retrying...");
                         TimeUnit.SECONDS.sleep(1);
-                        retryCounter ++;
+                        retryCounter++;
                     } catch (InterruptedException interruptedExeption) {
                         System.out.println("Error: Could not sleep for one second...");
                     }
                 }
 
                 // timeout
-                if(retryCounter >= 10 || !gotResponse) {
+                if (retryCounter >= 10 || !gotResponse) {
                     this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
 
                     registrationReturnList.add(new DataPackage(-1, "Registration failed"));
@@ -415,13 +415,13 @@ public class Server {
                     try {
                         System.out.println("Retrying...");
                         TimeUnit.SECONDS.sleep(1);
-                        retryCounter ++;
+                        retryCounter++;
                     } catch (InterruptedException interruptedExeption) {
                         System.out.println("Error: Could not sleep for one second...");
                     }
                 }
 
-                if(retryCounter >= 10 || !gotResponse) {
+                if (retryCounter >= 10 || !gotResponse) {
                     this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
 
                     registrationReturnList.add(new DataPackage(-1, "Registration failed"));
@@ -544,14 +544,14 @@ public class Server {
                             try {
                                 System.out.println("Retrying...");
                                 TimeUnit.SECONDS.sleep(1);
-                                retryCounter ++;
+                                retryCounter++;
                             } catch (InterruptedException interruptedExeption) {
                                 System.out.println("Error: Could not sleep for one second...");
                             }
                         }
 
                         // timeout
-                        if(retryCounter >= 10 || !gotResponse) {
+                        if (retryCounter >= 10 || !gotResponse) {
                             this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
 
                             messageReturnList.add(new DataPackage(-4, "Error: Abort"));
@@ -585,13 +585,13 @@ public class Server {
                             try {
                                 System.out.println("Retrying...");
                                 TimeUnit.SECONDS.sleep(1);
-                                retryCounter ++;
+                                retryCounter++;
                             } catch (InterruptedException interruptedExeption) {
                                 System.out.println("Error: Could not sleep for one second...");
                             }
                         }
 
-                        if(retryCounter >= 10 || !gotResponse) {
+                        if (retryCounter >= 10 || !gotResponse) {
                             this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
 
                             messageReturnList.add(new DataPackage(-4, "Error: Did not get acknowledge from other server"));
@@ -714,14 +714,14 @@ public class Server {
                     try {
                         System.out.println("Retrying...");
                         TimeUnit.SECONDS.sleep(1);
-                        retryCounter ++;
+                        retryCounter++;
                     } catch (InterruptedException interruptedExeption) {
                         System.out.println("Error: Could not sleep for one second...");
                     }
                 }
 
                 // timeout
-                if(retryCounter >= 10 || !gotResponse) {
+                if (retryCounter >= 10 || !gotResponse) {
                     this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
 
                     updateReturnList.add(new DataPackage(-4, "Error: Abort"));
@@ -763,13 +763,13 @@ public class Server {
                     try {
                         System.out.println("Retrying...");
                         TimeUnit.SECONDS.sleep(1);
-                        retryCounter ++;
+                        retryCounter++;
                     } catch (InterruptedException interruptedExeption) {
                         System.out.println("Error: Could not sleep for one second...");
                     }
                 }
 
-                if(retryCounter >= 10 || !gotResponse) {
+                if (retryCounter >= 10 || !gotResponse) {
                     this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
 
                     updateReturnList.add(new DataPackage(-4, "Error: Did not get acknowledge from other server"));

@@ -53,7 +53,7 @@ public class Client {
             try {
                 System.out.println("Retrying...");
                 TimeUnit.SECONDS.sleep(1);
-                retryCounter ++;
+                retryCounter++;
             } catch (InterruptedException interruptedExeption) {
                 System.out.println("Error: Could not sleep for one second...");
             }
@@ -61,7 +61,7 @@ public class Client {
             returnValue = sendDataPackage(socket, dataPackage);
         }
 
-        if(retryCounter >= 10) {
+        if (retryCounter >= 10) {
             // Close connection
             this.closeSocket(socket);
             return null;
@@ -149,7 +149,7 @@ public class Client {
             try {
                 System.out.println("Retrying...");
                 TimeUnit.SECONDS.sleep(1);
-                retryCounter ++;
+                retryCounter++;
             } catch (InterruptedException interruptedExeption) {
                 System.out.println("Error: Could not sleep for one second...");
             }
@@ -157,7 +157,7 @@ public class Client {
             returnValue = sendDataPackage(socket, dataPackage);
         }
 
-        if(retryCounter >= 10) {
+        if (retryCounter >= 10) {
             // Close connection
             this.closeSocket(socket);
             return "Error: Could not send message";
@@ -250,7 +250,7 @@ public class Client {
             try {
                 System.out.println("Retrying...");
                 TimeUnit.SECONDS.sleep(1);
-                retryCounter ++;
+                retryCounter++;
             } catch (InterruptedException interruptedExeption) {
                 System.out.println("Error: Could not sleep for one second...");
             }
@@ -258,12 +258,11 @@ public class Client {
             returnValue = sendDataPackage(socket, dataPackage);
         }
 
-        if(retryCounter >= 10) {
+        if (retryCounter >= 10) {
             // Close connection
             this.closeSocket(socket);
             return null;
         }
-
 
 
         // TODO: Retry + Error Handling
@@ -350,7 +349,7 @@ public class Client {
             try {
                 System.out.println("Retrying...");
                 TimeUnit.SECONDS.sleep(1);
-                retryCounter ++;
+                retryCounter++;
             } catch (InterruptedException interruptedExeption) {
                 System.out.println("Error: Could not sleep for one second...");
             }
@@ -358,7 +357,7 @@ public class Client {
             returnValue = sendDataPackage(socket, dataPackage);
         }
 
-        if(retryCounter >= 10) {
+        if (retryCounter >= 10) {
             // Close connection
             this.closeSocket(socket);
             return "Error: Could not send message";

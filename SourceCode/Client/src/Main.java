@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 public class Main {
 
     private static JFrame frame;
-    private static JTextField textFieldUsername,textFieldChat;
+    private static JTextField textFieldUsername, textFieldChat;
     private static JTextField textFieldPw;
     private static JTextField textFieldChatpartner;
 
@@ -28,11 +28,11 @@ public class Main {
         String passwort = reader.readLine();
         System.out.println("Bitte gib den Username deines Chatpartners ein");
         String to = reader.readLine();
-        Client c = new Client(username,passwort);
+        Client c = new Client(username, passwort);
         System.out.println("Du kannst jetzt chatten:");
-        while(true) {
+        while (true) {
             String message = "";
-            if((message = reader.readLine())!= null) {
+            if ((message = reader.readLine()) != null) {
                 if (message.equals("\\exit")) {
                     break;
                 }

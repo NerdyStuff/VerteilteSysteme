@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 public class UI {
 
     private static JFrame frame;
-    private static JTextField textFieldUsername,textFieldChat;
+    private static JTextField textFieldUsername, textFieldChat;
     private static JPasswordField textFieldPw;
     private static JTextField textFieldChatpartner;
     private static JEditorPane status;
@@ -23,13 +23,13 @@ public class UI {
 
     public UI() {
         generateUI();
-        while(true){
+        while (true) {
             try {
                 TimeUnit.SECONDS.sleep(1);
                 // TODO: CHANGED TO UPDATE!
                 List<Message> newMessages = c.getUpdates();
                 printMessages(newMessages);
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
 
@@ -109,10 +109,10 @@ public class UI {
         status = new JEditorPane();
         status.setBackground(SystemColor.control);
         status.setEditable(false);
-        status.setFont(new Font("Courier New",Font.PLAIN , 11));
+        status.setFont(new Font("Courier New", Font.PLAIN, 11));
         //scroll
         JScrollPane scrollStatus = new JScrollPane(status);
-        scrollStatus.setBounds(530,30,170,370);
+        scrollStatus.setBounds(530, 30, 170, 370);
         scrollStatus.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         scrollStatus.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         frame.getContentPane().add(scrollStatus);
@@ -142,7 +142,7 @@ public class UI {
         //Eventlisteners
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if(btnLogin.getText() == "Login") {
+                if (btnLogin.getText() == "Login") {
                     if (!textFieldUsername.getText().equals("") && !textFieldPw.getText().equals("")) {
                         username = textFieldUsername.getText();
                         passwort = textFieldPw.getText();
@@ -163,7 +163,7 @@ public class UI {
                         textFieldPw.setBorder(new LineBorder(Color.red, 1));
                         log("Please enter a username and a password");
                     }
-                }else if(btnLogin.getText() == "Logout"){
+                } else if (btnLogin.getText() == "Logout") {
                     username = "";
                     passwort = "";
                     textFieldUsername.setText("");
@@ -184,7 +184,7 @@ public class UI {
                     btnClear.setEnabled(false);
                     btnRegister.setEnabled(true);
                     log("Logged out");
-                }else{
+                } else {
                     log("What is happening?");
                 }
             }
@@ -212,13 +212,13 @@ public class UI {
                     textFieldPw.setBorder(new LineBorder(Color.red, 1));
                     log("Please enter a username and a password");
                 }
-           }
+            }
         });
 
         btnSend.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String message = textFieldChat.getText();
-                String messageStatus = c.sendMessage(to,message);
+                String messageStatus = c.sendMessage(to, message);
                 chatIncoming.append(" " + username + ": " + message + "\n");
                 textFieldChat.setText("");
                 log(messageStatus);
@@ -226,9 +226,9 @@ public class UI {
         });
         btnClear.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if(textFieldChat.getText().equals("")) {
+                if (textFieldChat.getText().equals("")) {
                     chatIncoming.setText("");
-                }else{
+                } else {
                     textFieldChat.setText("");
                 }
             }
@@ -236,7 +236,7 @@ public class UI {
 
         btnChat.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if(btnChat.getText().equals("Chat")) {
+                if (btnChat.getText().equals("Chat")) {
                     if (!textFieldChatpartner.getText().equals("")) {
                         to = textFieldChatpartner.getText();
                         chatIncoming.setEnabled(true);
@@ -248,7 +248,7 @@ public class UI {
                     } else {
                         log("please enter chat partner");
                     }
-                }else if(btnChat.getText().equals("Leave")){
+                } else if (btnChat.getText().equals("Leave")) {
                     to = null;
                     chatIncoming.setText("");
                     chatIncoming.setEnabled(false);
@@ -259,7 +259,7 @@ public class UI {
                     textFieldChatpartner.setText("");
                     btnChat.setText("Chat");
                     log("You left the chat");
-                }else{
+                } else {
                     log("What is going on?");
                 }
             }
@@ -268,7 +268,7 @@ public class UI {
         textFieldChat.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String message = textFieldChat.getText();
-                String messageStatus = c.sendMessage(to,message);
+                String messageStatus = c.sendMessage(to, message);
                 chatIncoming.append(" " + username + ": " + message + "\n");
                 textFieldChat.setText("");
                 log(messageStatus);
@@ -278,8 +278,7 @@ public class UI {
     }
 
 
-
-    private static void log(String log){
+    private static void log(String log) {
         status.setText(status.getText() + log + "\n");
     }
 
