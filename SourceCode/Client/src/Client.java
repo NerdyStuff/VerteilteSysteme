@@ -51,6 +51,7 @@ public class Client {
 
             // Sleep one second
             try {
+                System.out.println("Retrying...");
                 TimeUnit.SECONDS.sleep(1);
                 retryCounter ++;
             } catch (InterruptedException interruptedExeption) {
@@ -146,6 +147,7 @@ public class Client {
 
             // Sleep one second
             try {
+                System.out.println("Retrying...");
                 TimeUnit.SECONDS.sleep(1);
                 retryCounter ++;
             } catch (InterruptedException interruptedExeption) {
@@ -246,6 +248,7 @@ public class Client {
 
             // Sleep one second
             try {
+                System.out.println("Retrying...");
                 TimeUnit.SECONDS.sleep(1);
                 retryCounter ++;
             } catch (InterruptedException interruptedExeption) {
@@ -345,6 +348,7 @@ public class Client {
 
             // Sleep one second
             try {
+                System.out.println("Retrying...");
                 TimeUnit.SECONDS.sleep(1);
                 retryCounter ++;
             } catch (InterruptedException interruptedExeption) {

@@ -3,13 +3,15 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+// TODO: Add Messages to chat history!!
+
 public class Server {
 
     // server port and socket
     private int serverPort = 1337;
     private ServerSocket serverSocket;
 
-    private String syncHostname = "79.224.98.209";
+    private String syncHostname = "192.168.188.31";
 
     // Hashmap to store Users
     private HashMap<String, User> users;
@@ -312,7 +314,6 @@ public class Server {
 
             User user = new User(dataPackage.getUsername(), dataPackage.getPassword());
 
-            // TODO: CHECK ERROR HANDLING
             Socket syncSocket = null;
 
             try {
@@ -358,19 +359,23 @@ public class Server {
                             this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
 
                             registrationReturnList.add(new DataPackage(-1, "Registration failed"));
-                            return registrationReturnList;
+                            gotResponse = false;
+
+                            break;
                         } else {
                             // If an error occured
                             // Send Abort and do not save user
                             this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
 
                             registrationReturnList.add(new DataPackage(-1, "Registration failed"));
+                            gotResponse = false;
                             break;
                         }
                     }
 
                     // Wait a second
                     try {
+                        System.out.println("Retrying...");
                         TimeUnit.SECONDS.sleep(1);
                         retryCounter ++;
                     } catch (InterruptedException interruptedExeption) {
@@ -400,6 +405,7 @@ public class Server {
                         } else {
 
                             registrationReturnList.add(new DataPackage(-1, "Registration failed"));
+                            gotResponse = false;
 
                             break;
                         }
@@ -407,6 +413,7 @@ public class Server {
 
                     // Wait a second
                     try {
+                        System.out.println("Retrying...");
                         TimeUnit.SECONDS.sleep(1);
                         retryCounter ++;
                     } catch (InterruptedException interruptedExeption) {
@@ -441,7 +448,6 @@ public class Server {
     private List<DataPackage> handleIncomingMessage(DataPackage dataPackage) {
         List<DataPackage> messageReturnList = new LinkedList<DataPackage>();
 
-        // TODO: Synchronise between servers
         // Authentificate User
         User user = authenticateUser(dataPackage.getUsername(), dataPackage.getPassword());
 
@@ -497,7 +503,9 @@ public class Server {
                         this.sendServerSocketData(syncSocket, sendSyncData);
 
                         boolean gotResponse = false;
-                        while (!gotResponse) {
+                        int retryCounter = 0;
+
+                        while (!gotResponse && retryCounter < 10) {
 
                             DataPackage responseData = null;
 
@@ -514,16 +522,44 @@ public class Server {
                                     // Send Abort and do not save user
                                     this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
 
-                                    //TODO: CHECK IF ABORT IS SENT ON REQUESTED SERVER
-
                                     // Error
                                     messageReturnList.add(new DataPackage(-4, "Error: Abort"));
+
+                                    gotResponse = false;
+                                    break;
+                                } else {
+
+                                    // If an error occured
+                                    // Send Abort and do not update messages
+                                    this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
+
+                                    messageReturnList.add(new DataPackage(-4, "Error: Abort"));
+
+                                    gotResponse = false;
+                                    break;
                                 }
+                            }
+
+                            // Wait a second
+                            try {
+                                System.out.println("Retrying...");
+                                TimeUnit.SECONDS.sleep(1);
+                                retryCounter ++;
+                            } catch (InterruptedException interruptedExeption) {
+                                System.out.println("Error: Could not sleep for one second...");
                             }
                         }
 
+                        // timeout
+                        if(retryCounter >= 10 || !gotResponse) {
+                            this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
+
+                            messageReturnList.add(new DataPackage(-4, "Error: Abort"));
+                        }
+
                         gotResponse = false;
-                        while (!gotResponse) {
+                        retryCounter = 0;
+                        while (!gotResponse && retryCounter < 10) {
 
                             DataPackage responseData = null;
 
@@ -539,8 +575,30 @@ public class Server {
 
                                     // Error
                                     messageReturnList.add(new DataPackage(-4, "Error: Did not get acknowledge from other server"));
+
+                                    gotResponse = false;
+                                    break;
                                 }
                             }
+
+                            // Wait a second
+                            try {
+                                System.out.println("Retrying...");
+                                TimeUnit.SECONDS.sleep(1);
+                                retryCounter ++;
+                            } catch (InterruptedException interruptedExeption) {
+                                System.out.println("Error: Could not sleep for one second...");
+                            }
+                        }
+
+                        if(retryCounter >= 10 || !gotResponse) {
+                            this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
+
+                            messageReturnList.add(new DataPackage(-4, "Error: Did not get acknowledge from other server"));
+
+                            this.closeSocket(syncSocket);
+
+                            return messageReturnList;
                         }
                     }
 
@@ -560,8 +618,6 @@ public class Server {
     private List<DataPackage> handleUpdateRequest(DataPackage dataPackage) {
         List<DataPackage> updateReturnList = new LinkedList<DataPackage>();
         List<Message> messageList = new LinkedList<Message>();
-
-        // TODO: Synchronise between servers
 
         // Authentificate User
         User user = authenticateUser(dataPackage.getUsername(), dataPackage.getPassword());
@@ -621,7 +677,8 @@ public class Server {
                 this.sendServerSocketData(syncSocket, sendSyncData);
 
                 boolean gotResponse = false;
-                while (!gotResponse) {
+                int retryCounter = 0;
+                while (!gotResponse && retryCounter < 10) {
 
                     DataPackage responseData = null;
 
@@ -638,16 +695,41 @@ public class Server {
                             // Send Abort and do not save user
                             this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
 
-                            //TODO: CHECK IF ABORT IS SENT ON REQUESTED SERVER
-
                             // Error
                             updateReturnList.add(new DataPackage(-4, "Error: Abort"));
+                            gotResponse = false;
+                            break;
+                        } else {
+                            // If an error occured
+                            // Send Abort and do not save user
+                            this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
+
+                            updateReturnList.add(new DataPackage(-4, "Error: Abort"));
+                            gotResponse = false;
+                            break;
                         }
+                    }
+
+                    // Wait a second
+                    try {
+                        System.out.println("Retrying...");
+                        TimeUnit.SECONDS.sleep(1);
+                        retryCounter ++;
+                    } catch (InterruptedException interruptedExeption) {
+                        System.out.println("Error: Could not sleep for one second...");
                     }
                 }
 
+                // timeout
+                if(retryCounter >= 10 || !gotResponse) {
+                    this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
+
+                    updateReturnList.add(new DataPackage(-4, "Error: Abort"));
+                }
+
                 gotResponse = false;
-                while (!gotResponse) {
+                retryCounter = 0;
+                while (!gotResponse && retryCounter < 10) {
 
                     DataPackage responseData = null;
 
@@ -655,11 +737,11 @@ public class Server {
 
                         if (responseData.getFlag() == 23) {
 
-                            //TODO: messages are removed from user, so nothing to do here, Rollback if error occured
+                            //Messages are removed from user, so nothing to do here;
+                            // Rollback if error occured see code below
 
                             gotResponse = true;
                         } else {
-
                             // Error
 
                             // Rollback
@@ -670,8 +752,29 @@ public class Server {
                             }
 
                             updateReturnList.add(new DataPackage(-4, "Error: Did not get acknowledge from other server"));
+
+                            gotResponse = false;
+
+                            break;
                         }
                     }
+
+                    // Wait a second
+                    try {
+                        System.out.println("Retrying...");
+                        TimeUnit.SECONDS.sleep(1);
+                        retryCounter ++;
+                    } catch (InterruptedException interruptedExeption) {
+                        System.out.println("Error: Could not sleep for one second...");
+                    }
+                }
+
+                if(retryCounter >= 10 || !gotResponse) {
+                    this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
+
+                    updateReturnList.add(new DataPackage(-4, "Error: Did not get acknowledge from other server"));
+
+                    this.closeSocket(syncSocket);
                 }
             }
 
