@@ -73,11 +73,12 @@ public class Client {
 
         if (serverResponse == null) {
             // Error
+            this.closeSocket(socket);
+            return null;
         } else {
             if (!serverResponse.isEmpty()) {
 
                 DataPackage responsePackage = serverResponse.remove(0);
-                ;
 
                 if (responsePackage.getFlag() == -6) {
                     // No chathistory found on server
@@ -337,17 +338,35 @@ public class Client {
         DataPackage dataPackage = new DataPackage(1, username, password);
         int returnValue = sendDataPackage(socket, dataPackage);
 
-        // TODO : Error handling
-        /*switch (returnValue) {
-            case 0:
-                break;
-        }*/
+        int retryCounter = 0;
+
+        while (returnValue == -1 && retryCounter < 10) {
+            // retry if error occured
+
+            // Sleep one second
+            try {
+                TimeUnit.SECONDS.sleep(1);
+                retryCounter ++;
+            } catch (InterruptedException interruptedExeption) {
+                System.out.println("Error: Could not sleep for one second...");
+            }
+
+            returnValue = sendDataPackage(socket, dataPackage);
+        }
+
+        if(retryCounter >= 10) {
+            // Close connection
+            this.closeSocket(socket);
+            return "Error: Could not send message";
+        }
 
         // TODO: Retry + Error Handling
         List<DataPackage> serverResponse = getDataPackageList(socket);
 
         if (serverResponse == null) {
             // Error
+            this.closeSocket(socket);
+            return "Error: Server response is null"
         } else {
             if (!serverResponse.isEmpty()) {
                 DataPackage responsePackage = serverResponse.remove(0);
