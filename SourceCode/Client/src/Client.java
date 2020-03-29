@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class Client {
 
@@ -111,28 +112,48 @@ public class Client {
         } catch (UnknownHostException e) {
             System.out.println("Error: Host not known");
 
-            return null;
+            return "Error: Host not known";
 
         } catch (IOException e) {
             System.out.println("Error: IOException");
 
-            return null;
+            return "Error: IOException";
         }
 
         DataPackage dataPackage = new DataPackage(2, username, password, receiver, message, new Date());
         int returnValue = sendDataPackage(socket, dataPackage);
 
-        // TODO : Error handling
-        /*switch (returnValue) {
-            case 0:
-                break;
-        }*/
+        int retryCounter = 0;
+
+        while (returnValue == -1 && retryCounter < 10) {
+            // retry if error occured
+
+            // Sleep one second
+            try {
+                TimeUnit.SECONDS.sleep(1);
+                retryCounter ++;
+            } catch (InterruptedException interruptedExeption) {
+                System.out.println("Error: Could not sleep for one second...");
+            }
+
+            returnValue = sendDataPackage(socket, dataPackage);
+        }
+
+        if(retryCounter >= 10) {
+            // Close connection
+            this.closeSocket(socket);
+            return "Error: Could not send message";
+        }
+
 
         // TODO: Retry + Error Handling
         List<DataPackage> serverResponse = getDataPackageList(socket);
 
         if (serverResponse == null) {
             // Error
+            // Close connection
+            this.closeSocket(socket);
+            return "Error: Could not send message";
         } else {
             if (!serverResponse.isEmpty()) {
                 DataPackage responsePackage = serverResponse.remove(0);
@@ -167,7 +188,10 @@ public class Client {
                 }
 
             } else {
-                // error
+                // Error
+                // Close connection
+                this.closeSocket(socket);
+                return "Error: Server response was empty";
             }
         }
 
@@ -199,11 +223,29 @@ public class Client {
         DataPackage dataPackage = new DataPackage(3, username, password);
         int returnValue = sendDataPackage(socket, dataPackage);
 
-        // TODO : Error handling
-        /*switch (returnValue) {
-            case 0:
-                break;
-        }*/
+        int retryCounter = 0;
+
+        while (returnValue == -1 && retryCounter < 10) {
+            // retry if error occured
+
+            // Sleep one second
+            try {
+                TimeUnit.SECONDS.sleep(1);
+                retryCounter ++;
+            } catch (InterruptedException interruptedExeption) {
+                System.out.println("Error: Could not sleep for one second...");
+            }
+
+            returnValue = sendDataPackage(socket, dataPackage);
+        }
+
+        if(retryCounter >= 10) {
+            // Close connection
+            this.closeSocket(socket);
+            return null;
+        }
+
+
 
         // TODO: Retry + Error Handling
         List<DataPackage> serverResponse = getDataPackageList(socket);
@@ -216,7 +258,6 @@ public class Client {
             if (!serverResponse.isEmpty()) {
 
                 DataPackage responsePackage = serverResponse.remove(0);
-                ;
 
                 if (responsePackage.getFlag() == 5) {
                     // No new Messages
@@ -248,7 +289,7 @@ public class Client {
                     // Unknown Error
                 }
             } else {
-                // error
+                // Error
             }
         }
 
@@ -268,12 +309,12 @@ public class Client {
         } catch (UnknownHostException e) {
             System.out.println("Error: Host not known");
 
-            return null;
+            return "Error: Host not known";
 
         } catch (IOException e) {
             System.out.println("Error: IOException");
 
-            return null;
+            return "Error: IOException";
         }
 
         String returnString = "";
@@ -313,7 +354,9 @@ public class Client {
                 }
 
             } else {
-                // error
+                // Error
+                // Close connection
+                this.closeSocket(socket);
                 returnString = "An error occured";
             }
         }
@@ -396,7 +439,7 @@ public class Client {
                 System.out.println("Error: Could not send data...");
                 e.printStackTrace();
 
-                return -3; // Could not send Data
+                return -1; // Could not send Data
             }
         }
 
