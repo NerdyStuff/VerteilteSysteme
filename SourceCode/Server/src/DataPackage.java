@@ -6,6 +6,34 @@ public class DataPackage implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int flag;
+    /*flag:
+    Mit dem Flag wird den Client oder dem anderen Server mitgeteilt, welche Daten erwartet werden können
+
+    Wert: 1 Registrierung
+    Wert: 2 Nachricht
+    Wert: 3 Update-Request
+    Wert: 4 Neue Nachrichten für den Client
+    Wert: 5 Keine neuen Nachrichten für den Client
+    Wert: 6 Registrierung erfolgreich
+    Wert: 7 Nachricht erfolgreich angenommen
+    Wert: 8 Anfrage der Chathistorie
+    Wert: 9 Chathistory
+
+    Wert: 20 Commit request (prepare)
+    Wert: 21Ready Nachricht von anderen Server(n)
+    Wert: 22Commit von Koordinator
+    Wert: 23Acknowledge von anderen Servern
+
+    Wert: -1 Registrierung fehlgeschlagen
+    Wert: -2 Falsches Passwort oder Nutzername
+    Wert: -3 Empfänger existiert nicht
+    Wert: -4 Allgemeiner Fehler
+    Wert: -5 Empfänger darf nicht gleicher Nutzer sein wie Sender
+    Wert: -6 Keine Chathistorie gefunden / Fehler
+
+    Wert: -20 Failed von anderen Servern
+    Wert: -21 Abort von Koordinato
+    */
     private int syncFlag;
     private String username, password, receiver, message;
     private Date timestamp;
