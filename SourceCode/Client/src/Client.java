@@ -15,8 +15,7 @@ public class Client {
 
         hosts = new HashMap<Integer, Host>();
         hosts.put(0, new Host("localhost", 1337));
-        hosts.put(1, new Host("192.168.188.31", 1337));
-
+        //hosts.put(1, new Host("", 1337));
     }
 
     public void addHost(String hostname, int port) {
@@ -45,11 +44,27 @@ public class Client {
         DataPackage dataPackage = new DataPackage(8, username, password);
         int returnValue = sendDataPackage(socket, dataPackage);
 
-        // TODO : Error handling
-        /*switch (returnValue) {
-            case 0:
-                break;
-        }*/
+        int retryCounter = 0;
+
+        while (returnValue == -1 && retryCounter < 10) {
+            // retry if error occured
+
+            // Sleep one second
+            try {
+                TimeUnit.SECONDS.sleep(1);
+                retryCounter ++;
+            } catch (InterruptedException interruptedExeption) {
+                System.out.println("Error: Could not sleep for one second...");
+            }
+
+            returnValue = sendDataPackage(socket, dataPackage);
+        }
+
+        if(retryCounter >= 10) {
+            // Close connection
+            this.closeSocket(socket);
+            return null;
+        }
 
         // TODO: Retry + Error Handling
         List<DataPackage> serverResponse = getDataPackageList(socket);
