@@ -366,7 +366,8 @@ public class Client {
         if (serverResponse == null) {
             // Error
             this.closeSocket(socket);
-            return "Error: Server response is null"
+            return "Error: Server response is null";
+
         } else {
             if (!serverResponse.isEmpty()) {
                 DataPackage responsePackage = serverResponse.remove(0);
