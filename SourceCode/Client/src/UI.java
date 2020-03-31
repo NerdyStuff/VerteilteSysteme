@@ -150,8 +150,6 @@ public class UI {
                         textFieldUsername.setEnabled(false);
                         textFieldPw.setEnabled(false);
                         c = new Client(username, passwort);
-                        List<Message> history = c.login();
-                        printMessages(history);
                         btnLogin.setText("Logout");
                         textFieldChatpartner.setEnabled(true);
                         btnChat.setEnabled(true);
@@ -242,6 +240,8 @@ public class UI {
                         btnSend.setEnabled(true);
                         btnClear.setEnabled(true);
                         textFieldChat.setEnabled(true);
+                        List<Message> history = c.getChatHistory(to);
+                        printMessages(history);
                         log("Chat partner saved");
                         btnChat.setText("Leave");
                     } else {
