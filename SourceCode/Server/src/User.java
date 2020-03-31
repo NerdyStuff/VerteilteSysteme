@@ -40,6 +40,10 @@ public class User implements Serializable {
         this.chatHistory.add(message);
     }
 
+    public void addMessageToOwnHistory(Message message) {
+        this.chatHistory.add(message);
+    }
+
     public Message removeMessage() {
         return this.messages.remove();
     }

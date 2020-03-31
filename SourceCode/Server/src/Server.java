@@ -491,12 +491,19 @@ public class Server {
                     if (syncSocket != null) {
                         System.out.println("Socket to sync Server established");
 
-
                         User updateUser = users.get(dataPackage.getReceiver());
 
-                        updateUser.addMessage(new Message(dataPackage.getUsername(),
+                        Date date = new Date();
+
+                        updateUser.addMessage(new Message(dataPackage.getUsername(), dataPackage.getReceiver(),
                                 dataPackage.getMessage(),
-                                dataPackage.getTimestamp()));
+                                date));
+
+                        User senderUpdateUser = users.get(dataPackage.getUsername());
+
+                        senderUpdateUser.addMessage(new Message(dataPackage.getReceiver(), dataPackage.getUsername(),
+                                dataPackage.getMessage(),
+                                date));
 
                         DataPackage sendSyncData = new DataPackage(20, 1, updateUser); // Request Commit
 
