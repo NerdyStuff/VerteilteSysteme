@@ -3,8 +3,6 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-// TODO: Add Messages to chat history!!
-
 public class Server {
 
     // Save path
@@ -141,8 +139,6 @@ public class Server {
                             } else if (dataPackage.getSyncFlag() == 2) {
                                 // incomming message sync
 
-                                // TODO: Can Errors occur???? => YESSSSSSS
-
                                 this.sendServerSocketData(clientSocket, new DataPackage(21, "Ready"));
 
                                 // wait for commit
@@ -192,8 +188,6 @@ public class Server {
                                 }
                             } else if (dataPackage.getSyncFlag() == 3) {
                                 // update request sync
-
-                                // TODO: Can Errors occur????
 
                                 this.sendServerSocketData(clientSocket, new DataPackage(21, "Ready"));
 
