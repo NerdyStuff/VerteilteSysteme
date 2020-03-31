@@ -871,6 +871,7 @@ public class Server {
                     updateReturnList.add(
                             new DataPackage(9,
                                     tempMessage.getSender(),
+                                    tempMessage.getReceiver(),
                                     tempMessage.getText(),
                                     tempMessage.getTimestamp()));
                 }
