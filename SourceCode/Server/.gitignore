@@ -76,3 +76,6 @@ fabric.properties
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
+
+*save.bin
+*/save.bin
