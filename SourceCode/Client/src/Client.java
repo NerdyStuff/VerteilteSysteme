@@ -169,7 +169,7 @@ public class Client {
 
                 } else if (responsePackage.getFlag() == 9) {
                     // Add messages to messages list
-                    if(responsePackage.getUsername().equals(chatPartner) || responsePackage.getUsername().equals(username)) {
+                    if(responsePackage.getUsername().equals(chatPartner) && responsePackage.getReceiver().equals(username) || responsePackage.getUsername().equals(username) && responsePackage.getReceiver().equals(chatPartner)) {
                         messagesList.add(
                                 new Message(responsePackage.getUsername(),
                                         responsePackage.getMessage(),
@@ -178,7 +178,7 @@ public class Client {
                     Iterator iterator = serverResponse.iterator();
                     while (iterator.hasNext()) {
                         DataPackage tempData = (DataPackage) iterator.next();
-                        if(responsePackage.getUsername().equals(chatPartner) || responsePackage.getUsername().equals(username)) {
+                        if(responsePackage.getUsername().equals(chatPartner) && responsePackage.getReceiver().equals(username) || responsePackage.getUsername().equals(username) && responsePackage.getReceiver().equals(chatPartner)) {
                             messagesList.add(
                                     new Message(tempData.getUsername(),
                                             tempData.getMessage(),
