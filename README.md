@@ -30,22 +30,13 @@ Das System soll dokumentiert sein (5-10 Seiten + Codekommentare)
 
 ## Punkterechnung
 
-
-| Basisanforderung | 60 Pkt |
-| Emojis | +5 Pkt |
-| GUI | +10 Pkt |
-| Mehrere Chat Historien für einen User | + 10 Pkt |
-| Summe: | 85/100 Pkt|
-
-
-
 |Anforderung      | Punkte           | Summe  |
 | ------------- |:-------------:| -----:|
 | Basisanforderung      | 60 | 60 |
 | Emojis     | 5      |   65 |
 | GUI | 10      |    75 |
 | Mehrere Chat Historien für einen User | 10 |85|
-| ~~Persistente Chat Historie~~ | 10 | 85 |
+| Persistente Chat Historie | 10 | 95 |
 | ~~Verschlüsselte Speicherung auf dem Server~~ | 10 | 85 |
 | ~~Gruppenchats~~ | 20 | 85 |
 | ~~Verschlüsselte Kommunikation~~ | 20 | 85 |
