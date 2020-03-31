@@ -14,6 +14,26 @@ Nach dem sich ein Nutzer angemeldet hat, sendet der Client kontinuierlich in bes
 Synchronistatiion zwischen den Servern.... (**TBD:** Two-Phase-Commit-Protokoll)<br>
 Zeitstempel implementieren (TBD: Laportuhren -> eventuell das DataPacakgeObjet um eine NachrichtenID erweitern!) => NUTZEN VON LISTEN, UM LAPORTUHREN ZU UMGEHEN
 
+## Zusätzliche Features:
+
+### GUI
+Im Code für den Client wurde die Klasse <code>GUI</code> implementiert. **TBD** @Tony1704
+
+### Mehrere Chatverläufe pro Nutzer
+**TBD**
+
+### Emoji
+Während des chattesn können UTF8-Kodierte Emoji Zeichen zwischen den Chatteilnehmern genutzt werden
+
+### Persistente Speicherung auf dem Server
+Die HashMap mit den Nutzerdaten wird in der Datei <code>save.bin</code> gespeichert.
+Beim  Neustart des Servers, wird die Datei geladen und die HashMap mit den Nutzern steht zur Verfügung.
+Je nachdem, ob das Flag ```ENCRYPT_SAVE_FILE``` gestzt ist, wird die Datei verschlüsselt oder nicht. Weitere Informationen dazu findet sich unter "Verschlüsselte persistente Speicherung auf dem Server".
+
+### Verschlüsselte persistente Speicherung auf dem Server
+Wird das Flag ```ENCRYPT_SAVE_FILE``` in der Server-Klasse auf ```true``` gesetzt, wird die HashMap mit den Nutzerdaten mit dem AES-Algorithmus verschlüsselt. Der für die verschlüsselung genutzte Code stammt von Lokesh Gupta und kann unter [https://howtodoinjava.com/security/java-aes-encryption-example/](https://howtodoinjava.com/security/java-aes-encryption-example/) (Abgerufen am 31.03.2020) geunden werden.
+
+
 ## Schnittstellen- und Objektdefinitionen:
 
 ### DataPackage
