@@ -353,15 +353,16 @@ public class Server {
 
         List<DataPackage> registrationReturnList = new LinkedList<DataPackage>();
 
-        // Check if user already exsists
-        if (users.get(dataPackage.getUsername()) != null) {
-            // If user exists, return fail
-            registrationReturnList.add(new DataPackage(-7, "Login failed!"));
+        // try to authentificate user
+        User authenticateUser = authenticateUser(dataPackage.getUsername(), dataPackage.getPassword());
 
+        if(authenticateUser == null) {
+            // No user xists, or username or password is wrong
+            registrationReturnList.add(new DataPackage(-7, "Login failed!"));
             return registrationReturnList;
         } else {
+            // user exists and username and password is correct
             registrationReturnList.add(new DataPackage(11, "Login successfull"));
-
             return registrationReturnList;
         }
     }
