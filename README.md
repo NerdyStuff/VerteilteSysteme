@@ -19,7 +19,7 @@ Das System soll **Testcases** besitzen, welche mögliche Fehlerfälle abdecken.
 Das System soll dokumentiert sein (5-10 Seiten + Codekommentare)
 
 ## Zusatzerweiterungen:
-- Emojis (+ 5 points)
+- Emojis (+ 5 points) 
 - Mehrere Chat Hsitorien für einen User (+ 10 points)
 - GUI (+ 10 points)
 - Persistente Chat Historie (+ 10 points)
@@ -27,6 +27,29 @@ Das System soll dokumentiert sein (5-10 Seiten + Codekommentare)
 - Gruppenchats (+ 20 points)
 - Verschlüsselte Kommunikation (+ 20 points)
 - Drei identische Server mit der Major Consensus Strategei(+ 40 points)
+
+## Punkterechnung
+
+
+| Basisanforderung | 60 Pkt |
+| Emojis | +5 Pkt |
+| GUI | +10 Pkt |
+| Mehrere Chat Historien für einen User | + 10 Pkt |
+| Summe: | 85/100 Pkt|
+
+
+
+|Anforderung      | Punkte           | Summe  |
+| ------------- |:-------------:| -----:|
+| Basisanforderung      | 60 | 60 |
+| Emojis     | 5      |   65 |
+| GUI | 10      |    75 |
+| Mehrere Chat Historien für einen User | 10 |85|
+| ~~Persistente Chat Historie~~ | 10 | 85 |
+| ~~Verschlüsselte Speicherung auf dem Server~~ | 10 | 85 |
+| ~~Gruppenchats~~ | 20 | 85 |
+| ~~Verschlüsselte Kommunikation~~ | 20 | 85 |
+| ~~Drei identische Server mit der Major Consesus Strategie~~ | 40 | 85 |
 
 ### Gruppe:
 * **Anna-Lena Richert** ([aalenaa](https://github.com/aalenaa))
