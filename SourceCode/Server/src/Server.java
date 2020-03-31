@@ -5,8 +5,12 @@ import java.util.concurrent.TimeUnit;
 
 public class Server {
 
+    // TestCase Flags:
+    private static final boolean ENCRYPT_SAVE_FILE = true;
+
     // Save path
-    private static String SAVE_PATH = "./save.bin";
+    private static final String SAVE_PATH = "./save.bin";
+    private static final String SAVE_SECRET_PASSWORD = "SuperSicheresPassword123456";
 
     // server port and socket
     private int serverPort = 1337;
@@ -162,11 +166,11 @@ public class Server {
                                             LinkedList<User> updatedUsersFromServer = new LinkedList<User>();
 
                                             // Get data from datapackage
-                                            updatedUsersFromServer.addAll((LinkedList)dataPackage.getObject());
+                                            updatedUsersFromServer.addAll((LinkedList) dataPackage.getObject());
 
                                             // update user message for both users
-                                            users.replace(((User)updatedUsersFromServer.getFirst()).getUsername(), ((User)updatedUsersFromServer.getFirst()));
-                                            users.replace(((User)updatedUsersFromServer.getLast()).getUsername(), ((User)updatedUsersFromServer.getLast()));
+                                            users.replace(((User) updatedUsersFromServer.getFirst()).getUsername(), ((User) updatedUsersFromServer.getFirst()));
+                                            users.replace(((User) updatedUsersFromServer.getLast()).getUsername(), ((User) updatedUsersFromServer.getLast()));
 
 
                                             // Save updated users in file
@@ -353,7 +357,7 @@ public class Server {
 
         User user = users.get(dataPackage.getUsername());
 
-        if(user == null) {
+        if (user == null) {
             registrationReturnList.add(new DataPackage(-7, "Login failed!"));
             return registrationReturnList;
         } else {
@@ -909,9 +913,30 @@ public class Server {
 
     private void save() {
         //Path for save file
-        try (ObjectOutputStream saveStream = new ObjectOutputStream(new FileOutputStream(SAVE_PATH))) {
+        try {
             // Save HashMap with users in file to persist everything including chats
-            saveStream.writeObject(users);
+
+            if (ENCRYPT_SAVE_FILE) {
+                // Encrypt save file
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+                ObjectOutputStream saveStreamOOS = new ObjectOutputStream(byteArrayOutputStream);
+
+                saveStreamOOS.writeObject(users);
+                saveStreamOOS.flush();
+
+                byte[] objectBytes = byteArrayOutputStream.toByteArray();
+
+                String objectString = new String(objectBytes);
+
+                AES.encrypt(objectString, SAVE_SECRET_PASSWORD);
+
+            } else {
+                // Save plain
+                ObjectOutputStream saveStreamPlain = new ObjectOutputStream(new FileOutputStream(SAVE_PATH));
+                saveStreamPlain.writeObject(users);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error: Could not save.");
@@ -920,8 +945,36 @@ public class Server {
 
     private void loadFile() {
         //Open filestream
-        try (ObjectInputStream saveStream = new ObjectInputStream(new FileInputStream(SAVE_PATH))) {
-            Object object = saveStream.readObject();
+        try {
+
+            Object object = null;
+
+            if (ENCRYPT_SAVE_FILE) {
+
+                StringBuilder stringBuilder = new StringBuilder();
+
+                BufferedReader bufferedReader = new BufferedReader(new FileReader(SAVE_PATH));
+
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(line).append("\n");
+                }
+
+                String decryptedString = AES.decrypt(stringBuilder.toString(), SAVE_SECRET_PASSWORD);
+
+                byte[] decryptedBytes = decryptedString.getBytes();
+
+                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(decryptedBytes);
+                ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+
+                object = objectInputStream.readObject();
+
+            } else {
+                ObjectInputStream saveStream = new ObjectInputStream(new FileInputStream(SAVE_PATH));
+
+                object = saveStream.readObject();
+            }
+
 
             if (object == null) {
 
