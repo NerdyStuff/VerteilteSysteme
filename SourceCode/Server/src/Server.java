@@ -352,21 +352,29 @@ public class Server {
 
     private List<DataPackage> handleLogin(DataPackage dataPackage) {
 
-        List<DataPackage> registrationReturnList = new LinkedList<DataPackage>();
+        List<DataPackage> loginReturnList = new LinkedList<DataPackage>();
 
+        // Check if username and password are set
+        if(dataPackage.getUsername() == null
+                || dataPackage.getUsername().equals("")
+                || dataPackage.getPassword() == null
+                || dataPackage.getPassword().equals("")) {
+            loginReturnList.add(new DataPackage(-2, "Wrong username or password"));
+            return loginReturnList;
+        }
 
         User user = users.get(dataPackage.getUsername());
 
         if (user == null) {
-            registrationReturnList.add(new DataPackage(-7, "Login failed!"));
-            return registrationReturnList;
+            loginReturnList.add(new DataPackage(-7, "Login failed!"));
+            return loginReturnList;
         } else {
             if (user.getPassword().equals(dataPackage.getPassword())) {
-                registrationReturnList.add(new DataPackage(11, "Login successfull"));
-                return registrationReturnList;
+                loginReturnList.add(new DataPackage(11, "Login successfull"));
+                return loginReturnList;
             } else {
-                registrationReturnList.add(new DataPackage(-2, "Wrong username or password"));
-                return registrationReturnList;
+                loginReturnList.add(new DataPackage(-2, "Wrong username or password"));
+                return loginReturnList;
             }
         }
     }
@@ -374,6 +382,15 @@ public class Server {
     private List<DataPackage> handleRegistration(DataPackage dataPackage) {
 
         List<DataPackage> registrationReturnList = new LinkedList<DataPackage>();
+
+        // Check if username and password are set
+        if(dataPackage.getUsername() == null
+                || dataPackage.getUsername().equals("")
+                || dataPackage.getPassword() == null
+                || dataPackage.getPassword().equals("")) {
+            registrationReturnList.add(new DataPackage(-1, "Registration failed:"));
+            return registrationReturnList;
+        }
 
         // Check if user already exsists
         if (users.get(dataPackage.getUsername()) != null) {
@@ -508,6 +525,18 @@ public class Server {
 
     private List<DataPackage> handleIncomingMessage(DataPackage dataPackage) {
         List<DataPackage> messageReturnList = new LinkedList<DataPackage>();
+
+        // Check if username, password, receiver and message are set
+        if(dataPackage.getUsername() == null
+                || dataPackage.getUsername().equals("")
+                || dataPackage.getPassword() == null
+                || dataPackage.getPassword().equals("")
+                || dataPackage.getReceiver() == null
+                || dataPackage.getReceiver().equals("")
+                || dataPackage.getMessage() == null) {
+            messageReturnList.add(new DataPackage(-4, "An Error occured"));
+            return messageReturnList;
+        }
 
         // Authentificate User
         User user = authenticateUser(dataPackage.getUsername(), dataPackage.getPassword());
@@ -687,6 +716,15 @@ public class Server {
         List<DataPackage> updateReturnList = new LinkedList<DataPackage>();
         List<Message> messageList = new LinkedList<Message>();
 
+        // Check if username and password are set
+        if(dataPackage.getUsername() == null
+                || dataPackage.getUsername().equals("")
+                || dataPackage.getPassword() == null
+                || dataPackage.getPassword().equals("")) {
+            updateReturnList.add(new DataPackage(-2, "Wrong username or password"));
+            return updateReturnList;
+        }
+
         // Authentificate User
         User user = authenticateUser(dataPackage.getUsername(), dataPackage.getPassword());
 
@@ -851,6 +889,15 @@ public class Server {
 
         List<DataPackage> updateReturnList = new LinkedList<DataPackage>();
 
+        // Check if username and password are set
+        if(dataPackage.getUsername() == null
+                || dataPackage.getUsername().equals("")
+                || dataPackage.getPassword() == null
+                || dataPackage.getPassword().equals("")) {
+            updateReturnList.add(new DataPackage(-2, "Wrong username or password"));
+            return updateReturnList;
+        }
+
         // Authentificate User
         User user = authenticateUser(dataPackage.getUsername(), dataPackage.getPassword());
 
@@ -916,31 +963,39 @@ public class Server {
         try {
             // Save HashMap with users in file to persist everything including chats
 
+            // If flag is set for encryption
             if (ENCRYPT_SAVE_FILE) {
                 // Encrypt save file
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
                 ObjectOutputStream saveStreamOOS = new ObjectOutputStream(byteArrayOutputStream);
 
+                // Write HashMap to ObjectOutputStream
                 saveStreamOOS.writeObject(users);
                 saveStreamOOS.flush();
 
+                // Convert ObjectOutputStream into a byte array
                 byte[] objectBytes = byteArrayOutputStream.toByteArray();
 
+                // Do neccessary encoding on string while converting bytearray to string
                 String objectString = Base64.getEncoder().encodeToString(objectBytes);
 
+                // AES class only takes strings as input
+                // Pass converted stream to bytearray to string in method and get encrypted string
                 String encryptedString = AES.encrypt(objectString, SAVE_SECRET_PASSWORD);
 
-                // TODO: COMMENT
+                // Open a new File
                 File file = new File(SAVE_PATH);
                 FileWriter fileWriter = null;
                 try {
+                    // Write encrypted string to file
                    fileWriter = new FileWriter(file);
                    fileWriter.write(encryptedString);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
                     try {
+                        // Close FileWriter to persist data on disk
                         fileWriter.close();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -959,38 +1014,42 @@ public class Server {
     }
 
     private void loadFile() {
-        //Open filestream
         try {
 
             Object object = null;
 
+            // If encryption flag is set use decryption to load
             if (ENCRYPT_SAVE_FILE) {
 
                 StringBuilder stringBuilder = new StringBuilder();
 
+                // Read file in BufferedRead
                 BufferedReader bufferedReader = new BufferedReader(new FileReader(SAVE_PATH));
 
+                // Loop over BufferedReader and append "lines" (it is only one line in the file) to String
                 String line = "";
                 while ((line = bufferedReader.readLine()) != null) {
                     stringBuilder.append(line);
                 }
 
+                // AES class accepts string as input to decrypt, so pass read file to get decrypted string
                 String decryptedString = AES.decrypt(stringBuilder.toString(), SAVE_SECRET_PASSWORD);
 
+                // Convert String to byte array to convert to objectstream afterwards
                 byte[] decryptedBytes =  Base64.getDecoder().decode(decryptedString);
 
-                System.out.println(decryptedString);
-
+                // Create ObjectInputStream from bytearray
                 ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(decryptedBytes));
 
+                // Read object from stream to work with afterwards
                 object = objectInputStream.readObject();
 
             } else {
+                // No encryption used to save
                 ObjectInputStream saveStream = new ObjectInputStream(new FileInputStream(SAVE_PATH));
 
                 object = saveStream.readObject();
             }
-
 
             if (object == null) {
 
