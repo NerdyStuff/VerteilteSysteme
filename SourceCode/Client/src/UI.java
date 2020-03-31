@@ -26,7 +26,6 @@ public class UI {
         while (true) {
             try {
                 TimeUnit.SECONDS.sleep(1);
-                // TODO: CHANGED TO UPDATE!
                 List<Message> newMessages = c.getUpdates();
                 printMessages(newMessages);
             } catch (Exception e) {
