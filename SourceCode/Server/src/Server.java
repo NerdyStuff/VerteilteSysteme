@@ -352,21 +352,29 @@ public class Server {
 
     private List<DataPackage> handleLogin(DataPackage dataPackage) {
 
-        List<DataPackage> registrationReturnList = new LinkedList<DataPackage>();
+        List<DataPackage> loginReturnList = new LinkedList<DataPackage>();
 
+        // Check if username and password are set
+        if(dataPackage.getUsername() == null
+                || dataPackage.getUsername().equals("")
+                || dataPackage.getPassword() == null
+                || dataPackage.getPassword().equals("")) {
+            loginReturnList.add(new DataPackage(-2, "Wrong username or password"));
+            return loginReturnList;
+        }
 
         User user = users.get(dataPackage.getUsername());
 
         if (user == null) {
-            registrationReturnList.add(new DataPackage(-7, "Login failed!"));
-            return registrationReturnList;
+            loginReturnList.add(new DataPackage(-7, "Login failed!"));
+            return loginReturnList;
         } else {
             if (user.getPassword().equals(dataPackage.getPassword())) {
-                registrationReturnList.add(new DataPackage(11, "Login successfull"));
-                return registrationReturnList;
+                loginReturnList.add(new DataPackage(11, "Login successfull"));
+                return loginReturnList;
             } else {
-                registrationReturnList.add(new DataPackage(-2, "Wrong username or password"));
-                return registrationReturnList;
+                loginReturnList.add(new DataPackage(-2, "Wrong username or password"));
+                return loginReturnList;
             }
         }
     }
@@ -374,6 +382,15 @@ public class Server {
     private List<DataPackage> handleRegistration(DataPackage dataPackage) {
 
         List<DataPackage> registrationReturnList = new LinkedList<DataPackage>();
+
+        // Check if username and password are set
+        if(dataPackage.getUsername() == null
+                || dataPackage.getUsername().equals("")
+                || dataPackage.getPassword() == null
+                || dataPackage.getPassword().equals("")) {
+            registrationReturnList.add(new DataPackage(-1, "Registration failed:"));
+            return registrationReturnList;
+        }
 
         // Check if user already exsists
         if (users.get(dataPackage.getUsername()) != null) {
@@ -508,6 +525,18 @@ public class Server {
 
     private List<DataPackage> handleIncomingMessage(DataPackage dataPackage) {
         List<DataPackage> messageReturnList = new LinkedList<DataPackage>();
+
+        // Check if username, password, receiver and message are set
+        if(dataPackage.getUsername() == null
+                || dataPackage.getUsername().equals("")
+                || dataPackage.getPassword() == null
+                || dataPackage.getPassword().equals("")
+                || dataPackage.getReceiver() == null
+                || dataPackage.getReceiver().equals("")
+                || dataPackage.getMessage() == null) {
+            messageReturnList.add(new DataPackage(-4, "An Error occured"));
+            return messageReturnList;
+        }
 
         // Authentificate User
         User user = authenticateUser(dataPackage.getUsername(), dataPackage.getPassword());
@@ -687,6 +716,15 @@ public class Server {
         List<DataPackage> updateReturnList = new LinkedList<DataPackage>();
         List<Message> messageList = new LinkedList<Message>();
 
+        // Check if username and password are set
+        if(dataPackage.getUsername() == null
+                || dataPackage.getUsername().equals("")
+                || dataPackage.getPassword() == null
+                || dataPackage.getPassword().equals("")) {
+            updateReturnList.add(new DataPackage(-2, "Wrong username or password"));
+            return updateReturnList;
+        }
+
         // Authentificate User
         User user = authenticateUser(dataPackage.getUsername(), dataPackage.getPassword());
 
@@ -850,6 +888,15 @@ public class Server {
     private List<DataPackage> handleChatHistoryRequest(DataPackage dataPackage) {
 
         List<DataPackage> updateReturnList = new LinkedList<DataPackage>();
+
+        // Check if username and password are set
+        if(dataPackage.getUsername() == null
+                || dataPackage.getUsername().equals("")
+                || dataPackage.getPassword() == null
+                || dataPackage.getPassword().equals("")) {
+            updateReturnList.add(new DataPackage(-2, "Wrong username or password"));
+            return updateReturnList;
+        }
 
         // Authentificate User
         User user = authenticateUser(dataPackage.getUsername(), dataPackage.getPassword());
