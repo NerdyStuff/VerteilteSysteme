@@ -231,6 +231,9 @@ public class Server {
                                 if (retryCounter >= 10 || !gotResponse) {
                                     this.sendServerSocketData(clientSocket, new DataPackage(-21, "Abort"));
                                 }
+                            } else {
+                                // Error wrong sync flag sent!
+                                this.sendServerSocketData(clientSocket, new DataPackage(-21, "Abort"));
                             }
                         } else {
 
@@ -544,7 +547,7 @@ public class Server {
                         updatedUsers.add(updateUser);
                         updatedUsers.add(senderUpdateUser);
 
-                        DataPackage sendSyncData = new DataPackage(20, 1, updatedUsers); // Request Commit
+                        DataPackage sendSyncData = new DataPackage(20, 2, updatedUsers); // Request Commit
 
                         this.sendServerSocketData(syncSocket, sendSyncData);
 
@@ -714,7 +717,7 @@ public class Server {
             if (syncSocket != null) {
                 System.out.println("Socket to sync Server established");
 
-                DataPackage sendSyncData = new DataPackage(20, 1, user); // Request Commit
+                DataPackage sendSyncData = new DataPackage(20, 3, user); // Request Commit
 
                 this.sendServerSocketData(syncSocket, sendSyncData);
 
