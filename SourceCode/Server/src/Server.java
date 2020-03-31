@@ -931,9 +931,20 @@ public class Server {
 
                 String encryptedString = AES.encrypt(objectString, SAVE_SECRET_PASSWORD);
 
-                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(SAVE_PATH));
-                bufferedWriter.write(encryptedString);
-
+                // TODO: COMMENT
+                File file = new File(SAVE_PATH);
+                FileWriter fileWriter = null;
+                try {
+                   fileWriter = new FileWriter(file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        fileWriter.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             } else {
                 // Save plain
                 ObjectOutputStream saveStreamPlain = new ObjectOutputStream(new FileOutputStream(SAVE_PATH));
@@ -995,6 +1006,7 @@ public class Server {
             }
         } catch (Exception e) {
             System.out.println("Error: Could not load save file");
+            e.printStackTrace();
         }
     }
 
