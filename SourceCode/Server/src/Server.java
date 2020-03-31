@@ -533,7 +533,7 @@ public class Server {
 
                         Date date = new Date();
 
-                        updateUser.addMessage(new Message(dataPackage.getUsername(), dataPackage.getReceiver(),
+                        updateUser.addMessage(new Message(dataPackage.getReceiver(), dataPackage.getUsername(),
                                 dataPackage.getMessage(),
                                 date));
 
