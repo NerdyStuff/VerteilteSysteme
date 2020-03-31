@@ -22,7 +22,98 @@ public class Client {
         hosts.put(hosts.size(), new Host(hostname, port));
     }
 
-    public List<Message> login() {
+    public String login() {
+        Host host = selectHost();
+        Socket socket = null;
+        String returnString = "";
+
+        try {
+            socket = new Socket(host.getHostname(), host.getPort());
+        } catch (UnknownHostException e) {
+            System.out.println("Error: Host not known");
+
+            return "Error: Host not known";
+
+        } catch (IOException e) {
+            System.out.println("Error: IOException");
+
+            return "Error: IOException";
+        }
+
+        DataPackage dataPackage = new DataPackage(10, username, password);
+        int returnValue = sendDataPackage(socket, dataPackage);
+
+        int retryCounter = 0;
+
+        while (returnValue == -1 && retryCounter < 10) {
+            // retry if error occured
+
+            // Sleep one second
+            try {
+                System.out.println("Retrying...");
+                TimeUnit.SECONDS.sleep(1);
+                retryCounter++;
+            } catch (InterruptedException interruptedExeption) {
+                System.out.println("Error: Could not sleep for one second...");
+            }
+
+            returnValue = sendDataPackage(socket, dataPackage);
+        }
+
+        if (retryCounter >= 10) {
+            // Close connection
+            this.closeSocket(socket);
+            return "Error: Could not send message";
+        }
+
+
+        // TODO: Retry + Error Handling
+        List<DataPackage> serverResponse = getDataPackageList(socket);
+
+        if (serverResponse == null) {
+            // Error
+            // Close connection
+            this.closeSocket(socket);
+            return "Error: Could not login";
+        } else {
+            if (!serverResponse.isEmpty()) {
+                DataPackage responsePackage = serverResponse.remove(0);
+
+                int responseFlag = responsePackage.getFlag();
+
+                switch (responseFlag) {
+                    case -2:
+                        System.out.println(responseFlag);
+                        returnString = "Wrong username or password";
+                        break;
+                    case -7:
+                        System.out.println(responseFlag);
+                        returnString = "Login failed";
+                        break;
+                    case 11:
+                        System.out.println(responseFlag);
+                        returnString = "Login successfull";
+                        break;
+                    default:
+                        System.out.println(responseFlag);
+                        returnString = "An error occured";
+                }
+
+            } else {
+                // Error
+                // Close connection
+                this.closeSocket(socket);
+                return "Error: Server response was empty";
+            }
+        }
+
+        // Close connection
+        this.closeSocket(socket);
+
+        return returnString;
+    }
+
+    public List<Message> getChatHistory(String chatPartner) {
 
         Host host = selectHost();
         Socket socket = null;
@@ -88,18 +179,21 @@ public class Client {
 
                 } else if (responsePackage.getFlag() == 9) {
                     // Add messages to messages list
-                    messagesList.add(
-                            new Message(responsePackage.getUsername(),
-                                    responsePackage.getMessage(),
-                                    responsePackage.getTimestamp()));
-
+                    if(responsePackage.getUsername() == chatPartner || responsePackage.getUsername() == username) {
+                        messagesList.add(
+                                new Message(responsePackage.getUsername(),
+                                        responsePackage.getMessage(),
+                                        responsePackage.getTimestamp()));
+                    }
                     Iterator iterator = serverResponse.iterator();
                     while (iterator.hasNext()) {
                         DataPackage tempData = (DataPackage) iterator.next();
-                        messagesList.add(
-                                new Message(tempData.getUsername(),
-                                        tempData.getMessage(),
-                                        tempData.getTimestamp()));
+                        if(responsePackage.getUsername() == chatPartner || responsePackage.getUsername() == username) {
+                            messagesList.add(
+                                    new Message(tempData.getUsername(),
+                                            tempData.getMessage(),
+                                            tempData.getTimestamp()));
+                        }
                     }
                 } else if (responsePackage.getFlag() == -2) {
                     // Wrong password or username

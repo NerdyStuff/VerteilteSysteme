@@ -88,6 +88,9 @@ public class Server {
                             // User requests chathistory e.g. after login
 
                             this.sendSocketData(clientSocket, this.handleChatHistoryRequest(dataPackage));
+                        } else if (dataPackage.getFlag() == 10) {
+                            // Login request
+                            this.sendSocketData(clientSocket, this.handleLogin(dataPackage));
                         } else if (dataPackage.getFlag() == 20) {
                             // Other Server sent commit request (prepare for commit)
 
@@ -343,6 +346,27 @@ public class Server {
         } catch (IOException ioException) {
             System.out.println("Error: Couldn't send data to other server");
             ioException.printStackTrace();
+        }
+    }
+
+    private List<DataPackage> handleLogin(DataPackage dataPackage) {
+
+        List<DataPackage> registrationReturnList = new LinkedList<DataPackage>();
+
+
+        User user = users.get(dataPackage.getUsername());
+
+        if(user == null) {
+            registrationReturnList.add(new DataPackage(-7, "Login failed!"));
+            return registrationReturnList;
+        } else {
+            if (user.getPassword().equals(dataPackage.getPassword())) {
+                registrationReturnList.add(new DataPackage(11, "Login successfull"));
+                return registrationReturnList;
+            } else {
+                registrationReturnList.add(new DataPackage(-2, "Wrong username or password"));
+                return registrationReturnList;
+            }
         }
     }
 
