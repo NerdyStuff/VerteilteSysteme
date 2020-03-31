@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 public class Server {
 
     // Save path
-    private static String SAVE_PATH = "/save.bin";
+    private static String SAVE_PATH = "./save.bin";
 
     // server port and socket
     private int serverPort = 1337;
