@@ -48,14 +48,9 @@ public class Client {
         while (returnValue == -1 && retryCounter < 10) {
             // retry if error occured
 
-            // Sleep one second
-            try {
-                System.out.println("Retrying...");
-                TimeUnit.SECONDS.sleep(1);
-                retryCounter++;
-            } catch (InterruptedException interruptedExeption) {
-                System.out.println("Error: Could not sleep for one second...");
-            }
+            // Wait a second
+            this.waitMillis(1000);
+            retryCounter++;
 
             returnValue = sendDataPackage(socket, dataPackage);
         }
@@ -140,14 +135,9 @@ public class Client {
         while (returnValue == -1 && retryCounter < 10) {
             // retry if error occured
 
-            // Sleep one second
-            try {
-                System.out.println("Retrying...");
-                TimeUnit.SECONDS.sleep(1);
-                retryCounter++;
-            } catch (InterruptedException interruptedExeption) {
-                System.out.println("Error: Could not sleep for one second...");
-            }
+            // Wait a second
+            this.waitMillis(1000);
+            retryCounter++;
 
             returnValue = sendDataPackage(socket, dataPackage);
         }
@@ -239,14 +229,9 @@ public class Client {
         while (returnValue == -1 && retryCounter < 10) {
             // retry if error occured
 
-            // Sleep one second
-            try {
-                System.out.println("Retrying...");
-                TimeUnit.SECONDS.sleep(1);
-                retryCounter++;
-            } catch (InterruptedException interruptedExeption) {
-                System.out.println("Error: Could not sleep for one second...");
-            }
+            // Wait a second
+            this.waitMillis(1000);
+            retryCounter++;
 
             returnValue = sendDataPackage(socket, dataPackage);
         }
@@ -340,14 +325,9 @@ public class Client {
         while (returnValue == -1 && retryCounter < 10) {
             // retry if error occured
 
-            // Sleep one second
-            try {
-                System.out.println("Retrying...");
-                TimeUnit.SECONDS.sleep(1);
-                retryCounter++;
-            } catch (InterruptedException interruptedExeption) {
-                System.out.println("Error: Could not sleep for one second...");
-            }
+            // Wait a second
+            this.waitMillis(1000);
+            retryCounter++;
 
             returnValue = sendDataPackage(socket, dataPackage);
         }
@@ -439,14 +419,9 @@ public class Client {
         while (returnValue == -1 && retryCounter < 10) {
             // retry if error occured
 
-            // Sleep one second
-            try {
-                System.out.println("Retrying...");
-                TimeUnit.SECONDS.sleep(1);
-                retryCounter++;
-            } catch (InterruptedException interruptedExeption) {
-                System.out.println("Error: Could not sleep for one second...");
-            }
+            // Wait a second
+            this.waitMillis(1000);
+            retryCounter++;
 
             returnValue = sendDataPackage(socket, dataPackage);
         }
@@ -593,5 +568,14 @@ public class Client {
 
     private int randomNumber(int max) {
         return (int) (Math.random() * max);
+    }
+
+    private void waitMillis(int millis) {
+        try {
+            System.out.println("Retrying...");
+            TimeUnit.MILLISECONDS.sleep(millis);
+        } catch (InterruptedException interruptedExeption) {
+            System.out.println("Error: Could not sleep for " + millis + " milliseconds...");
+        }
     }
 }
