@@ -231,6 +231,9 @@ public class Server {
                                 if (retryCounter >= 10 || !gotResponse) {
                                     this.sendServerSocketData(clientSocket, new DataPackage(-21, "Abort"));
                                 }
+                            } else {
+                                // Error wrong sync flag sent!
+                                this.sendServerSocketData(clientSocket, new DataPackage(-21, "Abort"));
                             }
                         } else {
 
