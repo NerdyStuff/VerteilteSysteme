@@ -3,8 +3,6 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-// TODO: Add Messages to chat history!!
-
 public class Server {
 
     // Save path
@@ -22,6 +20,9 @@ public class Server {
     public Server() {
 
         users = new HashMap<String, User>();
+
+        // load Hashmap from file
+        this.loadFile();
 
         // wait till a server socket is established
         while (serverSocket == null) {
@@ -141,8 +142,6 @@ public class Server {
                             } else if (dataPackage.getSyncFlag() == 2) {
                                 // incomming message sync
 
-                                // TODO: Can Errors occur???? => YESSSSSSS
-
                                 this.sendServerSocketData(clientSocket, new DataPackage(21, "Ready"));
 
                                 // wait for commit
@@ -192,8 +191,6 @@ public class Server {
                                 }
                             } else if (dataPackage.getSyncFlag() == 3) {
                                 // update request sync
-
-                                // TODO: Can Errors occur????
 
                                 this.sendServerSocketData(clientSocket, new DataPackage(21, "Ready"));
 
@@ -930,9 +927,6 @@ public class Server {
                 System.out.println("Error: Save file is null");
             } else if (object instanceof HashMap) {
                 // Hashmap is in file
-
-                // TODO: CHECK HASHMAPS!!!!
-                // TODO: Maybe use return for error handling etc
 
                 // overwrite own Hashmap
                 users = (HashMap) object;
