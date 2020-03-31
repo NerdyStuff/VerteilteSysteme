@@ -936,6 +936,7 @@ public class Server {
                 FileWriter fileWriter = null;
                 try {
                    fileWriter = new FileWriter(file);
+                   fileWriter.write(encryptedString);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
