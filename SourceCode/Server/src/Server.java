@@ -544,7 +544,7 @@ public class Server {
                         updatedUsers.add(updateUser);
                         updatedUsers.add(senderUpdateUser);
 
-                        DataPackage sendSyncData = new DataPackage(20, 1, updatedUsers); // Request Commit
+                        DataPackage sendSyncData = new DataPackage(20, 2, updatedUsers); // Request Commit
 
                         this.sendServerSocketData(syncSocket, sendSyncData);
 
