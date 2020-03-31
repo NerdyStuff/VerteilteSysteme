@@ -9,18 +9,9 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
 
-    private static JFrame frame;
-    private static JTextField textFieldUsername, textFieldChat;
-    private static JTextField textFieldPw;
-    private static JTextField textFieldChatpartner;
-
-    private static String username;
-    private static String passwort;
-    private static String to;
-    private static Client c;
-
     public static void main(String[] args) throws IOException {
         UI ui = new UI();
+        /*
         System.out.println("Bitte gib deinen Username ein");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String username = reader.readLine();
@@ -46,6 +37,7 @@ public class Main {
                 interruptedExeption.printStackTrace();
             }
         }
+        */
     }
 
 }
