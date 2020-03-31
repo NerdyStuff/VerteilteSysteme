@@ -353,17 +353,20 @@ public class Server {
 
         List<DataPackage> registrationReturnList = new LinkedList<DataPackage>();
 
-        // try to authentificate user
-        User authenticateUser = authenticateUser(dataPackage.getUsername(), dataPackage.getPassword());
 
-        if(authenticateUser == null) {
-            // No user xists, or username or password is wrong
+        User user = users.get(dataPackage.getUsername());
+
+        if(user == null) {
             registrationReturnList.add(new DataPackage(-7, "Login failed!"));
             return registrationReturnList;
         } else {
-            // user exists and username and password is correct
-            registrationReturnList.add(new DataPackage(11, "Login successfull"));
-            return registrationReturnList;
+            if (user.getPassword().equals(dataPackage.getPassword())) {
+                registrationReturnList.add(new DataPackage(11, "Login successfull"));
+                return registrationReturnList;
+            } else {
+                registrationReturnList.add(new DataPackage(-2, "Wrong username or password"));
+                return registrationReturnList;
+            }
         }
     }
 

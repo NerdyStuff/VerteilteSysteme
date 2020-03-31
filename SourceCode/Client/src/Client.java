@@ -82,6 +82,10 @@ public class Client {
                 int responseFlag = responsePackage.getFlag();
 
                 switch (responseFlag) {
+                    case -2:
+                        System.out.println(responseFlag);
+                        returnString = "Wrong username or password";
+                        break;
                     case -7:
                         System.out.println(responseFlag);
                         returnString = "Login failed";
