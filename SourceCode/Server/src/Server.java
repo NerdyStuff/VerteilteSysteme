@@ -812,12 +812,13 @@ public class Server {
 
                 Iterator iterator = user.getChathistory().iterator();
                 while (iterator.hasNext()) {
-                    DataPackage tempData = (DataPackage) iterator.next();
+                    Message tempMessage = (Message) iterator.next();
+
                     updateReturnList.add(
                             new DataPackage(9,
-                                    tempData.getUsername(),
-                                    tempData.getMessage(),
-                                    tempData.getTimestamp()));
+                                    tempMessage.getSender(),
+                                    tempMessage.getText(),
+                                    tempMessage.getTimestamp()));
                 }
             }
 
