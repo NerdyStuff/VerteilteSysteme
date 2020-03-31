@@ -533,11 +533,11 @@ public class Server {
 
                         Date date = new Date();
 
-                        updateUser.addMessage(new Message(dataPackage.getReceiver(), dataPackage.getUsername(),
+                        updateUser.addMessage(new Message(dataPackage.getUsername(), dataPackage.getReceiver(),
                                 dataPackage.getMessage(),
                                 date));
 
-                        User senderUpdateUser = users.get(dataPackage.getReceiver());
+                        User senderUpdateUser = users.get(dataPackage.getUsername());
 
                         senderUpdateUser.addMessageToOwnHistory(new Message(dataPackage.getUsername(), dataPackage.getReceiver(),
                                 dataPackage.getMessage(),
