@@ -714,7 +714,7 @@ public class Server {
             if (syncSocket != null) {
                 System.out.println("Socket to sync Server established");
 
-                DataPackage sendSyncData = new DataPackage(20, 1, user); // Request Commit
+                DataPackage sendSyncData = new DataPackage(20, 3, user); // Request Commit
 
                 this.sendServerSocketData(syncSocket, sendSyncData);
 
