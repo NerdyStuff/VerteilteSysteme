@@ -7,6 +7,9 @@ import java.util.concurrent.TimeUnit;
 
 public class Server {
 
+    // Save path
+    private static String SAVE_PATH = "/save.bin";
+
     // server port and socket
     private int serverPort = 1337;
     private ServerSocket serverSocket;
@@ -101,7 +104,8 @@ public class Server {
 
                                     // wait for commit
                                     boolean gotResponse = false;
-                                    while (!gotResponse) {
+                                    int retryCounter = 0;
+                                    while (!gotResponse && retryCounter < 10) {
 
                                         DataPackage responseData = null;
 
@@ -114,6 +118,8 @@ public class Server {
 
                                                 users.put(((User) dataPackage.getObject()).getUsername(), ((User) dataPackage.getObject()));
 
+                                                // Save updated users in file
+                                                this.save();
                                                 gotResponse = true;
                                             } else {
                                                 // Send Failed and do not save user
@@ -122,18 +128,33 @@ public class Server {
                                                 gotResponse = true;
                                             }
                                         }
+
+                                        // Wait a second
+                                        try {
+                                            System.out.println("Retrying...");
+                                            TimeUnit.SECONDS.sleep(1);
+                                            retryCounter++;
+                                        } catch (InterruptedException interruptedExeption) {
+                                            System.out.println("Error: Could not sleep for one second...");
+                                        }
+                                    }
+
+                                    // timeout
+                                    if (retryCounter >= 10 || !gotResponse) {
+                                        this.sendServerSocketData(clientSocket, new DataPackage(-21, "Abort"));
                                     }
                                 }
                             } else if (dataPackage.getSyncFlag() == 2) {
                                 // incomming message sync
 
-                                // TODO: Can Errors occur????
+                                // TODO: Can Errors occur???? => YESSSSSSS
 
                                 this.sendServerSocketData(clientSocket, new DataPackage(21, "Ready"));
 
                                 // wait for commit
                                 boolean gotResponse = false;
-                                while (!gotResponse) {
+                                int retryCounter = 0;
+                                while (!gotResponse && retryCounter < 10) {
 
                                     DataPackage responseData = null;
 
@@ -147,6 +168,8 @@ public class Server {
                                             // update user message
                                             users.replace(((User) dataPackage.getObject()).getUsername(), ((User) dataPackage.getObject()));
 
+                                            // Save updated users in file
+                                            this.save();
                                             gotResponse = true;
                                         } else {
                                             // Send Failed and do not update user
@@ -155,6 +178,20 @@ public class Server {
                                             gotResponse = true;
                                         }
                                     }
+
+                                    // Wait a second
+                                    try {
+                                        System.out.println("Retrying...");
+                                        TimeUnit.SECONDS.sleep(1);
+                                        retryCounter++;
+                                    } catch (InterruptedException interruptedExeption) {
+                                        System.out.println("Error: Could not sleep for one second...");
+                                    }
+                                }
+
+                                // timeout
+                                if (retryCounter >= 10 || !gotResponse) {
+                                    this.sendServerSocketData(clientSocket, new DataPackage(-21, "Abort"));
                                 }
                             } else if (dataPackage.getSyncFlag() == 3) {
                                 // update request sync
@@ -165,7 +202,8 @@ public class Server {
 
                                 // wait for commit
                                 boolean gotResponse = false;
-                                while (!gotResponse) {
+                                int retryCounter = 0;
+                                while (!gotResponse && retryCounter < 10) {
 
                                     DataPackage responseData = null;
 
@@ -178,6 +216,8 @@ public class Server {
 
                                             // update user message
                                             users.replace(((User) dataPackage.getObject()).getUsername(), ((User) dataPackage.getObject()));
+                                            // Save updated users in file
+                                            this.save();
 
                                             gotResponse = true;
                                         } else {
@@ -187,6 +227,20 @@ public class Server {
                                             gotResponse = true;
                                         }
                                     }
+
+                                    // Wait a second
+                                    try {
+                                        System.out.println("Retrying...");
+                                        TimeUnit.SECONDS.sleep(1);
+                                        retryCounter++;
+                                    } catch (InterruptedException interruptedExeption) {
+                                        System.out.println("Error: Could not sleep for one second...");
+                                    }
+                                }
+
+                                // timeout
+                                if (retryCounter >= 10 || !gotResponse) {
+                                    this.sendServerSocketData(clientSocket, new DataPackage(-21, "Abort"));
                                 }
                             }
                         } else {
@@ -475,6 +529,7 @@ public class Server {
                         System.out.println("Error: Host not known");
 
                         // Error
+                        messageReturnList = new LinkedList<DataPackage>();
                         messageReturnList.add(new DataPackage(-4, "Error: Host unknown"));
 
                         return messageReturnList;
@@ -483,6 +538,7 @@ public class Server {
                         System.out.println("Error: IOException");
 
                         // Error
+                        messageReturnList = new LinkedList<DataPackage>();
                         messageReturnList.add(new DataPackage(-4, "Error: IOException"));
 
                         return messageReturnList;
@@ -530,6 +586,7 @@ public class Server {
                                     this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
 
                                     // Error
+                                    messageReturnList = new LinkedList<DataPackage>();
                                     messageReturnList.add(new DataPackage(-4, "Error: Abort"));
 
                                     gotResponse = false;
@@ -540,6 +597,7 @@ public class Server {
                                     // Send Abort and do not update messages
                                     this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
 
+                                    messageReturnList = new LinkedList<DataPackage>();
                                     messageReturnList.add(new DataPackage(-4, "Error: Abort"));
 
                                     gotResponse = false;
@@ -581,6 +639,7 @@ public class Server {
                                 } else {
 
                                     // Error
+                                    messageReturnList = new LinkedList<DataPackage>();
                                     messageReturnList.add(new DataPackage(-4, "Error: Did not get acknowledge from other server"));
 
                                     gotResponse = false;
@@ -601,6 +660,7 @@ public class Server {
                         if (retryCounter >= 10 || !gotResponse) {
                             this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
 
+                            messageReturnList = new LinkedList<DataPackage>();
                             messageReturnList.add(new DataPackage(-4, "Error: Did not get acknowledge from other server"));
 
                             this.closeSocket(syncSocket);
@@ -663,6 +723,7 @@ public class Server {
                 System.out.println("Error: Host not known");
 
                 // Error
+                updateReturnList = new LinkedList<DataPackage>();
                 updateReturnList.add(new DataPackage(-4, "Error: Host unknown"));
 
                 return updateReturnList;
@@ -671,6 +732,7 @@ public class Server {
                 System.out.println("Error: IOException");
 
                 // Error
+                updateReturnList = new LinkedList<DataPackage>();
                 updateReturnList.add(new DataPackage(-4, "Error: IOException"));
 
                 return updateReturnList;
@@ -703,6 +765,7 @@ public class Server {
                             this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
 
                             // Error
+                            updateReturnList = new LinkedList<DataPackage>();
                             updateReturnList.add(new DataPackage(-4, "Error: Abort"));
                             gotResponse = false;
                             break;
@@ -711,6 +774,7 @@ public class Server {
                             // Send Abort and do not save user
                             this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
 
+                            updateReturnList = new LinkedList<DataPackage>();
                             updateReturnList.add(new DataPackage(-4, "Error: Abort"));
                             gotResponse = false;
                             break;
@@ -731,6 +795,7 @@ public class Server {
                 if (retryCounter >= 10 || !gotResponse) {
                     this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
 
+                    updateReturnList = new LinkedList<DataPackage>();
                     updateReturnList.add(new DataPackage(-4, "Error: Abort"));
                 }
 
@@ -758,6 +823,7 @@ public class Server {
                                 user.addMessage(tempMessage);
                             }
 
+                            updateReturnList = new LinkedList<DataPackage>();
                             updateReturnList.add(new DataPackage(-4, "Error: Did not get acknowledge from other server"));
 
                             gotResponse = false;
@@ -779,6 +845,7 @@ public class Server {
                 if (retryCounter >= 10 || !gotResponse) {
                     this.sendServerSocketData(syncSocket, new DataPackage(-21, "Abort"));
 
+                    updateReturnList = new LinkedList<DataPackage>();
                     updateReturnList.add(new DataPackage(-4, "Error: Did not get acknowledge from other server"));
 
                     this.closeSocket(syncSocket);
@@ -849,6 +916,44 @@ public class Server {
         } catch (IOException e) {
             System.out.println("Error: Could not close connection");
             e.printStackTrace();
+        }
+    }
+
+    private void save() {
+        //Path for save file
+        try (ObjectOutputStream saveStream = new ObjectOutputStream(new FileOutputStream(SAVE_PATH))) {
+            // Save HashMap with users in file to persist everything including chats
+            saveStream.writeObject(users);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error: Could not save.");
+        }
+    }
+
+    private void loadFile() {
+        //Open filestream
+        try (ObjectInputStream saveStream = new ObjectInputStream(new FileInputStream(SAVE_PATH))) {
+            Object object = saveStream.readObject();
+
+            if (object == null) {
+
+                System.out.println("Error: Save file is null");
+            } else if (object instanceof HashMap) {
+                // Hashmap is in file
+
+                // TODO: CHECK HASHMAPS!!!!
+                // TODO: Maybe use return for error handling etc
+
+                // overwrite own Hashmap
+                users = (HashMap) object;
+
+                System.out.println("Data loaded");
+            } else {
+                // Other Error
+                System.out.println("An error occured while loading file");
+            }
+        } catch (Exception e) {
+            System.out.println("Error: Could not load save file");
         }
     }
 }
