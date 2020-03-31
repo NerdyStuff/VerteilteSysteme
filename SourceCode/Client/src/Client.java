@@ -1,3 +1,4 @@
+import javax.print.DocFlavor;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -162,14 +163,22 @@ public class Client {
 
                 DataPackage responsePackage = serverResponse.remove(0);
 
+                System.out.println(responsePackage.getFlag());
+
                 if (responsePackage.getFlag() == -6) {
                     // No chathistory found on server
 
                     messagesList.add(new Message("", "", null)); // Empty message object
 
                 } else if (responsePackage.getFlag() == 9) {
+
+                    System.out.println("ChatPartner: " + chatPartner);
+                    System.out.println("Username: " + username);
+
                     // Add messages to messages list
-                    if(responsePackage.getUsername().equals(chatPartner) && responsePackage.getReceiver().equals(username) || responsePackage.getUsername().equals(username) && responsePackage.getReceiver().equals(chatPartner)) {
+                    if ((responsePackage.getUsername().equals(username) && responsePackage.getReceiver().equals(chatPartner)) || (responsePackage.getUsername().equals(chatPartner) && responsePackage.getReceiver().equals(username))) {
+
+                        System.out.println("Added: Username: " + responsePackage.getUsername() + " Receiver: " + responsePackage.getReceiver());
                         messagesList.add(
                                 new Message(responsePackage.getUsername(),
                                         responsePackage.getMessage(),
@@ -178,7 +187,9 @@ public class Client {
                     Iterator iterator = serverResponse.iterator();
                     while (iterator.hasNext()) {
                         DataPackage tempData = (DataPackage) iterator.next();
-                        if(responsePackage.getUsername().equals(chatPartner) && responsePackage.getReceiver().equals(username) || responsePackage.getUsername().equals(username) && responsePackage.getReceiver().equals(chatPartner)) {
+                        if ((tempData.getUsername().equals(username) && tempData.getReceiver().equals(chatPartner)) || (tempData.getUsername().equals(chatPartner) && tempData.getReceiver().equals(username))) {
+
+                            System.out.println("Added: Username: " + tempData.getUsername() + " Receiver: " + tempData.getReceiver());
                             messagesList.add(
                                     new Message(tempData.getUsername(),
                                             tempData.getMessage(),
