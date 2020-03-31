@@ -929,7 +929,10 @@ public class Server {
 
                 String objectString = new String(objectBytes);
 
-                AES.encrypt(objectString, SAVE_SECRET_PASSWORD);
+                String encryptedString = AES.encrypt(objectString, SAVE_SECRET_PASSWORD);
+
+                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(SAVE_PATH));
+                bufferedWriter.write(encryptedString);
 
             } else {
                 // Save plain
