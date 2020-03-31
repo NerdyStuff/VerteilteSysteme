@@ -501,7 +501,7 @@ public class Server {
 
                         User senderUpdateUser = users.get(dataPackage.getUsername());
 
-                        senderUpdateUser.addMessage(new Message(dataPackage.getReceiver(), dataPackage.getUsername(),
+                        senderUpdateUser.addMessageToOwnHistory(new Message(dataPackage.getReceiver(), dataPackage.getUsername(),
                                 dataPackage.getMessage(),
                                 date));
 
