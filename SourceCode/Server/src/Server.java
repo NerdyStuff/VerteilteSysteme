@@ -30,6 +30,7 @@ public class Server {
             } catch (IOException e) {
                 System.out.println("Error: Socket creation failed... Retrying...");
 
+                // Wait a second for retry
                 this.waitMillis(1000);
             }
         }
@@ -155,8 +156,16 @@ public class Server {
                                             // push user to own HashMap
                                             this.sendServerSocketData(clientSocket, new DataPackage(23, "Acknowledge"));
 
-                                            // update user message
-                                            users.replace(((User) dataPackage.getObject()).getUsername(), ((User) dataPackage.getObject()));
+                                            // new temporary user list
+                                            LinkedList<User> updatedUsersFromServer = new LinkedList<User>();
+
+                                            // Get data from datapackage
+                                            updatedUsersFromServer.addAll((LinkedList)dataPackage.getObject());
+
+                                            // update user message for both users
+                                            users.replace(((User)updatedUsersFromServer.getFirst()).getUsername(), ((User)updatedUsersFromServer.getFirst()));
+                                            users.replace(((User)updatedUsersFromServer.getLast()).getUsername(), ((User)updatedUsersFromServer.getLast()));
+
 
                                             // Save updated users in file
                                             this.save();
@@ -525,13 +534,17 @@ public class Server {
                                 dataPackage.getMessage(),
                                 date));
 
-                        User senderUpdateUser = users.get(dataPackage.getUsername());
+                        User senderUpdateUser = users.get(dataPackage.getReceiver());
 
-                        senderUpdateUser.addMessageToOwnHistory(new Message(dataPackage.getUsername(), dataPackage.getReceiver(),
+                        senderUpdateUser.addMessageToOwnHistory(new Message(dataPackage.getReceiver(), dataPackage.getUsername(),
                                 dataPackage.getMessage(),
                                 date));
 
-                        DataPackage sendSyncData = new DataPackage(20, 1, updateUser); // Request Commit
+                        List<User> updatedUsers = new LinkedList<User>();
+                        updatedUsers.add(updateUser);
+                        updatedUsers.add(senderUpdateUser);
+
+                        DataPackage sendSyncData = new DataPackage(20, 1, updatedUsers); // Request Commit
 
                         this.sendServerSocketData(syncSocket, sendSyncData);
 
