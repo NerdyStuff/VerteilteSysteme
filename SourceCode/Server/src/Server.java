@@ -30,12 +30,7 @@ public class Server {
             } catch (IOException e) {
                 System.out.println("Error: Socket creation failed... Retrying...");
 
-                // Sleep one second
-                try {
-                    TimeUnit.SECONDS.sleep(1);
-                } catch (InterruptedException interruptedExeption) {
-                    System.out.println("Error: Could not sleep for one second...");
-                }
+                this.waitMillis(1000);
             }
         }
     }
@@ -129,14 +124,9 @@ public class Server {
                                             }
                                         }
 
-                                        // Wait a second
-                                        try {
-                                            System.out.println("Retrying...");
-                                            TimeUnit.SECONDS.sleep(1);
-                                            retryCounter++;
-                                        } catch (InterruptedException interruptedExeption) {
-                                            System.out.println("Error: Could not sleep for one second...");
-                                        }
+                                        // Wait half a second
+                                        this.waitMillis(500);
+                                        retryCounter++;
                                     }
 
                                     // timeout
@@ -179,14 +169,9 @@ public class Server {
                                         }
                                     }
 
-                                    // Wait a second
-                                    try {
-                                        System.out.println("Retrying...");
-                                        TimeUnit.SECONDS.sleep(1);
-                                        retryCounter++;
-                                    } catch (InterruptedException interruptedExeption) {
-                                        System.out.println("Error: Could not sleep for one second...");
-                                    }
+                                    // Wait half a second
+                                    this.waitMillis(500);
+                                    retryCounter++;
                                 }
 
                                 // timeout
@@ -228,14 +213,9 @@ public class Server {
                                         }
                                     }
 
-                                    // Wait a second
-                                    try {
-                                        System.out.println("Retrying...");
-                                        TimeUnit.SECONDS.sleep(1);
-                                        retryCounter++;
-                                    } catch (InterruptedException interruptedExeption) {
-                                        System.out.println("Error: Could not sleep for one second...");
-                                    }
+                                    // Wait half a second
+                                    this.waitMillis(500);
+                                    retryCounter++;
                                 }
 
                                 // timeout
@@ -427,14 +407,9 @@ public class Server {
                         }
                     }
 
-                    // Wait a second
-                    try {
-                        System.out.println("Retrying...");
-                        TimeUnit.SECONDS.sleep(1);
-                        retryCounter++;
-                    } catch (InterruptedException interruptedExeption) {
-                        System.out.println("Error: Could not sleep for one second...");
-                    }
+                    // Wait half a second
+                    this.waitMillis(500);
+                    retryCounter++;
                 }
 
                 // timeout
@@ -465,14 +440,9 @@ public class Server {
                         }
                     }
 
-                    // Wait a second
-                    try {
-                        System.out.println("Retrying...");
-                        TimeUnit.SECONDS.sleep(1);
-                        retryCounter++;
-                    } catch (InterruptedException interruptedExeption) {
-                        System.out.println("Error: Could not sleep for one second...");
-                    }
+                    // Wait half a second
+                    this.waitMillis(500);
+                    retryCounter++;
                 }
 
                 if (retryCounter >= 10 || !gotResponse) {
@@ -605,14 +575,9 @@ public class Server {
                                 }
                             }
 
-                            // Wait a second
-                            try {
-                                System.out.println("Retrying...");
-                                TimeUnit.SECONDS.sleep(1);
-                                retryCounter++;
-                            } catch (InterruptedException interruptedExeption) {
-                                System.out.println("Error: Could not sleep for one second...");
-                            }
+                            // Wait half a second
+                            this.waitMillis(500);
+                            retryCounter++;
                         }
 
                         // timeout
@@ -647,14 +612,9 @@ public class Server {
                                 }
                             }
 
-                            // Wait a second
-                            try {
-                                System.out.println("Retrying...");
-                                TimeUnit.SECONDS.sleep(1);
-                                retryCounter++;
-                            } catch (InterruptedException interruptedExeption) {
-                                System.out.println("Error: Could not sleep for one second...");
-                            }
+                            // Wait half a second
+                            this.waitMillis(500);
+                            retryCounter++;
                         }
 
                         if (retryCounter >= 10 || !gotResponse) {
@@ -781,14 +741,9 @@ public class Server {
                         }
                     }
 
-                    // Wait a second
-                    try {
-                        System.out.println("Retrying...");
-                        TimeUnit.SECONDS.sleep(1);
-                        retryCounter++;
-                    } catch (InterruptedException interruptedExeption) {
-                        System.out.println("Error: Could not sleep for one second...");
-                    }
+                    // Wait half a second
+                    this.waitMillis(500);
+                    retryCounter++;
                 }
 
                 // timeout
@@ -832,14 +787,9 @@ public class Server {
                         }
                     }
 
-                    // Wait a second
-                    try {
-                        System.out.println("Retrying...");
-                        TimeUnit.SECONDS.sleep(1);
-                        retryCounter++;
-                    } catch (InterruptedException interruptedExeption) {
-                        System.out.println("Error: Could not sleep for one second...");
-                    }
+                    // Wait half a second
+                    this.waitMillis(500);
+                    retryCounter++;
                 }
 
                 if (retryCounter >= 10 || !gotResponse) {
@@ -954,6 +904,15 @@ public class Server {
             }
         } catch (Exception e) {
             System.out.println("Error: Could not load save file");
+        }
+    }
+
+    private void waitMillis(int millis) {
+        try {
+            System.out.println("Retrying...");
+            TimeUnit.MILLISECONDS.sleep(millis);
+        } catch (InterruptedException interruptedExeption) {
+            System.out.println("Error: Could not sleep for " + millis + " milliseconds...");
         }
     }
 }
