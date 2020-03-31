@@ -21,6 +21,9 @@ public class Server {
 
         users = new HashMap<String, User>();
 
+        // load Hashmap from file
+        this.loadFile();
+
         // wait till a server socket is established
         while (serverSocket == null) {
             try {
@@ -924,9 +927,6 @@ public class Server {
                 System.out.println("Error: Save file is null");
             } else if (object instanceof HashMap) {
                 // Hashmap is in file
-
-                // TODO: CHECK HASHMAPS!!!!
-                // TODO: Maybe use return for error handling etc
 
                 // overwrite own Hashmap
                 users = (HashMap) object;
