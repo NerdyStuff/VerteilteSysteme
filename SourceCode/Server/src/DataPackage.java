@@ -70,6 +70,15 @@ public class DataPackage implements Serializable {
         this.timestamp = timestamp;
     }
 
+    // Constructor for Messages from Server with Messages for User
+    public DataPackage(int flag, String username, String receiver, String message, Date timestamp) {
+        this.flag = flag;
+        this.username = username;
+        this.receiver = receiver;
+        this.message = message;
+        this.timestamp = timestamp;
+    }
+
     // Constructor for sending data between servers
     public DataPackage(int flag, int syncFlag, Object object) {
         this.flag = flag;
