@@ -916,31 +916,39 @@ public class Server {
         try {
             // Save HashMap with users in file to persist everything including chats
 
+            // If flag is set for encryption
             if (ENCRYPT_SAVE_FILE) {
                 // Encrypt save file
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
                 ObjectOutputStream saveStreamOOS = new ObjectOutputStream(byteArrayOutputStream);
 
+                // Write HashMap to ObjectOutputStream
                 saveStreamOOS.writeObject(users);
                 saveStreamOOS.flush();
 
+                // Convert ObjectOutputStream into a byte array
                 byte[] objectBytes = byteArrayOutputStream.toByteArray();
 
+                // Do neccessary encoding on string while converting bytearray to string
                 String objectString = Base64.getEncoder().encodeToString(objectBytes);
 
+                // AES class only takes strings as input
+                // Pass converted stream to bytearray to string in method and get encrypted string
                 String encryptedString = AES.encrypt(objectString, SAVE_SECRET_PASSWORD);
 
-                // TODO: COMMENT
+                // Open a new File
                 File file = new File(SAVE_PATH);
                 FileWriter fileWriter = null;
                 try {
+                    // Write encrypted string to file
                    fileWriter = new FileWriter(file);
                    fileWriter.write(encryptedString);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
                     try {
+                        // Close FileWriter to persist data on disk
                         fileWriter.close();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -959,38 +967,42 @@ public class Server {
     }
 
     private void loadFile() {
-        //Open filestream
         try {
 
             Object object = null;
 
+            // If encryption flag is set use decryption to load
             if (ENCRYPT_SAVE_FILE) {
 
                 StringBuilder stringBuilder = new StringBuilder();
 
+                // Read file in BufferedRead
                 BufferedReader bufferedReader = new BufferedReader(new FileReader(SAVE_PATH));
 
+                // Loop over BufferedReader and append "lines" (it is only one line in the file) to String
                 String line = "";
                 while ((line = bufferedReader.readLine()) != null) {
                     stringBuilder.append(line);
                 }
 
+                // AES class accepts string as input to decrypt, so pass read file to get decrypted string
                 String decryptedString = AES.decrypt(stringBuilder.toString(), SAVE_SECRET_PASSWORD);
 
+                // Convert String to byte array to convert to objectstream afterwards
                 byte[] decryptedBytes =  Base64.getDecoder().decode(decryptedString);
 
-                System.out.println(decryptedString);
-
+                // Create ObjectInputStream from bytearray
                 ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(decryptedBytes));
 
+                // Read object from stream to work with afterwards
                 object = objectInputStream.readObject();
 
             } else {
+                // No encryption used to save
                 ObjectInputStream saveStream = new ObjectInputStream(new FileInputStream(SAVE_PATH));
 
                 object = saveStream.readObject();
             }
-
 
             if (object == null) {
 
