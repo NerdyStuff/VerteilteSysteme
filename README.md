@@ -38,7 +38,7 @@ Das System soll dokumentiert sein (5-10 Seiten + Codekommentare)
 | Mehrere Chat Historien für einen User | 10 |85|
 | Persistente Chat Historie | 10 | 95 |
 | Verschlüsselte Speicherung auf dem Server | 10 | 105 |
-| ~~Gruppenchats | 20 | - |
+| ~~Gruppenchats~~ | 20 | - |
 | ~~Verschlüsselte Kommunikation~~ | 20 | - |
 | ~~Drei identische Server mit der Major Consesus Strategie~~ | 40 | - |
 
