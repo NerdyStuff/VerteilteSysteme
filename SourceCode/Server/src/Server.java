@@ -927,7 +927,7 @@ public class Server {
 
                 byte[] objectBytes = byteArrayOutputStream.toByteArray();
 
-                String objectString = new String(objectBytes);
+                String objectString = Base64.getEncoder().encodeToString(objectBytes);
 
                 String encryptedString = AES.encrypt(objectString, SAVE_SECRET_PASSWORD);
 
@@ -970,17 +970,18 @@ public class Server {
 
                 BufferedReader bufferedReader = new BufferedReader(new FileReader(SAVE_PATH));
 
-                String line;
+                String line = "";
                 while ((line = bufferedReader.readLine()) != null) {
-                    stringBuilder.append(line).append("\n");
+                    stringBuilder.append(line);
                 }
 
                 String decryptedString = AES.decrypt(stringBuilder.toString(), SAVE_SECRET_PASSWORD);
 
-                byte[] decryptedBytes = decryptedString.getBytes();
+                byte[] decryptedBytes =  Base64.getDecoder().decode(decryptedString);
 
-                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(decryptedBytes);
-                ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+                System.out.println(decryptedString);
+
+                ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(decryptedBytes));
 
                 object = objectInputStream.readObject();
 
