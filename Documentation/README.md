@@ -40,7 +40,10 @@ Da ein Nutzer mit mehreren Nutzern chatten kann, wird jeweils nur der Verlauf im
 ## Zusätzliche Features:
 
 ### GUI
-Im Code für den Client wurde die Klasse <code>GUI</code> implementiert. **TBD** @Tony1704
+Im Code für den Client wurde die Klasse <code>GUI</code> implementiert. 
+Die Klasse GUI wird von Main gestartet. In der Klasse Main kann entschieden werden, ob das CLI benutzt werden soll oder das GUI. Der Funktionsumfang ist gleich.
+In dem GUI muss sich zuerst eingeloggt werden, dazu wird Username und Passwort eingetragen und dann Registrieren oder Login gedrückt. Wenn Registrierung gedrückt wird, obwohl man bereits Registriert ist, wird das in der Konsolenausgabe rechts angezeigt. Ebenso ist es mit dem Login ohne angelegtes Profil. Registriert man sich, so ist man bereits im gleichen Schritt eingeloggt. Ein erneutes Login ist somit nicht nötig.
+Ist man eingeloggt, so erscheint eine entsprechende Nachricht in der Konsolenausgabe. Anschließend muss ein Chatpartner eingegeben werden.
 
 ### Mehrere Chatverläufe pro Nutzer
 **TBD**
