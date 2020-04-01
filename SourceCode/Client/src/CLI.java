@@ -36,8 +36,7 @@ public class CLI {
                     login();
                 }
                 if (message.equals("/help")){
-                    System.out.println("/exit beendet das programm\n" +
-                            "/chatpartner wechselt deinen chatpartner");
+                    System.out.println("/exit beendet das programm\n/chatpartner wechselt deinen chatpartner\n/logout loggt dich aus");
                 }
                 c.sendMessage(to, message);
             }
