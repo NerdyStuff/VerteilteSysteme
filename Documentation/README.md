@@ -51,13 +51,17 @@ Wird der Clear Button gedrückt, wird, je nach Kontext, das Chatfeld geleert ode
 Wird Leave gedrückt, wird der Chat mit dem Chatteilnehmer verlassen. Wird Logout gedrückt, wird der User ausgeloggt.
 
 #### CLI
-
+Wird die CLI als bevorzugtes Interaktionsmittel ausgewählt, muss der Chat über die Konsole gesteuert werden. Dabei wird zuerst gefragt, ob bereits ein Profil angelegt wurde. Auf diese Frage kann der User mit y oder n antworten und zum Bestätigen die Enter-Taste drücken.
+Je nach Antwort wird der User dann dazu aufgefordert sich anzumelden oder zu registrieren.
+Anschließend wird der User dazu aufgefordert, seinen gewünschten Chatpartner einzugeben. Anschließend kann über die Konsole mit dem Chatpartner geschrieben werden.
+In der Konsole gibt es einige zusätzliche Befehle, um die Abwesenheit der Knöpfe, die das GUI besitzt, auszugleichen. Der Befehl /help zeigt die Übersicht der Befehle an. Der Befehl /exit beendet das Programm. Der Befehl /logout loggt den User aus und fordert ihm zu erneuten anmelden auf.
 
 ### Mehrere Chatverläufe pro Nutzer
-**TBD**
+Wie in der Beschreibung von GUI und CLI zu sehen ist, gibt es mehrere Chatverläufe für verschiedene User.
+Jeder User ist ein eigenes Objekt in dem Projekt. Jedes dieser Objekte hat einen eigenen Chatverlauf, wo sich sowohl die eigenen als auch die empfangenen Chatnachrichten von anderen Usern befinden. Diese werden in einer Liste bei dem User serverseitig gespeichert.
 
 ### Emoji
-Während des chattesn können UTF8-Kodierte Emoji Zeichen zwischen den Chatteilnehmern genutzt werden.
+Während des chattens können UTF8-Kodierte Emoji Zeichen zwischen den Chatteilnehmern genutzt werden.
 
 ### Persistente Speicherung auf dem Server
 Die HashMap mit den Nutzerdaten wird in der Datei <code>save.bin</code> gespeichert.
