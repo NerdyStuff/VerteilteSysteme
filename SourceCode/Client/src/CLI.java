@@ -9,7 +9,6 @@ public class CLI {
 
     Client c;
     BufferedReader reader;
-    boolean exit = false;
 
     public CLI() throws IOException {
         c = null;
