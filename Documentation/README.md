@@ -128,7 +128,7 @@ Der Objekt-Stream kann dann wieder in eine HashMap geparst werden und verwendet 
 Klasse um eine grafische Oberfläche für den Client zu erzeugen.
 
 ### CLI
-**TBD:** Klasse um ein Eingabeterminal für den Nutzer zu erzeugen
+Klasse um ein Eingabeterminal für den Nutzer zu erzeugen
 
 ### WrongDataPackageException
 Exception Objekt für Daten-Objekte, die nicht dem DataPackage Format entsprechen.
