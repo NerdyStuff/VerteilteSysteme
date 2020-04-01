@@ -50,7 +50,7 @@ public class CLI {
                             "/chatpartner wechselt deinen chatpartner");
                 }
             }
-            c.getUpdates();
+            c.getUpdates(to);
             try {
                 TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException interruptedExeption) {

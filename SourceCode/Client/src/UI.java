@@ -28,8 +28,10 @@ public class UI {
         while (true) {
             try {
                 TimeUnit.SECONDS.sleep(1);
-                List<Message> newMessages = c.getUpdates();
-                printMessages(newMessages);
+                if(!to.equals("")) {
+                    List<Message> newMessages = c.getUpdates(to);
+                    printMessages(newMessages);
+                }
             } catch (Exception e) {
 
             }
