@@ -484,6 +484,8 @@ public class Server {
                         if (responseData.getFlag() == 23) {
                             users.put(user.getUsername(), user);
 
+                            // save data on disk
+                            this.save();
                             gotResponse = true;
                         } else {
 
@@ -670,6 +672,8 @@ public class Server {
                                     // replace user
                                     users.replace(updateUser.getUsername(), updateUser);
 
+                                    // save data on disk
+                                    this.save();
                                     gotResponse = true;
                                 } else {
 
@@ -881,6 +885,8 @@ public class Server {
                 }
             }
 
+            // save data on disk
+            this.save();
             return updateReturnList;
         }
     }

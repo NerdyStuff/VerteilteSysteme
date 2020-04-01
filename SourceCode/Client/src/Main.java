@@ -9,35 +9,9 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args)  {
         UI ui = new UI();
-        /*
-        System.out.println("Bitte gib deinen Username ein");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String username = reader.readLine();
-        System.out.println("Bitte gib dein Passwort ein");
-        String passwort = reader.readLine();
-        System.out.println("Bitte gib den Username deines Chatpartners ein");
-        String to = reader.readLine();
-        Client c = new Client(username, passwort);
-        System.out.println("Du kannst jetzt chatten:");
-        while (true) {
-            String message = "";
-            if ((message = reader.readLine()) != null) {
-                if (message.equals("\\exit")) {
-                    break;
-                }
-            }
-            // TODO: HERERER
-            c.getUpdates();
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException interruptedExeption) {
-                System.out.println("Error: Could not sleep for one second...");
-                interruptedExeption.printStackTrace();
-            }
-        }
-        */
+        //CLI cli = new CLI();
     }
 
 }
