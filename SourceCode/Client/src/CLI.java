@@ -32,7 +32,7 @@ public class CLI {
         String to = reader.readLine();
         System.out.println(c.getChatHistory(to));
         System.out.println("Du kannst jetzt chatten:");
-        NonBlockingBufferedReader nbbr = new NonBlockingBufferedReader(reader);
+        NonBlockingBufferedReader nbbr = new NonBlockingBufferedReader(System.in);
         while (true) {
             String message = null;
             while ((message = nbbr.readLine()) != null) {
