@@ -16,7 +16,7 @@ public class Server {
     private int serverPort = 1337;
     private ServerSocket serverSocket;
 
-    private String syncHostname = "192.168.188.31";
+    private String syncHostname = "192.168.188.26";
 
     // Hashmap to store Users
     private HashMap<String, User> users;

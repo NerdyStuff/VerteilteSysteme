@@ -352,6 +352,9 @@ public class Client {
 
                 } else if (responsePackage.getFlag() == 4) {
                     // Add messages to messages list
+
+                    System.out.println("Username: " + username + " chatPartner: " + chatPartner);
+
                     if ((responsePackage.getUsername().equals(username) && responsePackage.getReceiver().equals(chatPartner)) || (responsePackage.getUsername().equals(chatPartner) && responsePackage.getReceiver().equals(username))) {
                         messagesList.add(
                                 new Message(responsePackage.getUsername(),
