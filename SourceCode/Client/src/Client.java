@@ -163,17 +163,12 @@ public class Client {
 
                 DataPackage responsePackage = serverResponse.remove(0);
 
-                System.out.println(responsePackage.getFlag());
-
                 if (responsePackage.getFlag() == -6) {
                     // No chathistory found on server
 
                     messagesList.add(new Message("", "", null)); // Empty message object
 
                 } else if (responsePackage.getFlag() == 9) {
-
-                    System.out.println("ChatPartner: " + chatPartner);
-                    System.out.println("Username: " + username);
 
                     // Add messages to messages list
                     if ((responsePackage.getUsername().equals(username) && responsePackage.getReceiver().equals(chatPartner)) || (responsePackage.getUsername().equals(chatPartner) && responsePackage.getReceiver().equals(username))) {
@@ -454,8 +449,6 @@ public class Client {
                 DataPackage responsePackage = serverResponse.remove(0);
 
                 int responseFlag = responsePackage.getFlag();
-
-                System.out.println(responseFlag);
 
                 switch (responseFlag) {
                     case -1:

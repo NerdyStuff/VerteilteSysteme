@@ -7,7 +7,7 @@ public class CLI {
 
     public CLI() throws IOException {
         Client c = null;
-        System.out.println("Hast du bereits ein Profil?");
+        System.out.println("Nutze /help um die Hilfe aufzurufen\n\nHast du bereits ein Profil? (y/n)");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String answer = reader.readLine();
         if(answer.equals("y")) {
@@ -46,7 +46,7 @@ public class CLI {
                     System.out.println("Du kannst jetzt chatten:");
                 }
                 if (message.equals("/help")){
-                    System.out.println("/exit beendet das programm" +
+                    System.out.println("/exit beendet das programm\n" +
                             "/chatpartner wechselt deinen chatpartner");
                 }
                 c.sendMessage(to, message);
