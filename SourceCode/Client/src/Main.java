@@ -9,9 +9,13 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) {
         UI ui = new UI();
-        //CLI cli = new CLI();
+        /*try {
+            CLI cli = new CLI();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
     }
 
 }
