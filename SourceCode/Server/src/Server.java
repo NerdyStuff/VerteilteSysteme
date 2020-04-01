@@ -753,6 +753,7 @@ public class Server {
 
                 updateReturnList.add(
                         new DataPackage(4, message.getSender(),
+                                message.getReceiver(),
                                 message.getText(),
                                 message.getTimestamp()));
             }
