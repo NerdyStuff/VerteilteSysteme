@@ -79,19 +79,15 @@ public class Client {
 
                 switch (responseFlag) {
                     case -2:
-                        System.out.println(responseFlag);
                         returnString = "Wrong username or password";
                         break;
                     case -7:
-                        System.out.println(responseFlag);
                         returnString = "Login failed";
                         break;
                     case 11:
-                        System.out.println(responseFlag);
                         returnString = "Login successfull";
                         break;
                     default:
-                        System.out.println(responseFlag);
                         returnString = "An error occured";
                 }
 
@@ -163,8 +159,6 @@ public class Client {
 
                 DataPackage responsePackage = serverResponse.remove(0);
 
-                System.out.println(responsePackage.getFlag());
-
                 if (responsePackage.getFlag() == -6) {
                     // No chathistory found on server
 
@@ -172,13 +166,9 @@ public class Client {
 
                 } else if (responsePackage.getFlag() == 9) {
 
-                    System.out.println("ChatPartner: " + chatPartner);
-                    System.out.println("Username: " + username);
-
                     // Add messages to messages list
                     if ((responsePackage.getUsername().equals(username) && responsePackage.getReceiver().equals(chatPartner)) || (responsePackage.getUsername().equals(chatPartner) && responsePackage.getReceiver().equals(username))) {
 
-                        System.out.println("Added: Username: " + responsePackage.getUsername() + " Receiver: " + responsePackage.getReceiver());
                         messagesList.add(
                                 new Message(responsePackage.getUsername(),
                                         responsePackage.getMessage(),
@@ -189,7 +179,6 @@ public class Client {
                         DataPackage tempData = (DataPackage) iterator.next();
                         if ((tempData.getUsername().equals(username) && tempData.getReceiver().equals(chatPartner)) || (tempData.getUsername().equals(chatPartner) && tempData.getReceiver().equals(username))) {
 
-                            System.out.println("Added: Username: " + tempData.getUsername() + " Receiver: " + tempData.getReceiver());
                             messagesList.add(
                                     new Message(tempData.getUsername(),
                                             tempData.getMessage(),
@@ -270,28 +259,22 @@ public class Client {
 
                 switch (responseFlag) {
                     case 7:
-                        System.out.println(responseFlag);
                         returnString = "Message accepted";
                         break;
                     case -2:
-                        System.out.println(responseFlag);
                         returnString = "Wrong Username or Password";
                         break;
                     case -3:
-                        System.out.println(responseFlag);
                         returnString = "Receiver does not exists";
                         break;
                     case -4:
-                        System.out.println(responseFlag);
                         returnString = "An error occured";
                         break;
                     case -5:
-                        System.out.println(responseFlag);
                         returnString = "You can not be the receiver";
                         break;
 
                     default:
-                        System.out.println(responseFlag);
                         returnString = "An error occured";
                 }
 
@@ -459,8 +442,6 @@ public class Client {
                 DataPackage responsePackage = serverResponse.remove(0);
 
                 int responseFlag = responsePackage.getFlag();
-
-                System.out.println(responseFlag);
 
                 switch (responseFlag) {
                     case -1:
