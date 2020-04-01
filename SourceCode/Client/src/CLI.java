@@ -34,8 +34,8 @@ public class CLI {
         System.out.println("Du kannst jetzt chatten:");
         NonBlockingBufferedReader nbbr = new NonBlockingBufferedReader(reader);
         while (true) {
-            String message = "";
-            if ((message = nbbr.readLine()) != null) {
+            String message = null;
+            while ((message = nbbr.readLine()) != null) {
                 if (message.equals("/exit")) {
                     break;
                 }
@@ -49,6 +49,7 @@ public class CLI {
                     System.out.println("/exit beendet das programm" +
                             "/chatpartner wechselt deinen chatpartner");
                 }
+                c.sendMessage(to, message);
             }
             c.getUpdates();
             try {
@@ -58,5 +59,6 @@ public class CLI {
                 interruptedExeption.printStackTrace();
             }
         }
+
     }
 }
