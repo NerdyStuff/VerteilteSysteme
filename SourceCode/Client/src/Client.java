@@ -79,19 +79,15 @@ public class Client {
 
                 switch (responseFlag) {
                     case -2:
-                        System.out.println(responseFlag);
                         returnString = "Wrong username or password";
                         break;
                     case -7:
-                        System.out.println(responseFlag);
                         returnString = "Login failed";
                         break;
                     case 11:
-                        System.out.println(responseFlag);
                         returnString = "Login successfull";
                         break;
                     default:
-                        System.out.println(responseFlag);
                         returnString = "An error occured";
                 }
 
@@ -263,28 +259,22 @@ public class Client {
 
                 switch (responseFlag) {
                     case 7:
-                        System.out.println(responseFlag);
                         returnString = "Message accepted";
                         break;
                     case -2:
-                        System.out.println(responseFlag);
                         returnString = "Wrong Username or Password";
                         break;
                     case -3:
-                        System.out.println(responseFlag);
                         returnString = "Receiver does not exists";
                         break;
                     case -4:
-                        System.out.println(responseFlag);
                         returnString = "An error occured";
                         break;
                     case -5:
-                        System.out.println(responseFlag);
                         returnString = "You can not be the receiver";
                         break;
 
                     default:
-                        System.out.println(responseFlag);
                         returnString = "An error occured";
                 }
 

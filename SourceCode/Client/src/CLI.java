@@ -9,6 +9,7 @@ public class CLI {
 
     Client c;
     BufferedReader reader;
+    boolean exit = false;
 
     public CLI() throws IOException {
         c = null;
@@ -23,7 +24,7 @@ public class CLI {
             String message = null;
             while ((message = nbbr.readLine()) != null) {
                 if (message.equals("/exit")) {
-                    break;
+                    return;
                 }
                 if (message.equals("/chatpartner")){
                     System.out.println("Bitte gib den Username deines Chatpartners ein");
@@ -57,15 +58,23 @@ public class CLI {
             String username = reader.readLine();
             System.out.println("Bitte gib dein Passwort ein");
             String passwort = reader.readLine();
-            c = new Client(username, passwort);
-            System.out.println(c.login());
+            try {
+                c = new Client(username, passwort);
+                System.out.println(c.login());
+            }catch (Exception e){
+                System.out.println("Bei deinem Login ist etwas schiefgelaufen...");
+            }
         }else if(answer.equals("n")){
             System.out.println("Bitte registriere dich.");
             System.out.println("Bitte gib deinen Username ein");
             String username = reader.readLine();
             System.out.println("Bitte gib dein Passwort ein");
             String passwort = reader.readLine();
-            c = new Client(username, passwort);
+            try{
+                c = new Client(username, passwort);
+            }catch (Exception e){
+                System.out.println("Bei deiner Registrierung ist etwas schiefgelaufen...");
+            }
             System.out.println(c.register());
         }else{
             System.out.println("???");
@@ -74,13 +83,11 @@ public class CLI {
     private void printMessages (List<Message> messageList){
         Iterator iterator = messageList.iterator();
         Message firstMessage = (Message) iterator.next();
-        if (firstMessage.getSender().equals("")) {
-            System.out.println("No new updates");
-        } else {
-            System.out.println("[" + firstMessage.getTimestamp() + "] " + firstMessage.getSender() + ": " + firstMessage.getText() + "\n");
+        if (!firstMessage.getSender().equals("")) {
+            System.out.println("[" + firstMessage.getTimestamp() + "] " + firstMessage.getSender() + ": " + firstMessage.getText());
             while (iterator.hasNext()) {
                 Message message = (Message) iterator.next();
-                System.out.println("[" + message.getTimestamp() + "] " + message.getSender() + ": " + message.getText() + "\n");
+                System.out.println("[" + message.getTimestamp() + "] " + message.getSender() + ": " + message.getText());
             }
         }
     }
