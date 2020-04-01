@@ -28,3 +28,21 @@ Messageobjekt hat timestamp, typ und body und wird auf dem server in die datenba
 - Alternativ bauen wir uns unseren eigenen String, welcher durch ein Zeichen die verschiedenen daten trennt
   -Dafür muss ein geeigneter trenner gefunden werden, idealerweise ein non printable character
   
+# Testszenarien
+
+## Ausfälle
+- Komplettausfall von einem Server
+- Komplettausfall von zwei Servern
+- Komplettausfall des gesamten Systems
+
+## Verbindungsprobleme
+- Ein Server hat langsamere Verbindung, wodurch es beim 2PC zu Problemen führen könnte
+- Ein Client hat Verbindungsprobleme beim Senden einer Nachricht
+- Ein Client hat Verbindungsprobleme beim Registrieren/Anmelden
+
+## Unstimmigkeiten
+- Ein User ist doppelt angelegt
+- Ein User ist nicht auf allen Servern angelegt
+- Durch einen Angriff stimmen Daten nicht überein
+- Es werden gefälschte Datenpakete an den Server gesendet (falsches PW, da angreifer)
+
