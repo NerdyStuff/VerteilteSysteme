@@ -292,7 +292,7 @@ public class Client {
         return returnString;
     }
 
-    public List<Message> getUpdates() {
+    public List<Message> getUpdates(String chatPartner) {
 
         Host host = selectHost();
         Socket socket = null;
@@ -352,18 +352,21 @@ public class Client {
 
                 } else if (responsePackage.getFlag() == 4) {
                     // Add messages to messages list
-                    messagesList.add(
-                            new Message(responsePackage.getUsername(),
-                                    responsePackage.getMessage(),
-                                    responsePackage.getTimestamp()));
-
+                    if ((responsePackage.getUsername().equals(username) && responsePackage.getReceiver().equals(chatPartner)) || (responsePackage.getUsername().equals(chatPartner) && responsePackage.getReceiver().equals(username))) {
+                        messagesList.add(
+                                new Message(responsePackage.getUsername(),
+                                        responsePackage.getMessage(),
+                                        responsePackage.getTimestamp()));
+                    }
                     Iterator iterator = serverResponse.iterator();
                     while (iterator.hasNext()) {
                         DataPackage tempData = (DataPackage) iterator.next();
-                        messagesList.add(
-                                new Message(tempData.getUsername(),
-                                        tempData.getMessage(),
-                                        tempData.getTimestamp()));
+                        if ((tempData.getUsername().equals(username) && tempData.getReceiver().equals(chatPartner)) || (tempData.getUsername().equals(chatPartner) && tempData.getReceiver().equals(username))) {
+                            messagesList.add(
+                                    new Message(tempData.getUsername(),
+                                            tempData.getMessage(),
+                                            tempData.getTimestamp()));
+                        }
                     }
                 } else if (responsePackage.getFlag() == -2) {
                     // Wrong password or username
