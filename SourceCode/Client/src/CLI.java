@@ -40,7 +40,7 @@ public class CLI {
                 }
                 c.sendMessage(to, message);
             }
-            printMessages(c.getUpdates(to);
+            printMessages(c.getUpdates(to));
             try {
                 TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException interruptedExeption) {
