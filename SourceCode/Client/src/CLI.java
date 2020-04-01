@@ -11,8 +11,8 @@ public class CLI {
     BufferedReader reader;
 
     public CLI() throws IOException {
-        Client c = null;
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        c = null;
+        reader = new BufferedReader(new InputStreamReader(System.in));
         login();
         System.out.println("Bitte gib den Username deines Chatpartners ein");
         String to = reader.readLine();
@@ -48,7 +48,6 @@ public class CLI {
                 interruptedExeption.printStackTrace();
             }
         }
-
     }
     private void login() throws IOException {
         System.out.println("Nutze /help um die Hilfe aufzurufen\n\nHast du bereits ein Profil? (y/n)");
