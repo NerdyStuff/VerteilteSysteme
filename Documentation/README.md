@@ -152,7 +152,7 @@ Exception Objekt für Daten-Objekte, die nicht dem DataPackage Format entspreche
 Die Klasse erzeugt entweder ein neues Objekt der Klasse **UI** oder der Klasse **CLI** je nachdem ob das Flag <code>USE_GUI</code> den Wert <code>true</code> oder <code>false</code> hat.
 
 ### Main-Klasse des Servers
-Die Klasse erzeugt ein neues Server-Objekt und führt die Methode "acceptClientConnections" aus.
+Die Klasse erzeugt ein neues Server-Objekt und führt die Methode <code>acceptClientConnections</code> aus.
 
 ## UML Klassendiagramm:
 Hier sieht man das (vorläufige) Klassen- und Beziehungsdiagramm der Basisversion.
