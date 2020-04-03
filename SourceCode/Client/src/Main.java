@@ -9,7 +9,6 @@ public class Main {
         if (USE_GUI) {
             UI ui = new UI();
         } else {
-
             try {
                 CLI cli = new CLI();
             } catch (IOException e) {
