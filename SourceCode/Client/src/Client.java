@@ -62,8 +62,6 @@ public class Client {
             return "Error: Could not send message";
         }
 
-
-        // TODO: Retry + Error Handling
         List<DataPackage> serverResponse = getDataPackageList(socket);
 
         if (serverResponse == null) {
@@ -145,10 +143,7 @@ public class Client {
             return null;
         }
 
-        // TODO: Retry + Error Handling
         List<DataPackage> serverResponse = getDataPackageList(socket);
-
-        // TODO: handle other cases than messages for user exist
 
         if (serverResponse == null) {
             // Error
@@ -187,18 +182,27 @@ public class Client {
                     }
                 } else if (responsePackage.getFlag() == -2) {
                     // Wrong password or username
+                    // Create new Message Object with Error
+                    messagesList.add(new Message("Error:", "Wrong Username or Password", null)); // Empty message object
 
                 } else if (responsePackage.getFlag() == -4) {
                     // General Error
+                    this.closeSocket(socket);
+                    return null;
 
                 } else {
                     // Unknown Error
+                    this.closeSocket(socket);
+                    return null;
                 }
             } else {
                 // error
+                this.closeSocket(socket);
+                return null;
             }
         }
 
+        this.closeSocket(socket);
         return messagesList;
     }
 
@@ -332,11 +336,7 @@ public class Client {
             return null;
         }
 
-
-        // TODO: Retry + Error Handling
         List<DataPackage> serverResponse = getDataPackageList(socket);
-
-        // TODO: handle other cases than messages for user exist
 
         if (serverResponse == null) {
             // Error
@@ -373,15 +373,23 @@ public class Client {
                     }
                 } else if (responsePackage.getFlag() == -2) {
                     // Wrong password or username
+                    // Create new Message Object with Error
+                    messagesList.add(new Message("Error:", "Wrong Username or Password", null)); // Empty message object
 
                 } else if (responsePackage.getFlag() == -4) {
                     // General Error
+                    this.closeSocket(socket);
+                    return null;
 
                 } else {
                     // Unknown Error
+                    this.closeSocket(socket);
+                    return null;
                 }
             } else {
                 // Error
+                this.closeSocket(socket);
+                return null;
             }
         }
 
@@ -432,7 +440,6 @@ public class Client {
             return "Error: Could not send message";
         }
 
-        // TODO: Retry + Error Handling
         List<DataPackage> serverResponse = getDataPackageList(socket);
 
         if (serverResponse == null) {

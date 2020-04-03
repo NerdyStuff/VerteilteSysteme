@@ -26,16 +26,16 @@ public class CLI {
                 if (message.equals("/exit")) {
                     return;
                 }
-                if (message.equals("/chatpartner")){
+                if (message.equals("/chatpartner")) {
                     System.out.println("Bitte gib den Username deines Chatpartners ein");
                     to = reader.readLine();
                     System.out.println(c.getChatHistory(to));
                     System.out.println("Du kannst jetzt chatten:");
                 }
-                if(message.equals("/logout")){
+                if (message.equals("/logout")) {
                     login();
                 }
-                if (message.equals("/help")){
+                if (message.equals("/help")) {
                     System.out.println("/exit beendet das programm\n/chatpartner wechselt deinen chatpartner\n/logout loggt dich aus");
                 }
                 c.sendMessage(to, message);
@@ -49,10 +49,11 @@ public class CLI {
             }
         }
     }
+
     private void login() throws IOException {
         System.out.println("Nutze /help um die Hilfe aufzurufen\n\nHast du bereits ein Profil? (y/n)");
         String answer = reader.readLine();
-        if(answer.equals("y")) {
+        if (answer.equals("y")) {
             System.out.println("Bitte gib deinen Username ein");
             String username = reader.readLine();
             System.out.println("Bitte gib dein Passwort ein");
@@ -60,26 +61,27 @@ public class CLI {
             try {
                 c = new Client(username, passwort);
                 System.out.println(c.login());
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("Bei deinem Login ist etwas schiefgelaufen...");
             }
-        }else if(answer.equals("n")){
+        } else if (answer.equals("n")) {
             System.out.println("Bitte registriere dich.");
             System.out.println("Bitte gib deinen Username ein");
             String username = reader.readLine();
             System.out.println("Bitte gib dein Passwort ein");
             String passwort = reader.readLine();
-            try{
+            try {
                 c = new Client(username, passwort);
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("Bei deiner Registrierung ist etwas schiefgelaufen...");
             }
             System.out.println(c.register());
-        }else{
+        } else {
             System.out.println("???");
         }
     }
-    private void printMessages (List<Message> messageList){
+
+    private void printMessages(List<Message> messageList) {
         Iterator iterator = messageList.iterator();
         Message firstMessage = (Message) iterator.next();
         if (!firstMessage.getSender().equals("")) {

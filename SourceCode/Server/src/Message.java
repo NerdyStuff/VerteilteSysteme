@@ -5,7 +5,7 @@ public class Message implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String sender, receiver,  text;
+    private String sender, receiver, text;
     private Date timestamp;
 
     public Message(String sender, String receiver, String text, Date timestamp) {

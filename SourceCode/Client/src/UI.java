@@ -28,7 +28,7 @@ public class UI {
         while (true) {
             try {
                 TimeUnit.SECONDS.sleep(1);
-                if(!to.equals("")) {
+                if (!to.equals("")) {
                     List<Message> newMessages = c.getUpdates(to);
                     printMessages(newMessages);
                 }

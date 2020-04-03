@@ -16,7 +16,7 @@ public class Server {
     private int serverPort = 1337;
     private ServerSocket serverSocket;
 
-    private String syncHostname = "192.168.188.26";
+    private String syncHostname = "192.168.188.31";
 
     // Hashmap to store Users
     private HashMap<String, User> users;
@@ -355,7 +355,7 @@ public class Server {
         List<DataPackage> loginReturnList = new LinkedList<DataPackage>();
 
         // Check if username and password are set
-        if(dataPackage.getUsername() == null
+        if (dataPackage.getUsername() == null
                 || dataPackage.getUsername().equals("")
                 || dataPackage.getPassword() == null
                 || dataPackage.getPassword().equals("")) {
@@ -384,7 +384,7 @@ public class Server {
         List<DataPackage> registrationReturnList = new LinkedList<DataPackage>();
 
         // Check if username and password are set
-        if(dataPackage.getUsername() == null
+        if (dataPackage.getUsername() == null
                 || dataPackage.getUsername().equals("")
                 || dataPackage.getPassword() == null
                 || dataPackage.getPassword().equals("")) {
@@ -529,7 +529,7 @@ public class Server {
         List<DataPackage> messageReturnList = new LinkedList<DataPackage>();
 
         // Check if username, password, receiver and message are set
-        if(dataPackage.getUsername() == null
+        if (dataPackage.getUsername() == null
                 || dataPackage.getUsername().equals("")
                 || dataPackage.getPassword() == null
                 || dataPackage.getPassword().equals("")
@@ -721,7 +721,7 @@ public class Server {
         List<Message> messageList = new LinkedList<Message>();
 
         // Check if username and password are set
-        if(dataPackage.getUsername() == null
+        if (dataPackage.getUsername() == null
                 || dataPackage.getUsername().equals("")
                 || dataPackage.getPassword() == null
                 || dataPackage.getPassword().equals("")) {
@@ -897,7 +897,7 @@ public class Server {
         List<DataPackage> updateReturnList = new LinkedList<DataPackage>();
 
         // Check if username and password are set
-        if(dataPackage.getUsername() == null
+        if (dataPackage.getUsername() == null
                 || dataPackage.getUsername().equals("")
                 || dataPackage.getPassword() == null
                 || dataPackage.getPassword().equals("")) {
@@ -996,8 +996,8 @@ public class Server {
                 FileWriter fileWriter = null;
                 try {
                     // Write encrypted string to file
-                   fileWriter = new FileWriter(file);
-                   fileWriter.write(encryptedString);
+                    fileWriter = new FileWriter(file);
+                    fileWriter.write(encryptedString);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
@@ -1043,7 +1043,7 @@ public class Server {
                 String decryptedString = AES.decrypt(stringBuilder.toString(), SAVE_SECRET_PASSWORD);
 
                 // Convert String to byte array to convert to objectstream afterwards
-                byte[] decryptedBytes =  Base64.getDecoder().decode(decryptedString);
+                byte[] decryptedBytes = Base64.getDecoder().decode(decryptedString);
 
                 // Create ObjectInputStream from bytearray
                 ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(decryptedBytes));

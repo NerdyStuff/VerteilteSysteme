@@ -7,11 +7,11 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.BufferedReader;
 import java.io.IOException;
+
 /**
  * A hack-of-a BufferedReader which does NOT block indefinately when reading.
  */
-public class NonBlockingBufferedReader
-{
+public class NonBlockingBufferedReader {
     // NOTE: LinkedBlockingQueue is threadsafe!
     private final BlockingQueue<String> lines = new LinkedBlockingQueue<String>();
 
@@ -25,13 +25,13 @@ public class NonBlockingBufferedReader
     }
 
     public NonBlockingBufferedReader(final Reader reader) {
-        backgroundReaderThread = new Thread(new Runnable(){
+        backgroundReaderThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 BufferedReader bfrdReader = null;
                 try {
-                    bfrdReader = (reader instanceof BufferedReader ? (BufferedReader)reader : new BufferedReader(reader));
-                    while ( !Thread.interrupted() ) {
+                    bfrdReader = (reader instanceof BufferedReader ? (BufferedReader) reader : new BufferedReader(reader));
+                    while (!Thread.interrupted()) {
                         String line = bfrdReader.readLine();
                         if (line == null) {
                             break;
@@ -42,15 +42,16 @@ public class NonBlockingBufferedReader
                     e.printStackTrace();
                 } finally {
                     closed = true;
-                    if ( bfrdReader!=null ) {
+                    if (bfrdReader != null) {
                         try {
                             bfrdReader.close();
-                        } catch(IOException e) {
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
                 }
-            }});
+            }
+        });
         // The JVM exits when the only running threads are all daemons.
         backgroundReaderThread.setDaemon(true);
         backgroundReaderThread.start();
@@ -62,7 +63,7 @@ public class NonBlockingBufferedReader
      */
     public String readLine() throws IOException {
         try {
-            return closed && lines.size()==0 ? null : lines.poll(500L, TimeUnit.MILLISECONDS);
+            return closed && lines.size() == 0 ? null : lines.poll(500L, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             throw new IOException("The BackgroundReaderThread was interrupted!");
         }
@@ -72,7 +73,7 @@ public class NonBlockingBufferedReader
      * Closes this reader (by interrupting the background reader thread).
      */
     public void close() {
-        if( backgroundReaderThread!=null ){
+        if (backgroundReaderThread != null) {
             backgroundReaderThread.interrupt();
             backgroundReaderThread = null;
         }
