@@ -82,7 +82,7 @@ Der Objekt-Stream kann dann wieder in eine HashMap geparst werden und verwendet 
 | Attribut | Datentyp | Beschreibung |
 | -------- | -------- | ------------ |
 | flag:    | Integer  | Mit dem Flag wird den Client oder dem anderen Server mitgeteilt, welche Daten erwartet werden können<br><br><code>Wert: 1</code> Registrierung <br> <code>Wert: 2</code> Nachricht <br> <code>Wert: 3</code> Update-Request <br> <code>Wert: 4</code> Neue Nachrichten für den Client <br> <code>Wert: 5</code> Keine neuen Nachrichten für den Client <br> <code>Wert: 6</code> Registrierung erfolgreich <br> <code>Wert: 7</code> Nachricht erfolgreich angenommen <br> <code>Wert: 8</code> Anfrage der Chathistorie <br> <code>Wert: 9</code> Chathistory <br><code>Wert: 10</code> Login Request <br><code>Wert: 11</code> Login successfull <br><br><code>Wert: 20</code> Commit request (prepare)<br><code>Wert: 21</code>Ready Nachricht von anderen Server(n)<br><code>Wert: 22</code>Commit von Koordinator<br><code>Wert: 23</code>Acknowledge von anderen Servern<br><br> <code>Wert: -1</code> Registrierung fehlgeschlagen <br> <code>Wert: -2</code> Falsches Passwort oder Nutzername <br> <code>Wert: -3</code> Empfänger existiert nicht <br> <code>Wert: -4</code> Allgemeiner Fehler <br> <code>Wert: -5</code> Empfänger darf nicht gleicher Nutzer sein wie Sender <br> <code>Wert: -6</code> Keine Chathistorie gefunden / Fehler<br><code>Wert: -7</code> Login Fehlgeschlagen<br><br><code>Wert: -20</code> Failed von anderen Servern<br><code>Wert: -21</code> Abort von Koordinator|
-| syncFlag | Integer | Mit dem Flag wird dem Sync-Server mitgeteilt, welche Daten im Attribut \"object\" zu erwarten sind <br><br><code>Wert: 1</code> User-Objekt für die Registrierung<br><code>Wert: 2</code> User-Objekt mit neue Nachrichtenliste <br> <code>Wert: 3</code>User-Objekt für Update-requests|
+| syncFlag | Integer | Mit dem Flag wird dem Sync-Server mitgeteilt, welche Daten im Attribut \"object\" zu erwarten sind <br><br><code>Wert: 1</code> User-Objekt für die Registrierung<br><code>Wert: 2</code> User-Objekt mit neue Nachrichtenliste <br> <code>Wert:  3</code>User-Objekt für Update-requests|
 | username | String | Nutzername |
 | password | String | Password |
 | receiver | String | Empfänger der Nachricht |
@@ -94,6 +94,7 @@ Der Objekt-Stream kann dann wieder in eine HashMap geparst werden und verwendet 
 | Attribut  | Datentyp | Beschreibung |
 | --------- | -------- | ------------ |
 | sender    | String   | Sender der Nachricht |
+| receiver  | String   | Empfänger der Nachricht |
 | text      | String   | Text der Nachricht |
 | timestamp | Date     | Zeitstempel der Nachricht |
 
@@ -103,6 +104,7 @@ Der Objekt-Stream kann dann wieder in eine HashMap geparst werden und verwendet 
 | username | String   | Nutzername |
 | password | String   | Passwort des Benutzers |
 | messages | LinkedList\<Message\> | Liste mit den Nachrichten für den Benutzer |
+| chatHistory | LinkedList\<Message\> | Liste mit der Chathistorie des Benutzer |
 
 ### Host
 | Attribut | Datentyp | Beschreibung |
@@ -113,8 +115,13 @@ Der Objekt-Stream kann dann wieder in eine HashMap geparst werden und verwendet 
 ### Server
 | Attribut | Datentyp | Beschreibung |
 | -------- | -------- | ------------ |
+| ENCRYPT_SAVE_FILE | Boolean | Flag mit dem die Daten verschlüsselt gespeichert werden können |
+| SAVE_PATH | String | Pfadangabe zur Speicherdatei mit den Nutzerdaten |
+| SAVE_SECRET_PASSWORD | String | Passwort zum verschlüsseln der Nutzerdatendatei | 
+| | | |
 | serverPort | Integer | Port, auf dem der Server Anfragen annimmt |
 | serverSocket | Socket | Socket des Servers |
+| syncHostname | String | Hostname des jeweils anderen Servers zum Synchronisieren.
 | users    | HashMap\<String, User\> | Hashmap mit den im System registrierten Nutzern |
 
 ### Client
@@ -124,14 +131,28 @@ Der Objekt-Stream kann dann wieder in eine HashMap geparst werden und verwendet 
 | username | String   | Nutzername des Clients |
 | password | String   | Passwort des Clients |
 
+Im Konstruktor des der Klasse Client müssen die Verfügbaren Server in die HashMap mit den Hosts eingefügt werden. soll nur der localhost verwendet werden, kann die nachfolgende Zeile entfernt werden. Soll zufällig ein Server aus der Liste verwendet werden, müssen die beiden Hostnames der Server angegeben werden. Die Methode <code>selectHost()</code> wählt dann zufällig einen Server aus der HashMap aus, der für die aktuelle Anfrage verwendet wird.
+
+### AES
+Klasse mit den Implementierungen des AES Algorithmus von Lokesh Gupta [https://howtodoinjava.com/security/java-aes-encryption-example/](https://howtodoinjava.com/security/java-aes-encryption-example/).
+
 ### UI
 Klasse um eine grafische Oberfläche für den Client zu erzeugen.
 
 ### CLI
 Klasse um ein Eingabeterminal für den Nutzer zu erzeugen
 
+### NonBlockingBufferedReader
+Klasse um die Eingaben der CLI Klasse non-blocking zu machen.
+
 ### WrongDataPackageException
 Exception Objekt für Daten-Objekte, die nicht dem DataPackage Format entsprechen.
+
+### Main-Klasse des Clients
+Die Klasse erzeugt entweder ein neues Objekt der Klasse **UI** oder der Klasse **CLI** je nachdem ob das Flag <code>USE_GUI</code> den Wert <code>true</code> oder <code>false</code> hat.
+
+### Main-Klasse des Servers
+Die Klasse erzeugt ein neues Server-Objekt und führt die Methode "acceptClientConnections" aus.
 
 ## UML Klassendiagramm:
 Hier sieht man das (vorläufige) Klassen- und Beziehungsdiagramm der Basisversion.
