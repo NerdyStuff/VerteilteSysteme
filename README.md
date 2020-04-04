@@ -20,7 +20,7 @@ Das System soll dokumentiert sein (5-10 Seiten + Codekommentare)
 
 ## Zusatzerweiterungen:
 - Emojis (+ 5 points) 
-- Mehrere Chat Hsitorien für einen User (+ 10 points)
+- Mehrere Chat Historien für einen User (+ 10 points)
 - GUI (+ 10 points)
 - Persistente Chat Historie (+ 10 points)
 - Verschlüsselte Speicherung auf dem Server (+ 10 points)
