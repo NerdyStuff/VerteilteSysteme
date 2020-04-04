@@ -1,4 +1,3 @@
-import javax.print.DocFlavor;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -9,6 +8,8 @@ public class Client {
     private HashMap<Integer, Host> hosts;
 
     private String username, password;
+    private static final boolean ENCRYPT_MESSAGES = false;
+    private static final String MESSAGE_PASSWORD = "extremSicheresPasswort123";
 
     public Client(String username, String password) {
         this.username = username;
@@ -164,9 +165,10 @@ public class Client {
                     // Add messages to messages list
                     if ((responsePackage.getUsername().equals(username) && responsePackage.getReceiver().equals(chatPartner)) || (responsePackage.getUsername().equals(chatPartner) && responsePackage.getReceiver().equals(username))) {
 
+                        // decrypt messages if flag is set
                         messagesList.add(
                                 new Message(responsePackage.getUsername(),
-                                        responsePackage.getMessage(),
+                                        this.modifyReceivedMessage(responsePackage.getMessage()),
                                         responsePackage.getTimestamp()));
                     }
                     Iterator iterator = serverResponse.iterator();
@@ -176,7 +178,7 @@ public class Client {
 
                             messagesList.add(
                                     new Message(tempData.getUsername(),
-                                            tempData.getMessage(),
+                                            this.modifyReceivedMessage(tempData.getMessage()),
                                             tempData.getTimestamp()));
                         }
                     }
@@ -225,7 +227,8 @@ public class Client {
             return "Error: IOException";
         }
 
-        DataPackage dataPackage = new DataPackage(2, username, password, receiver, message, new Date());
+        // encrypt message text if flag is set
+        DataPackage dataPackage = new DataPackage(2, username, password, receiver, this.modifySendMessageText(message), new Date());
         int returnValue = sendDataPackage(socket, dataPackage);
 
         int retryCounter = 0;
@@ -356,18 +359,20 @@ public class Client {
                     System.out.println("Username: " + username + " chatPartner: " + chatPartner);
 
                     if ((responsePackage.getUsername().equals(username) && responsePackage.getReceiver().equals(chatPartner)) || (responsePackage.getUsername().equals(chatPartner) && responsePackage.getReceiver().equals(username))) {
+                        // decrypt message text if flag is set
                         messagesList.add(
                                 new Message(responsePackage.getUsername(),
-                                        responsePackage.getMessage(),
+                                        this.modifyReceivedMessage(responsePackage.getMessage()),
                                         responsePackage.getTimestamp()));
                     }
                     Iterator iterator = serverResponse.iterator();
                     while (iterator.hasNext()) {
                         DataPackage tempData = (DataPackage) iterator.next();
                         if ((tempData.getUsername().equals(username) && tempData.getReceiver().equals(chatPartner)) || (tempData.getUsername().equals(chatPartner) && tempData.getReceiver().equals(username))) {
+                            // decrypt message text if flag is set
                             messagesList.add(
                                     new Message(tempData.getUsername(),
-                                            tempData.getMessage(),
+                                            this.modifyReceivedMessage(tempData.getMessage()),
                                             tempData.getTimestamp()));
                         }
                     }
@@ -581,6 +586,25 @@ public class Client {
             TimeUnit.MILLISECONDS.sleep(millis);
         } catch (InterruptedException interruptedExeption) {
             System.out.println("Error: Could not sleep for " + millis + " milliseconds...");
+        }
+    }
+
+    private String modifySendMessageText(String message) {
+
+        // If encryption is enabled, encrypt message text before sending, else use plain text
+        if (ENCRYPT_MESSAGES) {
+            return AES.encrypt(message, MESSAGE_PASSWORD);
+        } else {
+            return message;
+        }
+    }
+
+    private String modifyReceivedMessage(String message) {
+        // If encryption is enabled, decrypt message text before displaying to user, else use plain text
+        if (ENCRYPT_MESSAGES) {
+            return AES.decrypt(message, MESSAGE_PASSWORD);
+        } else {
+            return message;
         }
     }
 }
