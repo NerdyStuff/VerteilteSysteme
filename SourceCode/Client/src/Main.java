@@ -2,7 +2,7 @@ import java.io.IOException;
 
 public class Main {
 
-    private static final boolean USE_GUI = false;
+    private static final boolean USE_GUI = true;
 
     public static void main(String[] args) {
 

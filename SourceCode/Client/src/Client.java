@@ -8,8 +8,9 @@ public class Client {
     private HashMap<Integer, Host> hosts;
 
     private String username, password;
-    private static final boolean ENCRYPT_MESSAGES = false;
-    private static final String MESSAGE_PASSWORD = "extremSicheresPasswort123";
+    private static final boolean ENCRYPT_MESSAGES = true; // Flag to encrypt messages
+    private static final boolean SHOW_ENCRYPTED_MESSAGE_IN_TERMINAL = true; // Flag to show encrypted received message in terminal
+    private static final String MESSAGE_PASSWORD = "extremSicheresPasswort123"; // password to encrypt message
 
     public Client(String username, String password) {
         this.username = username;
@@ -602,6 +603,9 @@ public class Client {
     private String modifyReceivedMessage(String message) {
         // If encryption is enabled, decrypt message text before displaying to user, else use plain text
         if (ENCRYPT_MESSAGES) {
+            if (SHOW_ENCRYPTED_MESSAGE_IN_TERMINAL) {
+                System.out.println("Encrypted message: " + message);
+            }
             return AES.decrypt(message, MESSAGE_PASSWORD);
         } else {
             return message;
