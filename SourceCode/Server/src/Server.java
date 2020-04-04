@@ -1072,6 +1072,8 @@ public class Server {
                 // Other Error
                 System.out.println("An error occured while loading file");
             }
+        } catch (FileNotFoundException e) {
+            System.out.println("No save file found. It will be created if needed.");
         } catch (Exception e) {
             System.out.println("Error: Could not load save file");
             e.printStackTrace();
