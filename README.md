@@ -26,7 +26,7 @@ Das System soll dokumentiert sein (5-10 Seiten + Codekommentare)
 - Verschlüsselte Speicherung auf dem Server (+ 10 points)
 - Gruppenchats (+ 20 points)
 - Verschlüsselte Kommunikation (+ 20 points)
-- Drei identische Server mit der Major Consensus Strategei(+ 40 points)
+- Drei identische Server mit der Major Consensus Strategie(+ 40 points)
 
 ## Dokumentation
 Die Dokumentation findet sich im Ordner "Dokumentation" oder unter [diesem](https://github.com/NerdyStuff/VerteilteSysteme/tree/master/Documentation) Link.
