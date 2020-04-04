@@ -76,6 +76,11 @@ Anschließend wird der String in einer Datei persistiert.<br>
 Das Laden der Daten beim Start des Servers funktionirt umgekehrt, der String wird entschlüsslet, zu einem Byte-Array gemacht und anschließend wieder in einen Objekt-Stream.<br>
 Der Objekt-Stream kann dann wieder in eine HashMap geparst werden und verwendet werden.
 
+### Verschlüsselte Kommunikation
+Wird das Flag ```ENCRYPT_MESSAGES``` in der Client-Klasse auf true gesetzt, werden die Nachrichtentexte vor dem Versenden mit dem in der Konstante ```MESSAGE_PASSWORD``` gesetzten Passwort verschlüsselt. Das Flag ```SHOW_ENCRYPTED_MESSAGE_IN_TERMINAL``` zeigt die vor dem Entschlüsseln empfangenen Nachrichtentexte in der Konsole an. Damit kann validiert werden, dass die Nachrichtentexte von Client zu Client verschlüsselt übertragen werden.<br>
+Die Nachrichten werden auch verschlüsslet in der Chathistorie gespeichert, daher ist es nötig die Speicherdateien auf den Servern zu löschen, wenn nur verschlüsselt kommuniziert werden soll. Wird zwischen Klartextübertragung und verschlüsselter Übertragung gewechselt ohne die Datei(en) zu löschen, werden die Nachrichten falsch dargestellt.<br>
+Beide Clients müssen das gleiche Passwort verwenden um zu kommunizieren.
+
 ## Schnittstellen- und Objektdefinitionen:
 
 ### DataPackage
@@ -127,6 +132,10 @@ Der Objekt-Stream kann dann wieder in eine HashMap geparst werden und verwendet 
 ### Client
 | Attribut | Datentyp | Beschreibung |
 | -------- | -------- | ------------ |
+| ENCRYPT_MESSAGES | boolean | Flag um Nachrichrichtentexte vor dem Senden zu verschlüsseln.|
+| SHOW_ENCRYPTED_MESSAGE_IN_TERMINAL | boolean | Flag um die empfangenen verschlüsselten Nachrichten in der Konsole anzuzeigen. |
+| MESSAGE_PASSWORD | String | Passwort, mit dem die Nachrichten verschlüsselt werden, wenn das Flag zur Verschlüsselung gesetzt ist. |
+| | | |
 | hosts    | HashMap\<Integer, Host\> | Hashmap mit den benutzbaren Servern <br> \(HashMap wird als dynamisches Array verwendet mit Zugriffszeit von 1\) |
 | username | String   | Nutzername des Clients |
 | password | String   | Passwort des Clients |
