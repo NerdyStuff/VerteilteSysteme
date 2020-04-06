@@ -81,13 +81,19 @@ public class CLI {
     }
 
     private void printMessages(List<Message> messageList) {
-        Iterator iterator = messageList.iterator();
-        Message firstMessage = (Message) iterator.next();
-        if (!firstMessage.getSender().equals("")) {
-            System.out.println("[" + firstMessage.getTimestamp() + "] " + firstMessage.getSender() + ": " + firstMessage.getText());
-            while (iterator.hasNext()) {
-                Message message = (Message) iterator.next();
-                System.out.println("[" + message.getTimestamp() + "] " + message.getSender() + ": " + message.getText());
+        if(messageList != null) {
+            Iterator iterator = messageList.iterator();
+            Message firstMessage = (Message) iterator.next();
+            if(!firstMessage.getSender().equals("ERROR")) {
+                if (!firstMessage.getSender().equals("")) {
+                    System.out.println("[" + firstMessage.getTimestamp() + "] " + firstMessage.getSender() + ": " + firstMessage.getText());
+                    while (iterator.hasNext()) {
+                        Message message = (Message) iterator.next();
+                        System.out.println("[" + message.getTimestamp() + "] " + message.getSender() + ": " + message.getText());
+                    }
+                }
+            }else{
+                System.out.println("ERROR!");
             }
         }
     }
