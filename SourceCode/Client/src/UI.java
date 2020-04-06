@@ -294,11 +294,14 @@ public class UI {
     private static void printMessages(List<Message> newMessages) {
         if (newMessages == null || newMessages.isEmpty()) {
             log("Network error");
+
         } else {
             Iterator iterator = newMessages.iterator();
             Message firstMessage = (Message) iterator.next();
             if (firstMessage.getSender().equals("")) {
                 System.out.println("No new updates");
+            }else if (firstMessage.getSender().equals("Error:")){
+                log("" + firstMessage.getSender() + firstMessage.getText());
             } else {
                 chatIncoming.append("[" + firstMessage.getTimestamp() + "] " + firstMessage.getSender() + ": " + firstMessage.getText() + "\n");
                 while (iterator.hasNext()) {
