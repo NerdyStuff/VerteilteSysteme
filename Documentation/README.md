@@ -153,6 +153,7 @@ Klasse um ein Eingabeterminal für den Nutzer zu erzeugen
 
 ### NonBlockingBufferedReader
 Klasse um die Eingaben der CLI Klasse non-blocking zu machen.
+Diese Klasse wurde aus einem Forum entnommen. Diese findet sich [hier](https://community.oracle.com/message/5318833#5318833).
 
 ### WrongDataPackageException
 Exception Objekt für Daten-Objekte, die nicht dem DataPackage Format entsprechen.
