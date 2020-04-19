@@ -51,7 +51,13 @@ Die Dokumentation findet sich im Ordner "Dokumentation" oder unter [diesem](http
 * **Benno Grimm** ([Grimmig18](https://github.com/Grimmig18))
 * **Tizian Groß** ([tizian123](https://github.com/tizian123)) 
 * **Tristan Emig** ([TristanMrb](https://github.com/TristanMrb)) 
-* **Marcel Mertens** ([Nerdystuff](https://github.com/NerdyStuff)) 
+* **Marcel Mertens** ([Nerdystuff](https://github.com/NerdyStuff))
+
+### Aufgabenverteilung
+* GUI + CLI: Benno Grimm, Anton Ochel, Anna-Lena Richert
+* Server: Tizian Groß, Tristan Emig, Marcel Mertens
+* Client: Alle
+* Dokumentation + Ideen: Alle
 
 ### Quellen & Links
 - \[1\] [Lamport-Uhr](https://de.wikipedia.org/wiki/Lamport-Uhr); [Lamport timestamps](https://en.wikipedia.org/wiki/Lamport_timestamps) 
