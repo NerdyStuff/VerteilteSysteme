@@ -58,6 +58,7 @@ Die Dokumentation findet sich im Ordner "Dokumentation" oder unter [diesem](http
 * Server: Tizian Groß, Tristan Emig, Marcel Mertens
 * Client: Alle
 * Dokumentation + Ideen: Alle
+* Verwaltung von Github: Alle
 
 ### Quellen & Links
 - \[1\] [Lamport-Uhr](https://de.wikipedia.org/wiki/Lamport-Uhr); [Lamport timestamps](https://en.wikipedia.org/wiki/Lamport_timestamps) 
